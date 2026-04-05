@@ -7,7 +7,7 @@ User guide built with [VitePress](https://vitepress.dev/), with automated screen
 ```bash
 cd docs
 npm install        # first time only
-npm run dev        # starts at http://localhost:5173/VideoIdeas/
+npm run dev        # starts at http://localhost:5173/CRAFT/
 ```
 
 ## Build
@@ -95,4 +95,4 @@ docs/
 
 The docs deploy to GitHub Pages automatically on push to `main` via the CI workflow. The site is available at:
 
-**https://vibesmiths.github.io/VideoIdeas/**
+**https://vibesmiths.github.io/CRAFT/**

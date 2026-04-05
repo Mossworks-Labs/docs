@@ -13,7 +13,7 @@ hero:
       link: /mobile/
     - theme: alt
       text: View on GitHub
-      link: https://github.com/VibeSmiths/VideoIdeas
+      link: https://github.com/VibeSmiths/CRAFT
 features:
   - icon: "\u270D\uFE0F"
     title: AI Script Writing

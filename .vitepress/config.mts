@@ -56,7 +56,7 @@ export default defineConfig({
       },
     ],
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/VibeSmiths/VideoIdeas' },
+      { icon: 'github', link: 'https://github.com/VibeSmiths/CRAFT' },
     ],
     search: {
       provider: 'local',

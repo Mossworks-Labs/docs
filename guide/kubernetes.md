@@ -50,8 +50,8 @@ docker compose -f docker-compose.dev.yml build studio frontend
 # 2. Import into k3s containerd
 TAG=$(git rev-parse --short HEAD)
 for svc in studio frontend; do
-  docker tag craft-$svc:latest ghcr.io/vibesmiths/videoideas/$svc:$TAG
-  docker save ghcr.io/vibesmiths/videoideas/$svc:$TAG | \
+  docker tag craft-$svc:latest ghcr.io/vibesmiths/$svc:$TAG
+  docker save ghcr.io/vibesmiths/$svc:$TAG | \
     sudo k3s ctr -a /run/containerd/containerd.sock images import -
 done
 
@@ -158,8 +158,8 @@ sudo bash scripts/k3s-deploy.sh
 # Or just rebuild studio and restart
 docker compose -f docker-compose.dev.yml build studio
 TAG=$(kubectl get deployment craft-studio -o jsonpath='{.spec.template.spec.containers[0].image}' | sed 's/.*://')
-docker tag craft-studio:latest ghcr.io/vibesmiths/videoideas/studio:$TAG
-sudo docker save ghcr.io/vibesmiths/videoideas/studio:$TAG | \
+docker tag craft-studio:latest ghcr.io/vibesmiths/studio:$TAG
+sudo docker save ghcr.io/vibesmiths/studio:$TAG | \
   sudo k3s ctr -a /run/containerd/containerd.sock images import -
 kubectl delete pod -l app.kubernetes.io/component=studio
 ```
