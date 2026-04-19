@@ -18,7 +18,7 @@ There is **one** bill for creators: **storage**. It scales with the library they
 
 ## Sub-views
 
-The Marketplace has its own sub-navigation (separate chrome from the Studio stage rail):
+The Marketplace has its own sub-navigation (separate chrome from the Studio stage rail): **Browse · Gigs · My studio**. The `+ Post a gig` action lives in the top-right of the chrome and is always one click away.
 
 ### Browse
 
@@ -31,6 +31,38 @@ Filter rail on the left (category, style/vibe, language, turnaround, price), her
 - **Musicians** — custom tracks, ambient, orchestral, electronic
 - **Editors** — pacing surgery, shorts-first cuts, long-form docs
 - **Animators** — 2D motion, 3D, explainer, data-viz
+
+### Gigs
+
+<SchemeImage name="marketplace-gigs" alt="Open gigs — filter rail + gig cards" />
+
+Gigs is the flip side of Browse — instead of buyers searching for creators, creators see **channels posting what they need** and apply with a message + quote.
+
+**For creators**
+
+1. Open **Gigs** in the marketplace chrome.
+2. Filter by role, budget, deadline, status.
+3. Click a gig card to see the full brief (description, deliverables, tags, budget).
+4. Submit an application — short pitch + your quote.
+
+The buyer sees your application under their gig. If they shortlist or accept you, the next step is the standard [Hire & contract](#hire-contract) flow against your quote.
+
+**For buyers — Post a gig**
+
+<SchemeImage name="marketplace-post-gig" alt="Post a gig form with live preview" />
+
+Click **+ Post a gig** in the top-right of the marketplace chrome. The form has:
+
+- **Title** — the headline creators see in the list
+- **Role** — voice / spokesperson / music / editor / animator
+- **Description** — the brief (context, tone, samples, deadlines)
+- **Deliverables** — file formats, revisions, timeline
+- **Budget min / max** — displayed as a range on the card
+- **Deadline** — free-text (e.g. "Apr 28" or "Ongoing")
+- **Tags** — comma-separated search keywords
+- **Your name / channel** — attribution shown on the gig
+
+A live preview card sits to the right so you can see the cards as applicants will. Nothing is charged at post-time — funds only move through escrow once you **accept** a specific applicant.
 
 ### Artist profile
 
