@@ -40,10 +40,10 @@ The footer shows your current channel and reminds you of the key bindings.
 Behind the avatar you'll find:
 
 - **API keys** — paste Claude OAuth tokens, Gemini / OpenAI / ElevenLabs keys, YouTube Data API, GitHub PAT for feedback → issues, etc. All encrypted server-side.
-- **Change password** — inline form; uses Keycloak admin REST under the hood.
+- **Change password** — inline form, takes effect immediately.
 - **Theme & colors** — the seven color schemes (Classic / Purple / Blue / Amber / Rose / Liquid gold / Otter) plus light/dark mode toggle.
 - **Documentation** — links to this guide.
-- **Sign out** — ends your Keycloak session and returns to the login flow.
+- **Sign out** — ends your session and returns to the login screen.
 
 ::: tip
 Any channel-scoped nav (Proposals, Jobs, channel Settings) is only ever one click deep — open the channel pill and everything for the current channel is listed inline. No more hunt-and-click through nested nav.

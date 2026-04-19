@@ -85,7 +85,7 @@ html.scheme-otter.dark { --vp-c-brand-1: #a8d5b5; --vp-c-brand-2: #7ab88a; --vp-
 /* ── Image zoom ────────────────────────────────────────────────────────── */
 .vp-doc img,
 .feature-screenshot img,
-.VPHero .image-container img {
+.hero-carousel img {
   cursor: zoom-in;
 }
 

@@ -34,20 +34,19 @@ Channel-scoped actions (Proposals, Jobs, channel Settings) live inside the chann
 ## Architecture
 
 ```
-Browser ──> Express API (port 8080) ──> Docker
+Browser ──> Studio API ──> Studio runtime
               |-- AI (Claude Agent SDK + Gemini + Ollama)
               |-- 14 AI Agents (research, write, storyboard, composite...)
-              |-- YouTube (yt-dlp + Data API)
+              |-- YouTube research (yt-dlp + Data API)
               |-- TTS (Edge TTS, ElevenLabs, OpenAI, OpenedAI Speech)
-              |-- NATS JetStream Workers (idea, tts, discover, render...)
-              |-- Multi-tenant Auth (Keycloak OIDC, role-based)
-              |-- Feedback → GitHub Issues (Haiku grooming + worker)
-              |-- PostgreSQL (shared with Keycloak)
-              |-- Redis Caching (L1 memory → L2 Redis)
+              |-- Background workers (idea, tts, discover, render...)
+              |-- Role-based multi-tenant access
+              |-- Feedback → GitHub Issues (AI grooming + worker)
+              |-- Persistent storage + caching
               |-- Remotion Video (65+ components, Chromium render)
               \-- GPU Services (Ollama, ComfyUI, MusicGen, RVC)
 
-Mobile App ──> Same Express API (local network)
+Mobile App ──> Same Studio API (local network)
 ```
 
 ## Quick Start

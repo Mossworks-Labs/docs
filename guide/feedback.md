@@ -38,10 +38,9 @@ The issue includes:
 - Refined title as the issue title
 - Markdown body with summary, action items checklist, original description, suggestions, and metadata
 - Labels from the groomed result plus a `feedback` label
-- Submitter username from your Keycloak login (included in the payload as `submittedBy`)
-- Submitter username from your Keycloak login
+- Your username so the issue is attributed to you
 
-The submission runs as an async NATS worker job. You'll see real-time status updates, and a link to the created issue once complete.
+The submission runs as an async background job. You'll see real-time status updates and a link to the created issue once complete.
 
 ::: info Requirements
 - **Ollama** must be running for AI grooming. Enable GPU services via Helm (`gpu.enabled: true` in values.yaml) or `docker compose -f docker-compose.dev.yml --profile gpu up -d` for local dev.
