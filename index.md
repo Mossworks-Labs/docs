@@ -47,7 +47,7 @@ features:
     details: Android app for ideas, scripts, and YouTube research on the go. Connects over local network.
   - icon: "\uD83D\uDD10"
     title: Authentication & Role-Based Access
-    details: Keycloak SSO with 4 roles (admin, editor, premium, standard). Multi-tenant channel isolation, 3-tier model access, and per-user encrypted API key storage.
+    details: Single sign-on with four roles (admin, editor, premium, standard). Multi-tenant channel isolation, 3-tier model access, and per-user encrypted API key storage.
   - icon: "\uD83D\uDCE4"
     title: "Multi-Platform Publishing \u2728"
     details: "Coming Soon — Publish directly to YouTube, TikTok, Facebook, and X from a single workflow."
@@ -62,7 +62,7 @@ features:
   <img src="https://img.shields.io/badge/Kubernetes-Helm-0d9488?logo=helm&logoColor=white" alt="Kubernetes" />
   <img src="https://img.shields.io/badge/AI-Claude_%2B_Gemini_%2B_Ollama-0d9488?logo=anthropic&logoColor=white" alt="AI" />
   <img src="https://img.shields.io/badge/TTS-300%2B_Voices-0d9488" alt="TTS" />
-  <img src="https://img.shields.io/badge/Pipeline-8_Stages-0d9488?logo=nats&logoColor=white" alt="Pipeline" />
+  <img src="https://img.shields.io/badge/Pipeline-8_Stages-0d9488" alt="Pipeline" />
   <img src="https://img.shields.io/badge/Agents-14-0d9488?logo=anthropic&logoColor=white" alt="Agents" />
   <img src="https://img.shields.io/badge/GPU-5_Services-0d9488?logo=nvidia&logoColor=white" alt="GPU" />
   <img src="https://img.shields.io/badge/Mobile-Android-0d9488?logo=android&logoColor=white" alt="Mobile" />
@@ -319,24 +319,6 @@ features:
   </div>
 </div>
 
-## Open Source & Self-Hosted
-
-<div class="self-hosted">
-  <div class="self-hosted-content">
-    <p class="self-hosted-pitch">Your data stays on your machine. Deploy with Helm on k3s or any Kubernetes cluster — no cloud dependencies beyond your API keys.</p>
-    <div class="self-hosted-code">
-
-```bash
-helm upgrade --install craft ./helm/craft -f helm/craft/values-dev.yaml
-```
-
-</div>
-    <div class="self-hosted-links">
-      <a href="./guide/kubernetes">Deployment Guide →</a> · <a href="./guide/setup">Local Dev (Docker Compose) →</a>
-    </div>
-  </div>
-</div>
-
 ## Powered By
 
 <div class="powered-section">
@@ -350,41 +332,36 @@ helm upgrade --install craft ./helm/craft -f helm/craft/values-dev.yaml
     </div>
   </div>
   <div class="powered-group">
-    <div class="powered-label">Backend</div>
+    <div class="powered-label">Video & research</div>
     <div class="tech-stack">
-      <span class="tech-badge">Express</span>
-      <span class="tech-badge">Helm / k3s</span>
-      <span class="tech-badge">PostgreSQL</span>
-      <span class="tech-badge">yt-dlp</span>
+      <span class="tech-badge">Remotion</span>
       <span class="tech-badge">ffmpeg</span>
+      <span class="tech-badge">yt-dlp</span>
     </div>
   </div>
   <div class="powered-group">
-    <div class="powered-label">Pipeline</div>
-    <div class="tech-stack">
-      <span class="tech-badge">NATS JetStream</span>
-      <span class="tech-badge">Agent SDK</span>
-      <span class="tech-badge">Redis</span>
-      <span class="tech-badge">9 Workers</span>
-    </div>
-  </div>
-  <div class="powered-group">
-    <div class="powered-label">AI & Audio</div>
+    <div class="powered-label">AI models</div>
     <div class="tech-stack">
       <span class="tech-badge">Claude</span>
       <span class="tech-badge">Gemini</span>
       <span class="tech-badge">Ollama</span>
-      <span class="tech-badge">Edge TTS</span>
-      <span class="tech-badge">OpenedAI Speech</span>
-      <span class="tech-badge">MusicGen</span>
     </div>
   </div>
   <div class="powered-group">
-    <div class="powered-label">GPU Services</div>
+    <div class="powered-label">Audio</div>
+    <div class="tech-stack">
+      <span class="tech-badge">Edge TTS</span>
+      <span class="tech-badge">OpenedAI Speech</span>
+      <span class="tech-badge">ElevenLabs</span>
+      <span class="tech-badge">MusicGen</span>
+      <span class="tech-badge">RVC</span>
+    </div>
+  </div>
+  <div class="powered-group">
+    <div class="powered-label">Images</div>
     <div class="tech-stack">
       <span class="tech-badge">ComfyUI</span>
       <span class="tech-badge">Stable Diffusion</span>
-      <span class="tech-badge">RVC</span>
     </div>
   </div>
 </div>

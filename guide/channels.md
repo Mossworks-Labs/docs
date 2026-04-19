@@ -52,19 +52,17 @@ The top chrome gives you three ways to switch:
 - **Channel pill dropdown** — shows every channel you own with subs/character, click to select.
 - **⌘K command palette** — type a channel name, hit enter. See [Top chrome & ⌘K](/guide/command-palette).
 
-## Channel Ownership & Multi-Tenant Isolation
+## Channel ownership
 
-Each channel is owned by the user who created it. Access is controlled by Keycloak roles:
+Each channel is owned by the user who created it. What you can see and edit depends on your [role](/guide/auth):
 
-| Role | See Own Channels | See Others' Channels | Edit Others' Channels |
-|------|-----------------|---------------------|----------------------|
+| Role | See own channels | See others' | Edit others' |
+|------|-----------------|-------------|--------------|
 | **Admin** | Yes | Yes | Yes |
 | **Editor** | Yes | Yes (read-only) | No |
 | **Standard** | Yes | No | No |
 
-When you create a channel, it is automatically assigned to your user account. Admins can view and manage all channels across all users.
-
-Your username and role live under the avatar menu in the top-right of the chrome.
+When you create a channel it's automatically assigned to you. Your username and role live under the avatar menu in the top-right of the chrome.
 
 ## Multiple Channels
 

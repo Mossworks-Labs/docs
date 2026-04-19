@@ -20,7 +20,7 @@ export default defineConfig({
           { text: 'Kubernetes / Helm', link: '/guide/kubernetes' },
           { text: 'Local Dev (Docker)', link: '/guide/setup' },
           { text: 'AI Providers', link: '/guide/ai-providers' },
-          { text: 'Authentication & Roles', link: '/guide/auth' },
+          { text: 'Roles', link: '/guide/auth' },
         ],
       },
       {
@@ -49,7 +49,6 @@ export default defineConfig({
         items: [
           { text: 'Marketplace', link: '/guide/marketplace' },
           { text: 'Feedback', link: '/guide/feedback' },
-          { text: 'MCP Servers', link: '/guide/mcp-guide' },
         ],
       },
       {

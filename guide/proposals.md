@@ -40,5 +40,5 @@ The score (0-100) is a weighted composite:
 <SchemeImage name="proposals-panel" alt="Proposals Panel" />
 
 ::: tip
-Proposals require the `premium` Keycloak role (admin auto-qualifies). The `proposal-generate` worker is a fully implemented NATS consumer — not a stub.
+Proposals require the **premium** role (admin auto-qualifies). See [Roles](/guide/auth).
 :::

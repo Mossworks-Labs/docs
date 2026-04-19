@@ -16,7 +16,10 @@ const CraftLayout = defineComponent({
       if (zoomInstance) {
         zoomInstance.detach();
       }
-      zoomInstance = mediumZoom('.vp-doc img, .feature-screenshot img, .craft-showcase img, .scheme-screenshot', {
+      // Attach zoom to screenshots and the hero carousel — NOT badges,
+      // stat cards, or tech-stack chips (those live under .craft-showcase
+      // but aren't meaningful to zoom into).
+      zoomInstance = mediumZoom('.vp-doc img, .feature-screenshot img, .scheme-screenshot, .hero-carousel img', {
         background: 'rgba(0, 0, 0, 0.85)',
       });
     };
