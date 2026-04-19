@@ -771,6 +771,31 @@ test.describe('Documentation Screenshots', () => {
         await shotAllSchemes(page, 'marketplace-studio');
       });
 
+      test('marketplace — gigs list', async ({ page }) => {
+        await selectChannel(page);
+        await setView(page, 'marketplace');
+        await page.waitForTimeout(400);
+        const gigsTab = page.locator('button', { hasText: /^\s*Gigs\s*$/i }).first();
+        if (await gigsTab.isVisible()) {
+          await gigsTab.click();
+          await page.waitForTimeout(600);
+        }
+        await shotAllSchemes(page, 'marketplace-gigs');
+      });
+
+      test('marketplace — post a gig', async ({ page }) => {
+        await selectChannel(page);
+        await setView(page, 'marketplace');
+        await page.waitForTimeout(400);
+        // "Post a gig" button is in the top-right of the marketplace chrome
+        const postBtn = page.locator('button', { hasText: /^\s*Post a gig\s*$/i }).first();
+        if (await postBtn.isVisible()) {
+          await postBtn.click();
+          await page.waitForTimeout(600);
+        }
+        await shotAllSchemes(page, 'marketplace-post-gig');
+      });
+
       test('storyboard editor', async ({ page }) => {
         // Mock episode + script preview-sections endpoints so the editor populates
         await page.route(`**/api/channels/*/episodes/*`, async (route: any, request: any) => {
