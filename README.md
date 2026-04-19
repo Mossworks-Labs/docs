@@ -19,35 +19,41 @@ npm run preview    # preview the built site
 
 ## Screenshots
 
-Screenshots are captured automatically by Playwright against the running studio Docker container.
+Screenshots are captured automatically by Playwright against a running studio. The spec covers **32 view groups × 7 colour schemes = 224 PNGs** including the top chrome, ⌘K palette, marketplace (browse / gigs / post-gig / my-studio), and storyboard editor.
 
-### Take Screenshots Locally
+### Take screenshots locally
 
-1. Start the studio with seed data:
-   ```bash
-   # From the repo root
-   docker build -t studio-local -f app/Dockerfile app/
-   docker run -d --name studio-screenshots \
-     -p 8080:8080 \
-     -v "$(pwd)/docs/seed/channels:/channels" \
-     -e GEMINI_API_KEY="" \
-     -e ANTHROPIC_API_KEY="" \
-     studio-local
-   ```
+Two options — port-forward a running k3s deployment, or build and run the studio container directly.
 
-2. Run Playwright:
-   ```bash
-   cd docs
-   npx playwright install --with-deps chromium   # first time only
-   npm run screenshots
-   ```
+**Option A: port-forward (recommended if you have k3s)**
 
-3. Screenshots are saved to `public/screenshots/`.
+```bash
+kubectl port-forward svc/craft-frontend 3000:3000 &
+cd docs
+npx playwright install --with-deps chromium   # first time only
+npx playwright test screenshots.spec.ts
+```
 
-4. Clean up:
-   ```bash
-   docker stop studio-screenshots && docker rm studio-screenshots
-   ```
+**Option B: Docker container**
+
+```bash
+# From the repo root
+docker build -t studio-local -f app/Dockerfile app/
+docker run -d --name studio-screenshots \
+  -p 3000:3000 \
+  -v "$(pwd)/docs/seed/channels:/channels" \
+  -e GEMINI_API_KEY="" \
+  -e ANTHROPIC_API_KEY="" \
+  studio-local
+
+cd docs && npx playwright test screenshots.spec.ts
+```
+
+Screenshots are saved to `public/screenshots/`.
+
+### Test hook
+
+The Playwright spec navigates via `window.__craftStore` (exposed in `app/frontend/src/store/appStore.ts`) rather than chrome selectors, so tests don't drift when the UI changes layout. Call `store.setState({ activeView: '...', openEpisodeId: '...' })` to reach any view.
 
 ### CI Pipeline
 
@@ -58,6 +64,12 @@ On **pull requests**, the CI pipeline automatically:
 4. Uploads them as a build artifact
 
 Screenshots are **not** auto-committed — download the artifact from the PR checks and commit manually if they look good.
+
+### Adding a new screenshot
+
+1. Add a `test(...)` block in `screenshots.spec.ts` that navigates via `setView(page, '<activeView>')` or by clicking the relevant TopChrome button, then calls `await shotAllSchemes(page, 'name-of-view')`.
+2. Run the spec against a live deployment — it writes 7 PNGs (one per scheme).
+3. Reference the image in any `docs/guide/*.md` page with `<SchemeImage name="name-of-view" alt="…" />` — VitePress picks the PNG matching the active scheme automatically.
 
 ## Seed Data
 
@@ -82,7 +94,7 @@ docs/
     config.mts         # VitePress config (sidebar, nav, theme)
   public/
     screenshots/       # Playwright-captured images
-  guide/               # 10 guide pages (setup, ideas, scripts, etc.)
+  guide/               # 18 guide pages (top-chrome / ideas / scripts / discover / audio / storyboard / marketplace / etc.)
   mobile/              # 3 mobile app pages
   seed/                # Demo data for screenshots
   index.md             # Landing page with hero
