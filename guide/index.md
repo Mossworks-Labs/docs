@@ -44,7 +44,7 @@ Browser ──> Studio API ──> Studio runtime
               |-- Feedback → GitHub Issues (AI grooming + worker)
               |-- Persistent storage + caching
               |-- Remotion Video (65+ components, Chromium render)
-              \-- GPU Services (Ollama, ComfyUI, MusicGen, RVC)
+              \-- GPU Services (Ollama, ComfyUI, MusicGen)
 
 Mobile App ──> Same Studio API (local network)
 ```

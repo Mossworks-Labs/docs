@@ -437,7 +437,7 @@ async function mockAudioProject(page: Page) {
     service: 'edge', voiceId: 'en-US-GuyNeural', voiceName: 'Guy (Edge)',
     mergedFile: null, totalDuration: sections.reduce((a, s) => a + s.duration, 0),
     status: 'ready', episodeId: null, backgroundTrack: null,
-    originalUpload: null, rvcModel: null,
+    originalUpload: null,
     sections,
     created: new Date().toISOString(), updated: new Date().toISOString(),
   };
@@ -479,21 +479,6 @@ async function mockChannelList(page: Page) {
     } else {
       await route.continue();
     }
-  });
-
-  // Mock RVC models — show friendly names instead of real .pth files
-  await page.route('**/api/tts/rvc-models', async (route: any) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        models: [
-          { name: 'Studio Narrator v2' },
-          { name: 'Warm Baritone' },
-          { name: 'Energetic Host' },
-        ],
-      }),
-    });
   });
 }
 
@@ -794,13 +779,6 @@ test.describe('Documentation Screenshots', () => {
           }
         }
         await shotAllSchemes(page, 'music-generate');
-      });
-
-      test('voice train panel', async ({ page }) => {
-        await page.waitForTimeout(1500);
-        await selectChannel(page);
-        await setView(page, 'audio-train');
-        await shotAllSchemes(page, 'voice-train');
       });
 
       test('proposals panel', async ({ page }) => {

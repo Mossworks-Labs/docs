@@ -38,7 +38,7 @@ features:
     details: AI-scored content proposals with trend analysis, timeliness signals, and approval workflows before entering production.
   - icon: "\uD83D\uDE80"
     title: GPU-Accelerated
-    details: 5 optional GPU services — Ollama, OpenedAI Speech, MusicGen, ComfyUI, RVC voice cloning. All self-hosted.
+    details: 4 optional GPU services — Ollama, OpenedAI Speech, MusicGen, ComfyUI. All self-hosted.
   - icon: "\uD83D\uDCDA"
     title: Resource Library
     details: Search 14 royalty-free sources for video, image, audio, and reference material with auto-attribution.
@@ -222,7 +222,6 @@ features:
       <li>Upload your own voiceover and split at timestamps</li>
       <li>SFX sections between speech sections</li>
       <li>Background music with volume, fade, and loop controls</li>
-      <li>RVC voice cloning for custom voice conversion</li>
     </ul>
   </div>
   <div class="feature-screenshot">
@@ -248,23 +247,6 @@ features:
 </div>
 
 <div class="feature-section reverse">
-  <div class="feature-text">
-    <h3>Voice Training (RVC)</h3>
-    <p>Clone any voice with RVC v2. Upload audio samples, browse community models from HuggingFace, and convert TTS output to sound like anyone.</p>
-    <ul>
-      <li>Upload voice models (.pth) or training audio (.zip)</li>
-      <li>Browse and install HuggingFace voice models</li>
-      <li>RVC voice conversion on TTS output</li>
-      <li>GPU-accelerated inference</li>
-      <li>Preview voices before applying</li>
-    </ul>
-  </div>
-  <div class="feature-screenshot">
-    <SchemeImage name="voice-train" alt="Voice Training (RVC)" />
-  </div>
-</div>
-
-<div class="feature-section">
   <div class="feature-text">
     <h3>Episode Pipeline</h3>
     <div class="feature-stats">
@@ -354,7 +336,6 @@ features:
       <span class="tech-badge">OpenedAI Speech</span>
       <span class="tech-badge">ElevenLabs</span>
       <span class="tech-badge">MusicGen</span>
-      <span class="tech-badge">RVC</span>
     </div>
   </div>
   <div class="powered-group">

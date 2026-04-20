@@ -28,7 +28,7 @@ This is where you iterate. Common moves:
 
 Once a script and an active project are selected, the panel switches to a three-column **Audio room** layout:
 
-- **Left rail** — voice header (inline rename), service/RVC chip, live stats (sections / ready / pending / duration), primary actions (Generate all · Merge · Preview RVC · Strip all directions), collapsible **Voice smoothing** (TTS-only sliders), collapsible **Background bed** (upload or MusicGen tabs + volume / fade / mode), collapsible **Orphaned** (audio files no longer linked to a section).
+- **Left rail** — voice header (inline rename), service chip, live stats (sections / ready / pending / duration), primary actions (Generate all · Merge · Strip all directions), collapsible **Voice smoothing** (TTS-only sliders), collapsible **Background bed** (upload or MusicGen tabs + volume / fade / mode), collapsible **Orphaned** (audio files no longer linked to a section).
 - **Centre** — script title + total duration at the top, **row-per-beat** section list with inline mini-waveform and status chip, insert-section + delay-ms between rows, and a **master timeline** footer with the merged output's play button and proportional timeline.
 - **Right rail** — focused section detail: text (click **Edit** for a textarea), any scene context callout, linked resources, and actions (Play · Regenerate · Upload · Record · Strip directions · Remove · delay-after slider).
 
@@ -49,8 +49,6 @@ Generate speech from script text using one of four TTS providers:
 | **ElevenLabs** | Premium cloned/generated voices | Paid | Excellent |
 | **OpenAI** | 6 voices | Paid | Very Good |
 | **OpenedAI Speech** | 6 voices (local GPU) | Free | Very Good |
-
-Any carrier voice can optionally be post-processed through **RVC Voice Clone** to sound like your trained voice model — see [Voice cloning (RVC)](#voice-cloning-rvc) below.
 
 ::: tip
 Edge TTS is the default — no API key needed. **OpenedAI Speech** is also free if you have a GPU. Enable GPU services via Helm (`gpu.enabled: true`) or `docker compose -f docker-compose.dev.yml --profile gpu up -d` for local dev.
@@ -132,55 +130,7 @@ Click **Merge all** in the left rail to combine every ready section into a singl
 - Mixed formats (WAV + MP3) are normalised automatically.
 - If a background track is configured, it's layered under the voice with fade in/out.
 
-### Merge with RVC
-
-When the channel has an **RVC Voice Model** configured, the merge button reads **Merge + RVC** and a **Preview RVC** shortcut appears next to it — it converts just the first section so you can audition the cloned voice without a full merge.
-
 Once merged, the master timeline footer at the bottom of the centre column shows the play button, total duration, and a **Finalize & create episode** button that promotes the project into an Episode.
-
-## Voice cloning (RVC)
-
-Clone your voice using RVC v2 — it post-processes **any** TTS carrier voice into your custom voice. RVC is not a standalone TTS service; it's an optional post-processing toggle that works with Edge TTS, ElevenLabs, OpenAI, or OpenedAI Speech. Requires the GPU profile.
-
-### Step 1 — Collect voice samples
-
-Record or gather 10–50 minutes of clean audio. Avoid background music or noise; use a consistent mic and room. Supported formats: WAV, MP3, OGG, FLAC, M4A.
-
-Open the **Voice training** panel (`activeView: 'audio-train'` — reachable via command palette). Drag-and-drop your files into the upload zone; the progress bar tracks total duration.
-
-::: tip
-You can also record externally and upload via the Audio room's Upload mode, then export the sections as WAV files for training input.
-:::
-
-### Step 2 — Train a model
-
-Training happens outside CRAFT using free tools:
-
-- **[Applio](https://github.com/IAHispano/Applio)** — recommended GUI for RVC training (free, local)
-- **Google Colab notebooks** — free GPU training in the cloud
-
-Use your uploaded voice samples as input. Training takes 20–60 minutes depending on settings (2000–6000 steps). The output is a `.pth` model file.
-
-### Step 3 — Upload your model
-
-1. In the voice-training panel, select your `.pth` file (or a `.zip` containing `.pth` + `.index`).
-2. The model appears in the Trained Models list.
-3. Upload multiple models for different voices or styles.
-
-### Step 4 — Enable RVC on your channel
-
-1. Open the channel-pill dropdown → **Channel settings**.
-2. Under **Default Voice**, select any TTS service and choose a carrier voice.
-3. Enable the **RVC Voice Clone (optional)** dropdown and select your trained model.
-4. Click **Save**.
-
-When you create an audio project, it uses a two-stage pipeline:
-1. Your chosen TTS service generates the base speech with the carrier voice.
-2. RVC converts the carrier audio into your cloned voice.
-
-::: tip
-The carrier voice affects pacing and inflection but not the final timbre — RVC replaces the voice character entirely. Pair it with Edge TTS for a completely free pipeline, or use ElevenLabs/OpenAI for higher-quality carrier speech.
-:::
 
 ## Text preprocessing
 
