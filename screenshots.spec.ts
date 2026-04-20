@@ -838,4 +838,226 @@ test.describe('Documentation Screenshots', () => {
         }
         await shotAllSchemes(page, 'storyboard-editor');
       });
+
+      // ── Publish panel ─────────────────────────────────────────────────────
+
+      /** Mock the publish endpoints so the panel renders with realistic data
+       * regardless of what's actually rendered on the cluster. */
+      async function mockPublish(page: Page, opts: {
+        canPublish: boolean;
+        youtubeTitle?: string;
+        youtubeDescription?: string;
+        youtubeTags?: string[];
+        chaptersText?: string | null;
+        variants?: Array<Record<string, unknown>>;
+        suggestedHighlights?: Array<Record<string, unknown>>;
+      }) {
+        const body = {
+          id: 'pub-demo',
+          episodeId: 'ep-quantum-error',
+          channelId: dummyChannelId,
+          status: 'draft',
+          youtubeTitle: opts.youtubeTitle ?? null,
+          youtubeDescription: opts.youtubeDescription ?? null,
+          youtubeTags: opts.youtubeTags ?? [],
+          chaptersText: opts.chaptersText ?? null,
+          thumbnailPath: null,
+          variants: opts.variants ?? [],
+          suggestedHighlights: opts.suggestedHighlights ?? [],
+          canPublish: opts.canPublish,
+          renderedVideoUrl: opts.canPublish ? `/api/channels/${dummyChannelId}/episodes/ep-quantum-error/video` : null,
+          created: new Date().toISOString(),
+          updated: new Date().toISOString(),
+        };
+        await page.route(`**/api/channels/*/episodes/*/publish`, async (route: any, request: any) => {
+          if (request.method() === 'GET') {
+            await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+          } else {
+            await route.continue();
+          }
+        });
+        await page.route(`**/api/channels/*/episodes`, async (route: any, request: any) => {
+          if (request.method() === 'GET') {
+            await route.fulfill({
+              status: 200, contentType: 'application/json',
+              body: JSON.stringify({ episodes: [
+                { id: 'ep-quantum-error', title: 'Quantum Error Correction Explained', channelId: dummyChannelId,
+                  targetDuration: '12:00', pipeline: {
+                    research: { status: 'complete' }, script: { status: 'complete' },
+                    storyboard: { status: 'complete' }, assets: { status: 'complete' },
+                    compositing: { status: 'complete' }, export: { status: opts.canPublish ? 'complete' : 'not_started' },
+                    review: { status: 'not_started' }, publish: { status: 'not_started' },
+                  },
+                },
+                { id: 'ep-linux-gaming', title: 'Linux Gaming: The Year It Happened', channelId: dummyChannelId,
+                  targetDuration: '15:00', pipeline: {
+                    research: { status: 'complete' }, script: { status: 'complete' },
+                    storyboard: { status: 'complete' }, assets: { status: 'complete' },
+                    compositing: { status: 'complete' }, export: { status: 'complete' },
+                    review: { status: 'approved' }, publish: { status: 'not_started' },
+                  },
+                },
+              ]}),
+            });
+          } else {
+            await route.continue();
+          }
+        });
+      }
+
+      test('publish panel — empty state (pick an episode)', async ({ page }) => {
+        await mockPublish(page, { canPublish: false });
+        await selectChannel(page);
+        await setView(page, 'publish');
+        await page.waitForTimeout(800);
+        await shotAllSchemes(page, 'publish-empty');
+      });
+
+      test('publish panel — YouTube long-form', async ({ page }) => {
+        await mockPublish(page, {
+          canPublish: true,
+          youtubeTitle: 'Why Quantum Computers Will Change Everything',
+          youtubeDescription: 'A plain-English dive into qubits, superposition, and the jobs that quantum computing is actually about to eat. We cover real applications — drug discovery, cryptography, climate — and why the "5-years-away" meme is finally dying.\n\n{{CHAPTERS}}\n\nSubscribe for more weekly tech deep-dives.',
+          youtubeTags: ['quantum', 'computing', 'tutorial', 'science', 'tech', 'explainer'],
+          chaptersText: '0:00 Why this moment matters\n1:42 Classical vs. quantum bits\n4:30 Superposition, in pictures\n7:58 Real-world applications\n10:22 What you should do about it',
+          suggestedHighlights: [
+            { platform: 'youtube-shorts', startSec: 42, endSec: 88, hook: "The 2-line explainer that finally makes qubits click", caption: "If you've ever bounced off qubits, start here.", score: 92, reasoning: 'Clean hook with a payoff at 1:18.' },
+            { platform: 'tiktok', startSec: 210, endSec: 275, hook: "RSA is about to stop working. Here's why.", caption: "The cryptography half of the room is sweating.", score: 88, reasoning: 'Tension + visible stake.' },
+            { platform: 'instagram-reels', startSec: 460, endSec: 540, hook: "What quantum actually fixes in drug discovery", caption: "Simulating molecules a classical supercomputer can't.", score: 85, reasoning: 'Concrete imagery.' },
+          ],
+        });
+        await selectChannel(page);
+        await page.evaluate(() => {
+          const store = (window as any).__craftStore;
+          if (store) store.setState({ openEpisodeId: 'ep-quantum-error', activeView: 'publish' });
+        });
+        await page.waitForTimeout(1200);
+        await shotAllSchemes(page, 'publish-youtube');
+      });
+
+      test('publish panel — short-form variant detail', async ({ page }) => {
+        await mockPublish(page, {
+          canPublish: true,
+          youtubeTitle: 'Why Quantum Computers Will Change Everything',
+          youtubeTags: ['quantum', 'computing', 'tutorial'],
+          variants: [{
+            id: 'var-shorts-demo',
+            platform: 'youtube-shorts',
+            aspect: '9:16',
+            burnSubtitles: true,
+            title: 'The 2-line explainer that finally makes qubits click',
+            caption: "If you've ever bounced off qubits, start here.",
+            hashtags: ['#quantum', '#explainer', '#shorts', '#tech'],
+            clipStartSec: 42, clipEndSec: 88,
+            renderStatus: 'ready',
+            renderedPath: `${dummyChannelId}/episodes/ep-quantum-error/publish/var-shorts-demo.mp4`,
+            subjectTrack: true,
+            trackingPath: `${dummyChannelId}/episodes/ep-quantum-error/publish/track-var-shorts-demo.json`,
+            updated: new Date().toISOString(),
+          }],
+        });
+        await selectChannel(page);
+        await page.evaluate(() => {
+          const store = (window as any).__craftStore;
+          if (store) store.setState({ openEpisodeId: 'ep-quantum-error', activeView: 'publish' });
+        });
+        await page.waitForTimeout(1000);
+        // Click the Shorts variant in the left rail
+        const row = page.locator('main aside button', { hasText: /YouTube Shorts/i }).first();
+        if (await row.isVisible()) await row.click();
+        await page.waitForTimeout(500);
+        await shotAllSchemes(page, 'publish-shorts-variant');
+      });
+
+      test('publish panel — accounts modal', async ({ page }) => {
+        await mockPublish(page, {
+          canPublish: true,
+          youtubeTitle: 'Why Quantum Computers Will Change Everything',
+        });
+        // Mock the OAuth status endpoint — show a mix of configured/connected platforms
+        await page.route(`**/api/oauth/status`, async (route: any) => {
+          await route.fulfill({
+            status: 200, contentType: 'application/json',
+            body: JSON.stringify({ platforms: [
+              { platform: 'youtube', configured: true, connection: {
+                platform: 'youtube', accountId: 'UC_fake', accountName: 'Lorem Ipsum Tech',
+                connectedAt: new Date(Date.now() - 3 * 86400_000).toISOString(),
+                expiresAt: new Date(Date.now() + 3500_000).toISOString(),
+              }},
+              { platform: 'tiktok', configured: true, connection: null },
+              { platform: 'meta', configured: false, connection: null },
+              { platform: 'x', configured: true, connection: null },
+            ]}),
+          });
+        });
+        await selectChannel(page);
+        await page.evaluate(() => {
+          const store = (window as any).__craftStore;
+          if (store) store.setState({ openEpisodeId: 'ep-quantum-error', activeView: 'publish' });
+        });
+        await page.waitForTimeout(900);
+        // Click the Accounts button in the header
+        const btn = page.locator('header button', { hasText: /Accounts/i }).first();
+        if (await btn.isVisible()) await btn.click();
+        await page.waitForTimeout(500);
+        await shotAllSchemes(page, 'publish-accounts');
+      });
+
+      test('settings — brand templates', async ({ page }) => {
+        // Synthesize a minimal channel so SettingsPanel has something to render
+        // even when beforeAll didn't leave a Lorem-Ipsum-Tech channel behind.
+        const syntheticChannelId = 'screenshot-brand-channel';
+        await page.unroute('**/api/channels').catch(() => {});
+        await page.route('**/api/channels', async (route: any, request: any) => {
+          if (request.method() === 'GET') {
+            await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([{
+              id: syntheticChannelId, name: CHANNEL_NAME, character: CHARACTER_NAME,
+              character_description: 'Demo channel for brand-template screenshots.',
+              voice: null, topics: ['tech'], tags: ['tech','science','tutorial'],
+              avatar: null, rpm: 4, color: null,
+              created: new Date().toISOString(), updated: new Date().toISOString(),
+            }]) });
+          } else {
+            await route.continue();
+          }
+        });
+        await page.route(`**/api/channels/${syntheticChannelId}/brand-templates*`, async (route: any, request: any) => {
+          if (request.method() === 'GET') {
+            await route.fulfill({
+              status: 200, contentType: 'application/json',
+              body: JSON.stringify([
+                { id: 'bt-intro-1', channelId: syntheticChannelId, name: 'Tech stinger (3s)', kind: 'intro',
+                  mediaPath: `${syntheticChannelId}/brand/bt-intro-1.mp4`, position: null, autoApply: true, created: new Date().toISOString() },
+                { id: 'bt-outro-1', channelId: syntheticChannelId, name: 'Subscribe outro (5s)', kind: 'outro',
+                  mediaPath: `${syntheticChannelId}/brand/bt-outro-1.mp4`, position: null, autoApply: true, created: new Date().toISOString() },
+                { id: 'bt-wm-1', channelId: syntheticChannelId, name: 'Corner logo', kind: 'watermark',
+                  mediaPath: `${syntheticChannelId}/brand/bt-wm-1.png`,
+                  position: { x: 0.92, y: 0.92, scale: 0.08, opacity: 0.85 },
+                  autoApply: true, created: new Date().toISOString() },
+                { id: 'bt-lt-1', channelId: syntheticChannelId, name: 'Lower-third name tag', kind: 'lower-third',
+                  mediaPath: null,
+                  position: { x: 0.5, y: 0.85, scale: 0.5, opacity: 0.9 },
+                  autoApply: false, created: new Date().toISOString() },
+              ]),
+            });
+          } else {
+            await route.continue();
+          }
+        });
+        // Reload so the mocked channel list lands in the zustand store
+        await page.reload();
+        await page.waitForSelector('header');
+        await page.waitForFunction(() => typeof (window as any).__craftStore !== 'undefined');
+        await page.evaluate((id) => {
+          const store = (window as any).__craftStore;
+          if (store) store.setState({ selectedChannelId: id, activeView: 'settings' });
+        }, syntheticChannelId);
+        await page.waitForTimeout(1200);
+        const heading = page.locator('h3', { hasText: 'Brand templates' }).first();
+        if (await heading.isVisible()) {
+          await heading.scrollIntoViewIfNeeded();
+          await page.waitForTimeout(400);
+        }
+        await shotAllSchemes(page, 'brand-templates');
+      });
 });
