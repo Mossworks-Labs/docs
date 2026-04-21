@@ -1329,4 +1329,78 @@ test.describe('Documentation Screenshots', () => {
         }
         await shotAllSchemes(page, 'brand-templates');
       });
+
+      test('compose — reimagined editor', async ({ page }) => {
+        const channelId = effectiveChannelId();
+        const episodeId = 'ep-quantum-compose';
+        const fps = 30;
+        const SEC = (s: number) => Math.round(s * fps);
+        const durationInFrames = SEC(72);
+
+        // Mock the episode list so the picker has something, though we'll
+        // inject composition state directly to skip it.
+        await page.route(`**/api/channels/*/episodes`, async (route: any, request: any) => {
+          if (request.method() === 'GET') {
+            await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({
+              episodes: [{ id: episodeId, title: 'Build Your First MCP Server in 10 Minutes', slug: 'ep-mcp-server', channelId, targetDuration: '10:00' }],
+            }) });
+          } else {
+            await route.continue();
+          }
+        });
+        // Prevent RemotionPreview from hitting the live studio with a real bundle request.
+        await page.route('**/api/channels/*/episodes/*/composition/preview*', async (route: any) => {
+          await route.fulfill({ status: 200, contentType: 'text/html', body: '<html><body style="background:#000"></body></html>' });
+        });
+
+        await selectChannel(page);
+        await setView(page, 'video-create');
+        await page.waitForTimeout(500);
+
+        // Inject a populated composition so the panel renders chapter strip,
+        // timeline clips, and scene list. Bypasses the episode picker flow.
+        await page.evaluate(({ channelId, episodeId, durationInFrames, fps }) => {
+          const store = (window as any).__craftCompositionStore;
+          if (!store) return;
+          const SEC = (s: number) => Math.round(s * fps);
+          const composition = {
+            id: 'comp-demo', episodeId, channelId,
+            fps, width: 1920, height: 1080, durationInFrames,
+            created: new Date().toISOString(), updated: new Date().toISOString(),
+            tracks: [
+              { id: 't-v2', name: 'V2', type: 'video', order: 0, visible: true, locked: false, muted: false, volume: 1, clips: [
+                { id: 'c1', trackId: 't-v2', fromFrame: SEC(0),    durationInFrames: SEC(3.5),  mediaType: 'image', source: 'file', label: 'Title card', inPoint: 0, outPoint: SEC(3.5), opacity: 1 },
+                { id: 'c2', trackId: 't-v2', fromFrame: SEC(3.5),  durationInFrames: SEC(6.8),  mediaType: 'video', source: 'file', label: '01_intro_wide', inPoint: 0, outPoint: SEC(6.8), opacity: 1 },
+                { id: 'c3', trackId: 't-v2', fromFrame: SEC(10.3), durationInFrames: SEC(18.2), mediaType: 'video', source: 'file', label: '02_talking_head', inPoint: 0, outPoint: SEC(18.2), opacity: 1 },
+                { id: 'c4', trackId: 't-v2', fromFrame: SEC(28.5), durationInFrames: SEC(22.4), mediaType: 'video', source: 'file', label: '03_screen_rec', inPoint: 0, outPoint: SEC(22.4), opacity: 1 },
+                { id: 'c5', trackId: 't-v2', fromFrame: SEC(50.9), durationInFrames: SEC(14.6), mediaType: 'video', source: 'file', label: '02_talking_head', inPoint: 0, outPoint: SEC(14.6), opacity: 1 },
+                { id: 'c6', trackId: 't-v2', fromFrame: SEC(65.5), durationInFrames: SEC(5.8),  mediaType: 'video', source: 'file', label: 'outro_subscribe', inPoint: 0, outPoint: SEC(5.8), opacity: 1 },
+              ] },
+              { id: 't-v3', name: 'V3', type: 'overlay', order: 1, visible: true, locked: false, muted: false, volume: 1, clips: [
+                { id: 'c7', trackId: 't-v3', fromFrame: SEC(12.4), durationInFrames: SEC(4.1), mediaType: 'video', source: 'file', label: 'broll_keyboard', inPoint: 0, outPoint: SEC(4.1), opacity: 1 },
+                { id: 'c9', trackId: 't-v3', fromFrame: SEC(30.2), durationInFrames: SEC(5.4), mediaType: 'image', source: 'file', label: 'code_snippet_1', inPoint: 0, outPoint: SEC(5.4), opacity: 1 },
+                { id: 'c10', trackId: 't-v3', fromFrame: SEC(40.1), durationInFrames: SEC(6.2), mediaType: 'image', source: 'file', label: 'code_snippet_2', inPoint: 0, outPoint: SEC(6.2), opacity: 1 },
+              ] },
+              { id: 't-a1', name: 'Voice', type: 'audio', order: 2, visible: true, locked: false, muted: false, volume: 1, clips: [
+                { id: 'a1', trackId: 't-a1', fromFrame: SEC(3.5),  durationInFrames: SEC(26.8), mediaType: 'audio', source: 'file', label: 'narration (pt 1)', inPoint: 0, outPoint: SEC(26.8), opacity: 1 },
+                { id: 'a2', trackId: 't-a1', fromFrame: SEC(31.5), durationInFrames: SEC(19.1), mediaType: 'audio', source: 'file', label: 'narration (pt 2)', inPoint: 0, outPoint: SEC(19.1), opacity: 1 },
+                { id: 'a3', trackId: 't-a1', fromFrame: SEC(51.2), durationInFrames: SEC(18.6), mediaType: 'audio', source: 'file', label: 'narration (pt 3)', inPoint: 0, outPoint: SEC(18.6), opacity: 1 },
+              ] },
+              { id: 't-a2', name: 'Music', type: 'audio', order: 3, visible: true, locked: false, muted: false, volume: 1, clips: [
+                { id: 'a4', trackId: 't-a2', fromFrame: SEC(0), durationInFrames: SEC(71.3), mediaType: 'audio', source: 'file', label: 'bed_lofi_loop', inPoint: 0, outPoint: SEC(71.3), opacity: 1 },
+              ] },
+            ],
+            markers: [
+              { id: 'm1', frame: SEC(0),    type: 'chapter', label: 'Cold open' },
+              { id: 'm2', frame: SEC(10.3), type: 'chapter', label: 'Intro' },
+              { id: 'm3', frame: SEC(28.5), type: 'chapter', label: 'Tutorial' },
+              { id: 'm4', frame: SEC(51.2), type: 'chapter', label: 'Recap' },
+              { id: 'm5', frame: SEC(65.5), type: 'chapter', label: 'Outro' },
+            ],
+          };
+          store.setState({ composition, episodeId, channelId, playheadFrame: SEC(14), zoom: 6, isDirty: false });
+        }, { channelId, episodeId, durationInFrames, fps });
+        await page.waitForTimeout(1000);
+        await shotAllSchemes(page, 'compose-editor');
+      });
 });
