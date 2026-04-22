@@ -107,4 +107,4 @@ docs/
 
 The docs deploy to GitHub Pages automatically on push to `main` via the CI workflow. The site is available at:
 
-**https://vibesmiths.github.io/CRAFT/**
+**https://mossworks-labs.github.io/docs/**

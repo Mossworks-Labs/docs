@@ -27,7 +27,7 @@ All fields are editable after grooming -- tweak anything before submitting.
 
 ## Submitting to GitHub
 
-Click **Submit to GitHub** to create an issue in the [VibeSmiths/VideoIdeas](https://github.com/VibeSmiths/VideoIdeas) repository.
+Click **Submit to GitHub** to create an issue in the [Mossworks-Labs/craft](https://github.com/Mossworks-Labs/craft) repository.
 
 ::: warning GITHUB_TOKEN Required
 The "Submit to GitHub" button is only visible when a `GITHUB_TOKEN` is configured. The panel checks `GET /api/keys` on mount to detect this. If no token is found, a hint appears explaining how to add one via the API Keys modal or `GITHUB_TOKEN` in `app/.env`.

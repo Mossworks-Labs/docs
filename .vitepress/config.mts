@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress';
 export default defineConfig({
   title: 'CRAFT Studio',
   description: 'Content Refinement & Authoring Framework Toolkit — User Guide',
-  base: '/CRAFT/',
+  base: '/docs/',
   ignoreDeadLinks: [/localhost/],
   themeConfig: {
     logo: '/logo.png',
@@ -66,13 +66,13 @@ export default defineConfig({
       },
     ],
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/VibeSmiths/CRAFT' },
+      { icon: 'github', link: 'https://github.com/Mossworks-Labs/docs' },
     ],
     search: {
       provider: 'local',
     },
     footer: {
-      message: 'Built by <a href="https://github.com/VibeSmiths" target="_blank">VibeSmiths</a>',
+      message: 'Built by <a href="https://github.com/Mossworks-Labs" target="_blank">Mossworks Labs</a>',
     },
   },
   appearance: 'dark',
