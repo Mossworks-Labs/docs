@@ -1318,8 +1318,6 @@ test.describe('Documentation Screenshots', () => {
             await route.continue();
           }
         });
-          await route.fulfill({ status: 200, contentType: 'text/html', body: '<html><body style="background:#000"></body></html>' });
-        });
 
         await selectChannel(page);
         await setView(page, 'video-create');

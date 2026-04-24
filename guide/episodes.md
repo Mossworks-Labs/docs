@@ -16,15 +16,19 @@ Click any episode card to open the detail view. It has three stacked sections:
 
 ## Pipeline stages
 
-| Stage | Agent | Reviewer | Max iterations | Description |
-|-------|-------|----------|----------------|-------------|
-| **Research** | Researcher | Producer | 2 | Gather facts, sources, competitive analysis, define unique angle |
-| **Script** | Writer | Producer | 3 | Write screenplay in channel character voice |
-| **Storyboard** | Storyboarder | Producer | 2 | Plan visual sequences and scene layouts |
-| **Assets** | Asset Finder | — | 1 | Find and download media resources |
-| **Export** | Render Worker | — | 1 | Render final MP4 via ffmpeg (dispatched to `worker-render`) |
-| **Review** | Producer | — | 1 | Holistic quality gate across all artifacts — always requires human approval |
-| **Publish** | — | — | 1 | Guard on review approval, mark episode complete |
+Stages run in this order. DB names are stable for back-compat; display labels live in `STAGE_LABELS` (`app/frontend/src/components/panels/EpisodesPanel.tsx`).
+
+| # | Stage (DB) | Label | Agent | Reviewer | Max iterations | Description |
+|---|------------|-------|-------|----------|----------------|-------------|
+| 1 | `research` | Research | Researcher | Producer | 2 | Gather facts, sources, competitive analysis, define unique angle |
+| 2 | `script` | Script | Writer | Producer | 3 | Write screenplay in channel character voice |
+| 3 | `assets` | **Audio** | Asset Finder | — | 1 | Generate voiceover and gather media resources |
+| 4 | `storyboard` | Storyboard *(optional)* | Storyboarder | Producer | 2 | Plan visual sequences and scene layouts |
+| 5 | `export` | **Composite** | Render Worker | — | 1 | ffmpeg composition render to MP4 (dispatched to `worker-render`) |
+| 6 | `review` | Review | Producer | — | 1 | Holistic quality gate across all artifacts — always requires human approval |
+| 7 | `publish` | Publish | — | — | 1 | Guard on review approval, mark episode complete |
+
+**Optional stages** (`storyboard`, `research`) can be skipped on the board — forward drops past them don't require completion.
 
 ## Storyboard stage — Open editor
 

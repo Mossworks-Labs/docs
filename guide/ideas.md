@@ -8,7 +8,7 @@ The Ideas panel is where content starts. Generate ideas with AI, capture inspira
 
 The panel is a three-column layout:
 
-- **Left — filter rail.** Type (All / Shorts / Long-form), Source (All / AI / Discover / Manual — each with a live count and a coloured dot), Tags (pills that toggle in/out), a **Hide converted** checkbox, and a Sort dropdown.
+- **Left — filter rail.** Type (All / Shorts / Long-form), Source (All / AI / Discover / Manual — each with a live count and a coloured dot), Tags (pills that toggle in/out), and a Sort dropdown. Converted ideas are always hidden — once an idea becomes a script it lives on the Board instead.
 - **Centre — dense list.** Each idea is a single row: checkbox · type badge · title + hook · source + source metadata · age · action arrow. Click any row to focus it in the right pane.
 - **Right — focus pane.** Shows the selected idea's badges, serif title, italic hook, angle, tags, any discovery enrichment (views / likes / transcript), and an action footer (Edit · delete · Convert to script).
 
@@ -34,7 +34,6 @@ When researching YouTube videos in the [Discover](/guide/discover) panel, click 
 - **Sort** — newest / oldest / title A–Z / source — switchable from the left rail's Sort dropdown.
 - **Type toggle** — Short ↔ Long controls both filtering and what's used when you generate.
 - **Multi-select** — checkboxes on each row. When anything is selected the toolbar shows **Delete (n)** and **Cancel**.
-- **Hide converted** — checkbox in the left rail. Converted ideas still exist, just dim until the box is unchecked.
 
 ## Editing an idea
 
@@ -42,7 +41,7 @@ Click a row to focus it, then **Edit** in the right pane. Title / hook / angle a
 
 ## Convert to script
 
-From the focus pane, click **Convert to script**. A new script is created with the idea's title, hook, angle, and any enrichment data (e.g. Discover transcripts are carried in as reference material). The idea is marked `convertedToScript` and dims in the list; the Scripts stage rail lights up with a fresh draft.
+From the focus pane, click **Convert to script**. A new script **and** a matching episode are created together (research is auto-approved so the episode lands directly in the board's **Script** column). The script carries the idea's title, hook, angle, and any enrichment data (e.g. Discover transcripts become reference material). The original idea is marked `convertedToScript` and disappears from Ideas — from here on, the board is where it lives.
 
 ::: info Source tracking
 Every idea records its `source` (`manual` / `ai` / `discover`). AI-sourced ideas also record the `generatedByModel` for reproducibility. The source chip in the list (`✦ AI · claude sonnet` / `⊕ Discover · 2.4M views`) makes provenance visible at a glance.

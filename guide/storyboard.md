@@ -41,7 +41,7 @@ The right rail pulls from the channel's downloaded Resources library:
 - **Search** by filename or title
 - **Filter** to images or videos only
 - Click the **+** button on a row to attach it to the currently focused scene
-- Shortcuts to web-search (Resource Search) or AI image generation (Image Generate) if you don't already have what you need
+- **Search the web** and **Upload** buttons open Resource Search and Resource Upload inline as modals — no navigating away — so newly downloaded or uploaded files appear in the right rail the moment you close them
 
 ## Typical workflow
 
@@ -52,13 +52,13 @@ The right rail pulls from the channel's downloaded Resources library:
 
 ## Persistence
 
-The current storyboard is saved to **`localStorage`** keyed by script ID (`craft:storyboard:<scriptId>`). That means:
+Storyboards are stored in PostgreSQL keyed by script ID (`storyboards` table, migration `012_storyboards.sql`). The editor autosaves every ~1.5 s via `PUT /channels/:channelId/scripts/:scriptId/storyboard`, and reloads via `GET` on next open. That means:
 
-- It survives page refresh and switching channels
-- It's not synced across browsers or devices
-- A proper backend schema is planned; when it lands, `loadStoryboard` / `saveStoryboard` in `app/frontend/src/lib/storyboard.ts` are the single swap point — the UI doesn't change
+- It survives page refresh, browser restarts, and device switches
+- Multiple devices see the same storyboard
+- A script re-linked to a different episode keeps its storyboard (the record is keyed by script ID, not episode ID)
 
-Because the key is the script ID (not the episode ID), you can re-link the script to a different episode and the storyboard follows the script.
+Mobile-app sync and compositor hand-off (feeding attached resources into Episode scenes) are still on the roadmap — see `TODO.md`.
 
 ::: tip
 The split into beats comes from the same parser the Audio room uses, which means adding or removing paragraphs in the script after starting a storyboard can shift the beat indexing. Re-run the pipeline's `script` stage or touch up the text first to stabilise scene boundaries.
