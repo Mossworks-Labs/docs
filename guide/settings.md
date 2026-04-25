@@ -39,13 +39,16 @@ Configure the default TTS voice for audio generation:
 
 The selected voice pre-populates when creating new audio projects.
 
-## Analytics (RPM)
+## Niche
 
-Revenue Per Mille ($ per 1,000 views) is used for earnings estimates in the [Discover](/guide/discover) channel deep dive.
+Drives Discover's default search query and the RPM used to estimate earnings. Pick a preset (Gaming, Tech, Finance, Education, Entertainment, How-To, News, Lifestyle, Health, Food, Travel, Kids, Beauty) or **Other (custom)** for niches the presets don't cover.
 
-- **Default**: $4/1000 views
-- **Niche Presets**: quick-select chips — Gaming $3, Tech $6, Finance $10, Health $8, etc.
-- Adjust based on your actual YouTube analytics
+When you select **Other**:
+
+- **Custom niche label** — what your channel covers (e.g. "Underwater archaeology"). Used as the channel's content focus and shown in the UI.
+- **Discover prompts** — comma-separated keywords (e.g. `shipwrecks, submerged ruins, scuba archaeology`). Seed Discover's default search query the same way preset keyword sets do.
+
+Custom niches default to **$4/1k views** (the platform-wide default). Preset RPMs are static averages — actual earnings vary by geography and seasonality. Adjust by switching to a different preset that better matches your real YouTube CPM.
 
 ## AI Context (CLAUDE.md)
 

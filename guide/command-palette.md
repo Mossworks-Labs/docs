@@ -10,13 +10,13 @@ The Studio runs on a single top bar — the **top chrome** — instead of a left
 
 - **`craft.`** logo (top-left) — click to clear the channel and return to the landing page.
 - **Channel pill** — shows the current channel. Click to open the dropdown: switch channels, open channel settings, jump to Proposals or Jobs (if you're premium), or add a new channel.
-- **Peer avatars** — the next few channels' initials, one click to switch.
+- **Ad / promo slot** — the gap between the channel pill and the search box. Free-tier users see a curated affiliate offer (ElevenLabs, Descript, etc); active subscribers see a rotating marketplace spotlight. Collapses on narrow viewports so the chrome doesn't crowd.
 - **⌘K search slot** — opens the command palette. Click or press `⌘K` (`Ctrl+K` on Linux/Windows).
 - **Avatar** (top-right) — opens a menu with API keys, change password, color scheme & light/dark, documentation, and sign out.
 
 **Row 2 — the stage rail**
 
-The five primary workflow stages are `Discover → Ideas → Scripts → Audio → Episodes`. The current stage is underlined in accent. On the right side of the rail: `Resources`, `Settings` (when a channel is selected), `Marketplace`, and `Feedback`.
+The five primary workflow stages are `Discover → Ideas → Scripts → Episodes → Publish`. The current stage is underlined in accent. On the right side of the rail: `Marketplace`, `Settings` (when a channel is selected), and `Feedback`.
 
 ## Command palette (⌘K)
 

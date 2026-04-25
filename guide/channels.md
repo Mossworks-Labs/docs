@@ -35,10 +35,9 @@ Configure a default TTS voice for audio generation:
 - **Voice** — cascading filters by language, gender, then specific voice
 - **Test** — preview the voice before saving
 
-### Analytics
+### Niche
 
-- **RPM** — Revenue Per Mille (per 1,000 views). Used for earnings estimates in Discover.
-- **Niche Presets** — quick-select RPM values (Gaming $3, Tech $6, Finance $10, etc.)
+A preset (Gaming, Tech, Finance, Education, Entertainment, How-To, News, Lifestyle, Health, Food, Travel, Kids, Beauty) or **Other (custom)** for niches outside the preset set. Drives Discover's default search query and the RPM used to estimate earnings. Custom niches let you set a label + comma-separated Discover prompts. See [Settings → Niche](/guide/settings#niche).
 
 ### CLAUDE.md
 

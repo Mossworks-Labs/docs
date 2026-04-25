@@ -41,7 +41,11 @@ Click a row to focus it, then **Edit** in the right pane. Title / hook / angle a
 
 ## Convert to script
 
-From the focus pane, click **Convert to script**. A new script **and** a matching episode are created together (research is auto-approved so the episode lands directly in the board's **Script** column). The script carries the idea's title, hook, angle, and any enrichment data (e.g. Discover transcripts become reference material). The original idea is marked `convertedToScript` and disappears from Ideas — from here on, the board is where it lives.
+From the focus pane, click **Convert to script**. A new script **and** a matching episode are created together — research is auto-approved so the episode lands in the board's **Script** column, and the script-generate worker (write → fact-check → humanize) is dispatched immediately. The script bubble flips through `not_started → in_progress → complete` while the worker runs.
+
+The script carries the idea's title, hook, angle, and any enrichment data (e.g. Discover transcripts become reference material). The original idea is marked `convertedToScript` and disappears from Ideas — from here on, the board is where it lives. Clicking **Convert to script** a second time on an already-converted idea jumps to the existing script instead of duplicating it.
+
+Dragging an idea from the **Backlog** column to **Script** on the board does the same thing (creates the episode + dispatches the worker), so either entry point lands you in the same flow.
 
 ::: info Source tracking
 Every idea records its `source` (`manual` / `ai` / `discover`). AI-sourced ideas also record the `generatedByModel` for reproducibility. The source chip in the list (`✦ AI · claude sonnet` / `⊕ Discover · 2.4M views`) makes provenance visible at a glance.
