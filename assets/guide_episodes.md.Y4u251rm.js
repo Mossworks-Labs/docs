@@ -7,4 +7,4 @@ import{_ as r,C as i,o as n,c as l,j as t,a,E as o,ag as d}from"./chunks/framewo
 <span class="line"><span>  script.md</span></span>
 <span class="line"><span>  ...</span></span>
 <span class="line"><span>output/               # Rendered video</span></span>
-<span class="line"><span>  {slug}.mp4</span></span></code></pre></div><div class="tip custom-block"><p class="custom-block-title">TIP</p><p>Episodes require NATS workers. Workers are deployed as Kubernetes Deployments in Helm (see the <code>workers</code> values section). For local dev: <code>docker compose -f docker-compose.dev.yml up -d</code>.</p></div>`,26))])}const v=r(p,[["render",c]]);export{y as __pageData,v as default};
+<span class="line"><span>  {slug}.mp4</span></span></code></pre></div><div class="tip custom-block"><p class="custom-block-title">TIP</p><p>Episodes require the NATS worker pool to be online. If episodes hang in <code>queued</code> for minutes, ask your administrator to check that the workers are running.</p></div>`,26))])}const v=r(p,[["render",c]]);export{y as __pageData,v as default};
