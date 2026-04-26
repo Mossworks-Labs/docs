@@ -1,110 +1,107 @@
 # Mobile Features
 
-## Ideas
+A walkthrough of every screen in the Craft mobile app, in roughly the order you'll use them.
 
-The Ideas tab mirrors the web app's Ideas panel.
+## Sign in
 
-### List View
-- Pull-to-refresh
-- Search by title, hook, angle, or tags
-- Type toggle: All / Short / Long
-- "Hide converted" filter
-- Long-press to delete
+<div class="mobile-screen">
+  <img src="/screenshots/mobile/login.png" alt="Login screen" />
+</div>
 
-### Create
-- Tap the **+** FAB (floating action button) to add a manual idea
-- Tap the **AI** FAB (pink) to generate 5 ideas with optional context
+The first time you launch Craft you'll land on the sign-in screen. Set the **Server URL** to your CRAFT deployment, tap **Test connection** to verify, then **Login** — Keycloak handles the auth flow in a system browser tab and you're sent back into the app.
 
-### Detail / Edit
-- Tap any idea to view/edit title, hook, angle, type, tags
-- **Convert to Script** button (green) — creates a script with all idea data
-- **View Script** button — appears after conversion, links to the script
+The redirect URI shown on the login screen needs to be allowed in your Keycloak `mobile` client; ask your administrator if you hit "Invalid parameter: redirect_uri."
 
-## Scripts
+## Home
 
-### List View
-- Status filter chips: All / Draft / Review / Final
-- Search by title or tags
-- Long-press to delete
-- Pull-to-refresh (updates when navigating back from editor)
+<div class="mobile-screen">
+  <img src="/screenshots/mobile/home.png" alt="Home" />
+</div>
 
-### Script Detail
-- **Model picker** — tap to select Claude or Gemini model from bottom sheet
-- **Write / Revise / Polish** buttons with selected model
-- **View / Edit** toggle — markdown rendering or raw text editor
-- **Status controls** — promote (draft → review → final) or demote
-- **Delete** button in the toolbar
-
-::: tip Model Picker
-The model picker shows a shortened name (e.g., "sonnet-4-6" instead of "claude-sonnet-4-6"). Tap to open the full list.
-:::
+Home is the daily landing surface. The greeting summarizes what's waiting for you — scripts in review, episodes mid-pipeline. The four **stage tiles** (Discover, Ideas, Scripts, Episodes) jump you to each phase of the production lifecycle, and the **Live now** rail surfaces any episodes the AI agents are actively working on with their pipeline progress strip.
 
 ## Discover
 
-### Search
-- Search bar with submit
-- **Dropdown filter pickers** (not toggles):
-  - Sort: Relevance / Most viewed / Newest
-  - Duration: Any / Short / Medium / Long
-  - Channel Size: Any / <1M / <100K / <10K / <1K
-  - Outliers: All / 5x+ / 10x+ / 50x+
-  - Search Depth: 50 / 100 / 150 / 200
-- Changing any filter immediately re-searches
-- Results count displayed
+<div class="mobile-screen-row">
+  <img src="/screenshots/mobile/discover.png" alt="Discover" />
+  <img src="/screenshots/mobile/channel-deep.png" alt="Channel deep dive" />
+  <img src="/screenshots/mobile/video-deep.png" alt="Video deep dive" />
+</div>
 
-### Video Cards
-- Thumbnail, title, channel name (tappable), view count, duration
-- **Save as Idea** button on each card
+Search YouTube without burning API quota — yt-dlp drives the search. The **outlier slider** boosts videos performing above their channel's baseline, and the **channel chips** group results so you can do a competitive read at a glance.
 
-### Channel Deep Dive
-Tap a channel name to open the deep dive modal:
-- Subscriber count, total views, video count
-- Avg views, upload frequency, engagement rate
-- Subs/day, shorts ratio, 30-day video count
-- **Estimated Earnings** — monthly revenue, per-video revenue, 30-day views (based on your RPM)
-- Monetization badge, channel age
-- Recent videos list (tappable)
+Tapping a channel opens a **deep dive** with subscriber count, growth rate, engagement, content mix, and estimated monthly earnings (uses your channel's RPM preset). Tapping a video shows the full transcript and lets you **Inspire idea** — pipes the metadata straight into the AI ideas generator with the source video as context.
 
-### Video Detail
-Tap a video card to see:
-- Full metadata (views, likes, comments, duration, date)
-- Description, tags, chapters
-- **View Transcript** — modal with full captions
-- **Save as Idea** button
+## Ideas
 
-## Episodes
+<div class="mobile-screen-row">
+  <img src="/screenshots/mobile/ideas.png" alt="Ideas list" />
+  <img src="/screenshots/mobile/idea-detail.png" alt="Idea detail" />
+</div>
 
-Browse and manage video episodes on your phone:
-- Episode list with pipeline stage progress indicators
-- Tap to view episode detail with stage status (research → script → storyboard → assets → compositing → export → review → publish)
+Three sources of ideas merge into one feed — AI-generated, Discover-imported, and manually written — each with a marker showing where it came from. The dashed-border **Generate** strip lets you drop in optional context and produce 5 ideas with the model of your choice. The Long/Shorts pill is a hard filter on what gets generated.
 
-## Proposals
+Idea detail shows the angle, source metrics, and tags. **Convert to script** kicks off the full production flow: creates the episode shell, spawns the script-generate worker, marks research as approved. **YOLO** runs the entire pipeline end-to-end without manual review.
 
-Review AI-scored content proposals:
-- List sorted by score (0-100)
-- Approve or reject proposals
-- Approved proposals convert to ideas
+## Scripts
 
-## Jobs
+<div class="mobile-screen-row">
+  <img src="/screenshots/mobile/scripts.png" alt="Scripts list" />
+  <img src="/screenshots/mobile/script-edit.png" alt="Script editor" />
+</div>
 
-Monitor async worker jobs in real-time:
-- Job list with status filters (queued, running, completed, failed)
-- Tap for job detail with output log
+The list shows each script with its **type pill** (long/short), **status pill** (draft / review / final), and **word-count progress** against the target (1500 for long, 150 for shorts).
+
+The editor surfaces the four AI tools — **Revise**, **Polish**, **Fact-check**, **Humanize** — across the top. Fact-check opens a bottom sheet with verified / unverified / disputed claims, and Humanize shows the rewritten passages with a one-tap accept. Auto-save fires every 12 seconds. **Send to audio** is gated behind `review` or `final` status — drafts can't be sent.
+
+## Episodes (Board)
+
+<div class="mobile-screen-row">
+  <img src="/screenshots/mobile/episodes.png" alt="Episodes" />
+  <img src="/screenshots/mobile/episode-detail.png" alt="Episode detail" />
+</div>
+
+Episodes is the production board. Each card shows the **7-stage pipeline strip** (research → script → storyboard → assets → export → review → publish) so you can see exactly where every episode is at a glance. Amber stages mean the producer agent flagged something for review.
+
+Tap an episode for the per-stage detail view — each row shows status (running / queued / done / changes-requested) and the producer agent's feedback when a stage scored under 7/10.
 
 ## Audio
 
-Full audio production on mobile:
-- Voice track listing per script
-- Playback controls
+<div class="mobile-screen">
+  <img src="/screenshots/mobile/audio-create.png" alt="Audio production" />
+</div>
+
+The four TTS providers (Edge free, ElevenLabs, OpenAI, OpenedAI Speech) live across the top. Voice tuning sliders adjust stability, similarity, and inter-section pause. Each section has its own **render**, **play**, and **mic** controls — tap the mic to record a take from your phone, which uploads as the section's voice (replacing the TTS output). The MusicGen background track is generated from a text prompt and mixed under the voice during the merge.
 
 ## Resources
 
-Browse your downloaded resource library:
-- File browser with type filters
-- Preview media files
+<div class="mobile-screen">
+  <img src="/screenshots/mobile/resources.png" alt="Resources" />
+</div>
 
-## Settings
+Search across 14 royalty-free media sources — Pexels, Unsplash, Wikimedia Commons, NASA, Met Museum, and more. The **type tabs** (video / image / audio / reference) scope the search; the **source toggles** let you opt out of providers you don't want. CC0 / PD badges surface license info inline. Tap **Upload** in the top bar to add your own media via the system file picker.
 
-- **Server URL** — text input with **Test Connection** button (shows error details on failure)
-- **Channel selector** — radio buttons for your channels
-- Connection status indicator (green dot / red dot)
+## Proposals & Jobs (Premium)
+
+<div class="mobile-screen-row">
+  <img src="/screenshots/mobile/proposals.png" alt="Proposals" />
+  <img src="/screenshots/mobile/jobs.png" alt="Jobs" />
+</div>
+
+Proposals are AI-scored content suggestions — relevance to your existing catalog, uniqueness in your niche, and character fit (averaged into the lead score). **Accept** spawns an idea + script + queues research; **YOLO** one-shots the entire pipeline.
+
+Jobs shows every async worker invocation with live status — running, queued, completed, failed. The mobile app polls every 3 seconds (the web frontend uses SSE; React Native's fetch lacks ReadableStream, so polling is the workaround).
+
+## More
+
+<div class="mobile-screen-row">
+  <img src="/screenshots/mobile/more.png" alt="More menu" />
+  <img src="/screenshots/mobile/settings.png" alt="Settings" />
+  <img src="/screenshots/mobile/endpoints.png" alt="Endpoint health" />
+</div>
+
+The More menu is a flat tray for everything that didn't earn a permanent bottom-nav slot — Scripts, Episodes, Resources, Proposals, Jobs, Channel settings, Endpoint health, Sign out. Premium-only items are visually marked but never gated until tapped (discoverability over conversion friction).
+
+**Settings** is the channel control panel: character description, default voice, RPM for earnings estimates, topic tags, API keys, billing chip, publishing connections, brand templates, and the AI channel wizard.
+
+**Endpoint health** is a refactor appendix — diff of `mobile/src/lib/api.ts` against the live backend, grouped by section, with status pills for `ok` / `mismatch` / `add` and inline notes for each gap.

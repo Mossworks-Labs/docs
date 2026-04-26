@@ -44,7 +44,7 @@ The issue (or log entry) includes:
 The submission runs as an async background job. You'll see real-time status updates and a link to the created issue once complete.
 
 ::: info Requirements
-- **Ollama** must be running for AI grooming. Enable GPU services via Helm (`gpu.enabled: true` in values.yaml) or `docker compose -f docker-compose.dev.yml --profile gpu up -d` for local dev.
+- **Ollama** must be running for AI grooming. Your administrator can enable the GPU services on the CRAFT deployment.
 - **GitHub Token** is optional. Without it, submissions log server-side with full user/channel context. With it, a real issue is created.
 :::
 

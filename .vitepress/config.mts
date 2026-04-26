@@ -5,6 +5,9 @@ export default defineConfig({
   description: 'Content Refinement & Authoring Framework Toolkit — User Guide',
   base: '/',
   ignoreDeadLinks: [/localhost/],
+  // Source files for the mobile-screenshots.mjs script — don't try to render
+  // the prototype's HTML/JSX as VitePress pages.
+  srcExclude: ['mobile-prototype/**'],
   themeConfig: {
     logo: '/logo.png',
     nav: [

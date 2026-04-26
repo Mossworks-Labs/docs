@@ -1,34 +1,23 @@
 # Mobile App
 
-The CRAFT Android companion app provides full dashboard parity — ideas, scripts, episodes, proposals, jobs, audio, and YouTube research from your phone.
+The CRAFT Android companion app gives you full feature parity with the web studio — write scripts in your channel's voice, research YouTube competitors, watch the production pipeline, and re-record audio takes — all from your phone.
 
-## Features
+<div class="mobile-hero">
+  <img src="/screenshots/mobile/home.png" alt="Home screen" />
+  <img src="/screenshots/mobile/script-edit.png" alt="Script editor" />
+  <img src="/screenshots/mobile/episodes.png" alt="Episodes board" />
+</div>
 
-| Feature | Web | Mobile |
-|---------|-----|--------|
-| Ideas (CRUD + AI generate) | Full | Full |
-| Scripts (view/edit/AI) | Full | Full (with model picker) |
-| Script Status Workflow | Full | Full |
-| Convert Idea to Script | Full | Full |
-| Episodes | Full | Full |
-| Proposals | Full | Full |
-| Jobs | Full | Full |
-| YouTube Discover | Full | Full (dropdown filters) |
-| Channel Deep Dive | Full | Full (with earnings) |
-| Audio/TTS | Full | Full |
-| Resources | Full | Full |
-| Fact Check | Full | Not yet |
-| Humanize | Full | Not yet |
-| Settings | Full | Server URL + Channel |
+## Highlights
 
-## Tech Stack
+- **Flow design system** — Instrument Serif headlines, teal accent on dark surface, identical to the web chrome
+- **5-tab bottom nav** — Home, Discover, Board (episodes + pipeline), Audio, More
+- **Same backend** — talks to the same Express API as the web studio over Keycloak SSO; no duplicate data
+- **Mic re-record + uploads** — record voice takes per section, upload images/video/audio to the resource library
+- **Read-only storyboard viewer** — review the per-scene plan before composition runs
+- **AI channel wizard** — first-run flow that creates a new channel from a single sentence
 
-- React Native + Expo SDK 55
-- Expo Router (file-based navigation)
-- Zustand (state management)
-- TypeScript
+## Next steps
 
-## Next Steps
-
-- [Setup](/mobile/setup) — install and connect
-- [Features](/mobile/features) — detailed feature walkthrough
+- [Setup](/mobile/setup) — install the APK, connect to your server
+- [Features](/mobile/features) — full screen-by-screen walkthrough

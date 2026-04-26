@@ -97,5 +97,5 @@ output/               # Rendered video
 ```
 
 ::: tip
-Episodes require NATS workers. Workers are deployed as Kubernetes Deployments in Helm (see the `workers` values section). For local dev: `docker compose -f docker-compose.dev.yml up -d`.
+Episodes require the NATS worker pool to be online. If episodes hang in `queued` for minutes, ask your administrator to check that the workers are running.
 :::

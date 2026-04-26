@@ -51,7 +51,7 @@ Generate speech from script text using one of four TTS providers:
 | **OpenedAI Speech** | 6 voices (local GPU) | Free | Very Good |
 
 ::: tip
-Edge TTS is the default — no API key needed. **OpenedAI Speech** is also free if you have a GPU. Enable GPU services via Helm (`gpu.enabled: true`) or `docker compose -f docker-compose.dev.yml --profile gpu up -d` for local dev.
+Edge TTS is the default — no API key needed. **OpenedAI Speech** is also free if your CRAFT instance has a GPU and the OpenedAI Speech service enabled.
 :::
 
 A subtle "Try ElevenLabs free →" link sits below the TTS Service dropdown for users without an `ELEVENLABS_API_KEY` configured. Once you add the key (Profile avatar → API Keys), the link disappears — you're a customer, no point pitching the upgrade.

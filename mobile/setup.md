@@ -1,52 +1,30 @@
 # Mobile Setup
 
-## Development (Expo Go)
+## Install the APK
 
-The fastest way to test the app on your phone:
-
-1. Install **Expo Go** from the [Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent)
-2. Start the dev server:
-   ```bash
-   cd mobile
-   npm install     # first time only
-   npx expo start --lan
-   ```
-3. Scan the QR code with Expo Go
-4. Open **Settings** tab and enter your backend URL:
-   - **Helm/k3s**: `https://<hostname>/studio` (your ingress hostname)
-   - **Local dev**: `http://192.168.x.x:3000` (your PC's LAN IP)
-5. Tap **Test Connection** — should show green
-
-::: tip Finding Your IP
-Run `ipconfig` (Windows) or `ifconfig` (Mac/Linux). Use the **Wi-Fi adapter's IPv4 address**. Your phone must be on the same Wi-Fi network.
-:::
-
-## APK Install
-
-For a standalone app that doesn't need Expo Go:
-
-1. Download the latest APK from the [EAS build page](https://expo.dev/accounts/xander-rudolph/projects/videoideas-studio)
-2. Transfer to your phone and install (allow "Unknown sources" in Android settings)
-3. Open the app, go to **Settings**, configure your server URL
-
-### Building Your Own APK
-
-```bash
-cd mobile
-npx eas-cli login          # Expo account required
-npx eas build --platform android --profile preview --non-interactive
-```
-
-The APK downloads from Expo's cloud build servers.
+1. Download the latest APK from the [EAS build page](https://expo.dev/accounts/xander-rudolph/projects/craft).
+2. Transfer to your phone and open it. Allow "Unknown sources" in Android settings the first time.
+3. Open **Craft**, sign in with your Keycloak account.
+4. Open **Settings** → **Server URL** and point it at your CRAFT server (e.g. `https://craft.example.com/studio`).
+5. Tap **Test Connection** — you should see a green check.
 
 ## Server Connection
 
-The mobile app connects to the same Express backend as the web app:
+The mobile app talks to the same Express backend as the web app:
 
-- **Helm/k3s**: Use your ingress hostname (e.g. `https://craft.example.com/studio`) — accessible from anywhere on your network
-- **Local dev**: Both must be on the same network (or use a VPN like Tailscale); use `http://192.168.x.x:3000`
-- The server URL is saved and persists between app launches
+- **Hosted CRAFT** — use your ingress hostname (e.g. `https://craft.example.com/studio`). Works from anywhere on the public internet.
+- **Local network** — use your server's LAN IP and port (e.g. `http://192.168.1.42:3000`). Phone and server must be on the same network (Wi-Fi or VPN like Tailscale).
+
+The server URL is saved between launches.
+
+::: tip Finding your LAN IP
+On the machine running CRAFT, run `ipconfig` (Windows) or `ifconfig` / `ip addr` (Mac/Linux). Use the Wi-Fi adapter's IPv4 address.
+:::
 
 ::: warning HTTP on Android
-Android blocks cleartext HTTP by default. The app uses `expo-build-properties` with `usesCleartextTraffic: true` to allow local network HTTP connections.
+Android blocks cleartext HTTP by default. The Craft APK is built with `usesCleartextTraffic: true` so local-network HTTP works without certificate setup.
 :::
+
+## Building from source
+
+Building the APK yourself, running the app in Expo Go, or making changes to the mobile codebase is covered in the [project README](https://github.com/Mossworks-Labs/craft/blob/main/README.md#mobile-app-android) — that's contributor territory rather than user-facing setup.
