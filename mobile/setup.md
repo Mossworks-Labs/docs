@@ -4,25 +4,21 @@
 
 1. Download the latest APK from the [EAS build page](https://expo.dev/accounts/xander-rudolph/projects/craft).
 2. Transfer to your phone and open it. Allow "Unknown sources" in Android settings the first time.
-3. Open **Craft**, sign in with your Keycloak account.
-4. Open **Settings** → **Server URL** and point it at your CRAFT server (e.g. `https://craft.example.com/studio`).
-5. Tap **Test Connection** — you should see a green check.
+3. Open **Craft** and sign in with your Keycloak account.
+4. Open **Settings** → **Server URL** and point it at your CRAFT server's host (e.g. `https://craft.example.com`).
+5. Tap **Test connection** — you should see a green check.
 
-## Server Connection
+## Server URL
 
-The mobile app talks to the same Express backend as the web app:
+The Server URL field takes the **host root** of your CRAFT deployment, not a specific path. The app appends `/api` for backend calls and derives the Keycloak URL by appending `/auth`. So a single host entry covers both:
 
-- **Hosted CRAFT** — use your ingress hostname (e.g. `https://craft.example.com/studio`). Works from anywhere on the public internet.
-- **Local network** — use your server's LAN IP and port (e.g. `http://192.168.1.42:3000`). Phone and server must be on the same network (Wi-Fi or VPN like Tailscale).
+- API → `<server-url>/api`
+- Auth → `<server-url>/auth/realms/craft`
 
-The server URL is saved between launches.
-
-::: tip Finding your LAN IP
-On the machine running CRAFT, run `ipconfig` (Windows) or `ifconfig` / `ip addr` (Mac/Linux). Use the Wi-Fi adapter's IPv4 address.
-:::
+Use the same hostname you'd type into a desktop browser to reach the studio (e.g. `https://craft.example.com`). The setting persists between launches.
 
 ::: warning HTTP on Android
-Android blocks cleartext HTTP by default. The Craft APK is built with `usesCleartextTraffic: true` so local-network HTTP works without certificate setup.
+Android blocks cleartext HTTP by default. The Craft APK is built with `usesCleartextTraffic: true` so HTTP-only servers work without certificate setup — but production deployments should use HTTPS.
 :::
 
 ## Building from source
