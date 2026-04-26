@@ -52,19 +52,6 @@ features:
 
 <div class="craft-showcase">
 
-<div class="badge-row">
-  <img src="https://img.shields.io/badge/Docs-Live-0d9488?logo=vitepress&logoColor=white" alt="Docs" />
-  <img src="https://img.shields.io/badge/TypeScript-strict-0d9488?logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/React-18-0d9488?logo=react&logoColor=white" alt="React" />
-  <img src="https://img.shields.io/badge/Kubernetes-Helm-0d9488?logo=helm&logoColor=white" alt="Kubernetes" />
-  <img src="https://img.shields.io/badge/AI-Claude_%2B_Gemini_%2B_Ollama-0d9488?logo=anthropic&logoColor=white" alt="AI" />
-  <img src="https://img.shields.io/badge/TTS-300%2B_Voices-0d9488" alt="TTS" />
-  <img src="https://img.shields.io/badge/Pipeline-7_Stages-0d9488" alt="Pipeline" />
-  <img src="https://img.shields.io/badge/Agents-14-0d9488?logo=anthropic&logoColor=white" alt="Agents" />
-  <img src="https://img.shields.io/badge/GPU-3_Services-0d9488?logo=nvidia&logoColor=white" alt="GPU" />
-  <img src="https://img.shields.io/badge/Mobile-Android-0d9488?logo=android&logoColor=white" alt="Mobile" />
-</div>
-
 ## Numbers That Matter
 
 <div class="stats-row">
