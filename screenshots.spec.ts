@@ -101,11 +101,14 @@ const SYNTHETIC_CHANNEL = {
 };
 function effectiveChannelId(): string { return dummyChannelId ?? SYNTHETIC_CHANNEL_ID; }
 
+// Bearer JWT (alg:none) for the screenshot runner — matches
+// playwright.config.ts and goes through studio's bearer-path auth
+// middleware (post-ADR 0002 — the legacy X-Auth-Request-* headers
+// are no longer consulted).
+const SCREENSHOT_JWT = 'eyJhbGciOiJub25lIn0.eyJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiYWRtaW4iLCJwcmVtaXVtIl19LCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJsb2NhbGRldiIsImVtYWlsIjoibG9jYWxkZXZAY3JhZnQubG9jYWwiLCJnaXZlbl9uYW1lIjoiTG9jYWwifQ.';
 const AUTH_HEADERS: Record<string, string> = {
   'Content-Type': 'application/json',
-  'X-Auth-Request-User': 'localdev',
-  'X-Auth-Request-Email': 'localdev@craft.local',
-  'X-Auth-Request-Access-Token': 'eyJhbGciOiJub25lIn0.eyJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiYWRtaW4iLCJwcmVtaXVtIl19LCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJsb2NhbGRldiIsImVtYWlsIjoibG9jYWxkZXZAY3JhZnQubG9jYWwiLCJnaXZlbl9uYW1lIjoiTG9jYWwifQ.',
+  Authorization: `Bearer ${SCREENSHOT_JWT}`,
 };
 
 async function apiPost(path: string, body: object) {
