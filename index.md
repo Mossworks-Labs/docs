@@ -110,30 +110,31 @@ features:
 
 <div class="feature-section">
   <div class="feature-text">
-    <h3>Idea Generation & Management</h3>
-    <p>Generate ideas with AI tuned to your channel's personality. Save inspiration from YouTube Discover. Expand, edit, and convert ideas into full scripts with one click.</p>
+    <h3>Episodes — your single backlog</h3>
+    <p>Every show is an episode card moving across a kanban: <strong>Backlog → Script → Assets → Storyboard → Export → Review → Publish</strong>. AI proposals and YouTube Discover both drop ideas straight onto the board, so there's no stand-alone Ideas tab to babysit.</p>
     <ul>
-      <li>AI brainstorming with channel context</li>
-      <li>Import from YouTube research with metadata</li>
-      <li>Search, sort, filter by type (shorts/long)</li>
-      <li>Convert to script with enrichment data</li>
+      <li><strong>Proposals</strong> — AI ranks 5 content angles per channel, scored on trend, gap, alignment, and timeliness. <em>Create Episode</em> turns one into a backlog card with a starter script.</li>
+      <li><strong>Discover → Inspire</strong> — save any YouTube video as an episode; metadata, transcript, and earnings carry through.</li>
+      <li><strong>Drag forward</strong> — drop a backlog card on Script and the write → fact-check → humanize worker chain spins up automatically.</li>
+      <li><strong>Per-stage Run</strong> — every pipeline row has a Run button that queues a worker job and shows a Queued spinner immediately; the embedded Jobs panel under Proposals tracks progress.</li>
     </ul>
   </div>
   <div class="feature-screenshot">
-    <SchemeImage name="ideas-panel" alt="Ideas Panel" />
+    <SchemeImage name="episodes-panel" alt="Episodes kanban" />
   </div>
 </div>
 
 <div class="feature-section reverse">
   <div class="feature-text">
     <h3>AI Script Editor</h3>
-    <p>Write scripts in your channel's character voice. AI-powered revision, polishing, and fact-checking keep your content accurate and natural.</p>
+    <p>Open a script from any episode card. The editor writes, revises, fact-checks, humanizes, and translates in your channel's voice — and the back button always returns you to the episodes board.</p>
     <ul>
-      <li>Write with Voice — AI drafts in character</li>
-      <li>Revise with custom instructions</li>
-      <li>Fact Check — verify claims with sources</li>
-      <li>Humanize — detect and rewrite AI-sounding text</li>
-      <li>Status workflow: Draft → Review → Final</li>
+      <li><strong>Write with Voice</strong> — AI drafts in character; per-row Run ▶ kicks it off without leaving the rail.</li>
+      <li><strong>Revise</strong> with custom instructions, tone, or pacing notes.</li>
+      <li><strong>Fact Check</strong> — every claim labelled verified / unverified / disputed / opinion with sources.</li>
+      <li><strong>Humanize</strong> — flags AI-sounding phrases and rewrites them.</li>
+      <li><strong>Localize</strong> — spawn a translation child script (BCP-47 locales like es, pt-BR, ja, hi) right from the Revise tab.</li>
+      <li>Status workflow: <strong>Draft → Review → Final</strong>, with autosave every 30 seconds.</li>
     </ul>
   </div>
   <div class="feature-screenshot">
