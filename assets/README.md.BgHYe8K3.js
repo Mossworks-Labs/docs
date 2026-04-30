@@ -24,7 +24,6 @@ import{_ as a,o as i,c as e,ag as t}from"./chunks/framework.DLWhSH9p.js";const k
 <span class="line"><span>  public/</span></span>
 <span class="line"><span>    screenshots/       # Playwright-captured images</span></span>
 <span class="line"><span>  guide/               # 18 guide pages (top-chrome / ideas / scripts / discover / audio / storyboard / marketplace / etc.)</span></span>
-<span class="line"><span>  mobile/              # 3 mobile app pages</span></span>
 <span class="line"><span>  seed/                # Demo data for screenshots</span></span>
 <span class="line"><span>  index.md             # Landing page with hero</span></span>
 <span class="line"><span>  screenshots.spec.ts  # Playwright test spec</span></span>
