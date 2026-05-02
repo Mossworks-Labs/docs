@@ -12,7 +12,7 @@ These agents are directly wired into the 7-stage orchestration pipeline:
 | **Writer** | Script | File read/write | `script.md` — screenplay in channel character voice |
 | **Storyboarder** | Storyboard | File read/write | `storyboard.md` — visual sequences, scene layouts, timing |
 | **Asset Finder** | Assets | Web search, file tools | Downloads media resources to episode directory |
-| **Producer** | Review (all stages) | Read-only | Structured JSON: score (1-10), pass/fail, feedback, upstream issues |
+| **Producer** | Review (all stages) | Read-only | Structured score (1–10) with pass/fail, feedback, and any upstream issues flagged |
 
 ## Support Agents
 
@@ -56,5 +56,5 @@ Each agent invocation has configurable budget limits:
 | Final Review | 15 | $1.00 | — |
 
 ::: tip
-Each agent has a defined persona, instructions, and output expectations baked into its definition. Operators with deploy access can customise these for their instance — see your administrator if you want to tune how a particular agent thinks.
+Each agent has a defined persona, instructions, and output expectations. Administrators can customise these for their studio — ask yours if you'd like to tune how a particular agent thinks.
 :::

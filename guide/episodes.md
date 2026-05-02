@@ -24,7 +24,7 @@ Stages run in this order:
 | 2 | Script | Writer | Producer | 3 | Write screenplay in channel character voice |
 | 3 | **Audio** | Asset Finder | — | 1 | Generate voiceover and gather media resources |
 | 4 | Storyboard *(optional)* | Storyboarder | Producer | 2 | Plan visual sequences and scene layouts |
-| 5 | **Composite** | Render Worker | — | 1 | Composition render to MP4 |
+| 5 | **Composite** | — | — | 1 | Compose every artifact into a single MP4 |
 | 6 | Review | Producer | — | 1 | Holistic quality gate across all artifacts — always requires human approval |
 | 7 | Publish | — | — | 1 | Guard on review approval, mark episode complete |
 

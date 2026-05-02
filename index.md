@@ -139,7 +139,7 @@ features:
 <div class="feature-section">
   <div class="feature-text">
     <h3>YouTube Discover</h3>
-    <p>Research trending content with yt-dlp-powered search. No API key needed for basic search. Progressive loading fetches more results as you scroll.</p>
+    <p>Research trending content with built-in YouTube search. No API key needed for basic search. Progressive loading fetches more results as you scroll.</p>
     <ul>
       <li>Filter by duration, date, subscriber cap</li>
       <li>Outlier detection — find viral hits (5x/10x/50x avg)</li>

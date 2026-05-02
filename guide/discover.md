@@ -1,6 +1,6 @@
 # Discover
 
-The Discover panel is a YouTube research tool powered by yt-dlp. Search for videos, analyze channels, estimate earnings, and save inspiring content as ideas. Reach it from the stage rail — **Discover** is the leftmost stage.
+The Discover panel is a YouTube research tool. Search for videos, analyze channels, estimate earnings, and save inspiring content as ideas. Reach it from the stage rail — **Discover** is the leftmost stage.
 
 <SchemeImage name="discover-search" alt="Discover — left filter rail, channel strip, video grid" />
 
@@ -14,7 +14,7 @@ The Discover panel is a YouTube research tool powered by yt-dlp. Search for vide
 Type in the **Search** box in the left rail and hit Enter (or click the button beneath it). Results load in batches — scroll down to fetch more. Your channel's Topic tags show up as pill-buttons in the rail so you can jump straight to relevant queries.
 
 ::: tip No API key needed
-Basic search works without a YouTube API key (uses yt-dlp). Adding a key enables subscriber-cap and outlier filters plus channel comparison. Status is reflected in which filter groups appear in the left rail.
+Basic search works without a YouTube API key. Adding a key enables subscriber-cap and outlier filters plus channel comparison. Status is reflected in which filter groups appear in the left rail.
 :::
 
 ## Filters

@@ -21,7 +21,7 @@ Every user in CRAFT Studio belongs to one of four roles. Your role decides which
 
 - All advanced Claude models: Opus, Sonnet, Haiku
 - Proposals and Jobs features unlocked (channel-scoped)
-- Full Claude Agent SDK capabilities including MCP tool integrations
+- Full MCP tool access for the channel's AI workflows
 
 ### Standard
 
@@ -40,7 +40,7 @@ Model availability depends on your role **and** which API keys you've saved in y
 | **API keys** | Users with saved Gemini / Claude keys | + Gemini models |
 | **Premium** | `premium` or `admin` role | All Claude models (Opus, Sonnet, Haiku) + Gemini + Ollama + MCP tools |
 
-API keys are stored per-user (encrypted in the database) and managed from the avatar menu → **API Keys**. The studio checks your keys first, then falls back to the server-wide defaults.
+API keys are stored per-user (encrypted at rest) and managed from the avatar menu → **API Keys**. The studio checks your keys first, then falls back to whatever defaults your administrator has set.
 
 ## Change password
 
