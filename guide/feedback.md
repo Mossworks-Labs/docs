@@ -1,10 +1,10 @@
 # Feedback
 
-The Feedback panel lets you submit suggestions, bug reports, and content ideas that get refined by AI. With a `GITHUB_TOKEN` configured, submissions become GitHub Issues. Without a token, they're logged server-side with your user + channel context for the operator to triage later.
+The Feedback panel lets you submit suggestions, bug reports, and content ideas that get refined by AI. When the studio is configured for it, submissions become GitHub Issues; otherwise they're logged server-side with your user + channel context for an operator to triage.
 
 ## Opening the Panel
 
-Click **Feedback** in the top chrome's right rail. The link is always visible — submission destination depends on whether a GitHub token is configured (see below).
+Click **Feedback** in the top bar's right rail. The link is always visible.
 
 ## Submitting Feedback
 
@@ -27,12 +27,10 @@ All fields are editable after grooming -- tweak anything before submitting.
 
 ## Submitting
 
-Click **Submit** to send the feedback. The destination depends on whether a `GITHUB_TOKEN` is configured:
+Click **Submit** to send the feedback. Depending on how your studio is configured:
 
-- **With token** — the button reads "Submit to GitHub" and an issue lands in the [Mossworks-Labs/craft](https://github.com/Mossworks-Labs/craft) repository (or whatever repo `GITHUB_ISSUE_REPO` points at).
-- **Without token** — the button reads "Submit feedback" and the worker logs the structured payload (title, body, submitter, channel id, labels) to its stdout under `[feedback]`. A `local-<timestamp>` id is returned so the worker run shows complete in the Jobs panel.
-
-Forwarding existing local logs to GitHub later is just a matter of grepping `[feedback]` in the `craft-worker-github-issue` pod logs.
+- **GitHub-connected studio** — the button reads "Submit to GitHub" and an issue is filed in the configured repository.
+- **Logging-only studio** — the button reads "Submit feedback" and the submission is logged for an operator to review.
 
 The issue (or log entry) includes:
 
@@ -44,8 +42,8 @@ The issue (or log entry) includes:
 The submission runs as an async background job. You'll see real-time status updates and a link to the created issue once complete.
 
 ::: info Requirements
-- **Ollama** must be running for AI grooming. Your administrator can enable the GPU services on the CRAFT deployment.
-- **GitHub Token** is optional. Without it, submissions log server-side with full user/channel context. With it, a real issue is created.
+- AI grooming uses your studio's local model, so it works whenever the local model service is reachable. Ask your administrator if the **Groom with AI** button is greyed out.
+- GitHub forwarding is optional — without it, submissions log server-side; with it, a real issue is created.
 :::
 
 ## Re-grooming

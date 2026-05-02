@@ -1,8 +1,8 @@
-# Top chrome & ⌘K
+# Top bar & ⌘K
 
-The Studio runs on a single top bar — the **top chrome** — instead of a left sidebar. Everything reachable from the old nav now lives either on the stage rail, inside the channel pill dropdown, or behind the avatar menu.
+The Studio runs on a single top bar. Everything you need lives on the stage rail, inside the channel pill dropdown, or behind the avatar menu.
 
-<SchemeImage name="top-chrome" alt="Top chrome: channel pill, peer avatars, stage rail, ⌘K slot, and avatar" />
+<SchemeImage name="top-bar" alt="Top bar: channel pill, peer avatars, stage rail, ⌘K slot, and avatar" />
 
 ## What's where
 
@@ -10,7 +10,7 @@ The Studio runs on a single top bar — the **top chrome** — instead of a left
 
 - **`craft.`** logo (top-left) — click to clear the channel and return to the landing page.
 - **Channel pill** — shows the current channel. Click to open the dropdown: switch channels, open channel settings, jump to Proposals or Jobs (if you're premium), or add a new channel.
-- **Ad / promo slot** — the gap between the channel pill and the search box. Free-tier users see a curated affiliate offer (ElevenLabs, Descript, etc); active subscribers see a rotating marketplace spotlight. Collapses on narrow viewports so the chrome doesn't crowd.
+- **Ad / promo slot** — the gap between the channel pill and the search box. Free-tier users see a curated affiliate offer (ElevenLabs, Descript, etc); active subscribers see a rotating marketplace spotlight. Collapses on narrow viewports.
 - **⌘K search slot** — opens the command palette. Click or press `⌘K` (`Ctrl+K` on Linux/Windows).
 - **Avatar** (top-right) — opens a menu with API keys, change password, color scheme & light/dark, documentation, and sign out.
 

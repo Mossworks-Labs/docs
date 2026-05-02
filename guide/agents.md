@@ -1,6 +1,6 @@
 # AI Agents
 
-CRAFT uses specialized AI agents that collaborate through the content pipeline. Each agent has a defined role, structured output format, and quality expectations. Agents are invoked via the Claude Agent SDK with full tool access (Read, Write, Edit, Bash, Glob, Grep, WebSearch, WebFetch).
+CRAFT uses specialized AI agents that collaborate through the content pipeline. Each agent has a defined role, structured output format, and quality expectations.
 
 ## Pipeline Agents
 
@@ -31,24 +31,17 @@ These agents handle tasks outside the main pipeline:
 
 ## How Agents Execute
 
-1. The `worker-orchestrate` service determines the next stage to run
-2. It loads the agent definition from `app/agents/{name}.md`
-3. Builds a prompt with episode context (channel, episode dir, iteration, prior feedback)
-4. Invokes the Claude Agent SDK with `--dangerously-skip-permissions` (agents run in Docker)
-5. The agent reads the episode directory, does its work, writes artifacts
-6. The orchestrator checks the result and runs the **Producer** for review
+When you click **Run** on a pipeline stage, the orchestrator picks the right agent for that stage, hands it the episode context (channel character, prior stage output, any feedback notes from earlier review iterations), and lets it work. When the agent returns, the **Producer** reviews the result against quality criteria for that stage and either passes it forward or sends it back with revision notes.
 
 ## Producer Review
 
 The Producer agent is the quality gate. After each stage, it:
 
-- Reads the channel's `CHANNEL.md` for tone and audience expectations
-- Reads the stage output artifact
-- Scores 1-10 with structured JSON output
+- Reads the channel's character configuration for tone and audience expectations
+- Reads the stage output
+- Scores 1–10 against the stage's quality criteria
 - Provides actionable feedback if the score is below 7
 - Can flag **upstream issues** (e.g., "the script is weak because the research missed X")
-
-The review uses the Agent SDK's `outputFormat: json_schema` for guaranteed structured output.
 
 ## Budget Controls
 
@@ -63,5 +56,5 @@ Each agent invocation has configurable budget limits:
 | Final Review | 15 | $1.00 | — |
 
 ::: tip
-Agent definitions live in `app/agents/*.md` — each file defines the agent's persona, instructions, and output expectations. Edit them to customize behavior.
+Each agent has a defined persona, instructions, and output expectations baked into its definition. Operators with deploy access can customise these for their instance — see your administrator if you want to tune how a particular agent thinks.
 :::

@@ -4,7 +4,7 @@ Channels are the top-level organizer in CRAFT. Each channel has its own characte
 
 ## Creating a channel
 
-1. Click the **channel pill** in the top chrome (left side, next to the logo) to open the dropdown.
+1. Click the **channel pill** in the top bar (left side, next to the logo) to open the dropdown.
 2. Click **+ New channel** at the bottom.
 3. Enter a **Channel name** and optional **Character name**.
 4. Click **Create**.
@@ -15,7 +15,7 @@ You'll land in the new channel's Settings so you can configure character, voice,
 
 ## Channel settings
 
-Open them from the top chrome — either the **Settings** link in the right-rail (only visible when a channel is selected) or the channel-pill dropdown → **Channel settings**. See the full [Settings guide](/guide/settings).
+Open them from the top bar — either the **Settings** link in the right-rail (only visible when a channel is selected) or the channel-pill dropdown → **Channel settings**. See the full [Settings guide](/guide/settings).
 
 ### Character
 
@@ -45,11 +45,11 @@ The AI Context editor lets you view and edit the CLAUDE.md file that shapes Clau
 
 ## Switching channels
 
-The top chrome gives you three ways to switch:
+The top bar gives you three ways to switch:
 
 - **Peer avatars** — the next few channels sit as small avatars next to the channel pill. One click to switch.
 - **Channel pill dropdown** — shows every channel you own with subs/character, click to select.
-- **⌘K command palette** — type a channel name, hit enter. See [Top chrome & ⌘K](/guide/command-palette).
+- **⌘K command palette** — type a channel name, hit enter. See [Top bar & ⌘K](/guide/command-palette).
 
 ## Channel ownership
 
@@ -61,7 +61,7 @@ Each channel is owned by the user who created it. What you can see and edit depe
 | **Editor** | Yes | Yes (read-only) | No |
 | **Standard** | Yes | No | No |
 
-When you create a channel it's automatically assigned to you. Your username and role live under the avatar menu in the top-right of the chrome.
+When you create a channel it's automatically assigned to you. Your username and role live under the avatar menu in the top-right of the top bar.
 
 ## Multiple Channels
 

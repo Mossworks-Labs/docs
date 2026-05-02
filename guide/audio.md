@@ -1,6 +1,6 @@
 # Audio production
 
-The Audio room generates speech from your scripts using text-to-speech, handles uploaded voiceovers with timestamp-based splitting, supports sound effect sections, and layers background music under the voice track. Reach it via **Audio** on the top-chrome stage rail, or from the Script editor with **Send to audio** / **Promote & send**.
+The Audio room generates speech from your scripts using text-to-speech, handles uploaded voiceovers with timestamp-based splitting, supports sound effect sections, and layers background music under the voice track. Reach it via **Audio** on the stage rail, or from the Script editor with **Send to audio** / **Promote & send**.
 
 ## Script breakdown (project setup)
 
@@ -54,7 +54,7 @@ Generate speech from script text using one of four TTS providers:
 Edge TTS is the default — no API key needed. **OpenedAI Speech** is also free if your CRAFT instance has a GPU and the OpenedAI Speech service enabled.
 :::
 
-A subtle "Try ElevenLabs free →" link sits below the TTS Service dropdown for users without an `ELEVENLABS_API_KEY` configured. Once you add the key (Profile avatar → API Keys), the link disappears — you're a customer, no point pitching the upgrade.
+A subtle "Try ElevenLabs free →" link sits below the TTS Service dropdown for users without an ElevenLabs key configured. Once you add the key (Avatar menu → API Keys), the link disappears.
 
 ### Upload (recorded voiceover)
 
@@ -103,7 +103,7 @@ Settings are applied during **Merge**.
 
 ### Standalone music generation
 
-A dedicated **Music Generator** panel lives at `activeView: 'audio-music'` (reachable from the command palette or the resource sub-nav when applicable). It creates tracks without needing a project — useful for quickly auditioning ideas.
+A dedicated **Music Generator** panel is reachable from the command palette (or the resource sub-nav when applicable). It creates tracks without needing an audio project — useful for quickly auditioning ideas.
 
 ## Generating audio
 

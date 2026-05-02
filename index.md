@@ -14,13 +14,13 @@ hero:
 features:
   - icon: "\u270D\uFE0F"
     title: AI Script Writing
-    details: Write, revise, polish, fact-check, and humanize scripts with Claude, Gemini, or local Ollama models in your channel's voice.
+    details: Write, revise, polish, fact-check, and humanize scripts in your channel's voice. Pick from premium AI models or use the free local option.
   - icon: "\uD83D\uDD0D"
     title: YouTube Research
     details: Search YouTube with outlier detection, channel deep dives, earnings estimates, and competitive analysis.
   - icon: "\uD83C\uDFA7"
     title: Audio Production
-    details: 4 TTS providers (Edge free, ElevenLabs, OpenAI, OpenedAI Speech local). AI background music generation with MusicGen.
+    details: Multiple text-to-speech voice options including a free default, premium voice cloning, and a local high-quality option. Generate AI background music to score your videos.
   - icon: "\uD83C\uDFA8"
     title: Storyboard Editor
     details: Plan every scene with shot type, duration, transitions, director notes, and per-scene resource attachments before composition begins.
@@ -38,7 +38,7 @@ features:
     details: Search 14 royalty-free sources for video, image, audio, and reference material with auto-attribution.
   - icon: "\uD83D\uDD10"
     title: Authentication & Role-Based Access
-    details: Single sign-on with four roles (admin, editor, premium, standard). Multi-tenant channel isolation, 3-tier model access, and per-user encrypted API key storage.
+    details: Single sign-on with four roles (admin, editor, premium, standard). Channel-level access control and a model-tier system that scales with your role and the keys you've added.
   - icon: "\uD83D\uDCE4"
     title: "Multi-Platform Publishing \u2728"
     details: "Coming Soon — Publish directly to YouTube, TikTok, Facebook, and X from a single workflow."
@@ -62,8 +62,8 @@ features:
     <div class="stat-label">AI Agents</div>
   </div>
   <div class="stat-card">
-    <div class="stat-number">9</div>
-    <div class="stat-label">Pipeline Workers</div>
+    <div class="stat-number">7</div>
+    <div class="stat-label">Pipeline Stages</div>
   </div>
 </div>
 
@@ -109,8 +109,8 @@ features:
     <ul>
       <li><strong>Proposals</strong> — AI ranks 5 content angles per channel, scored on trend, gap, alignment, and timeliness. <em>Create Episode</em> turns one into a backlog card with a starter script.</li>
       <li><strong>Discover → Inspire</strong> — save any YouTube video as an episode; metadata, transcript, and earnings carry through.</li>
-      <li><strong>Drag forward</strong> — drop a backlog card on Script and the write → fact-check → humanize worker chain spins up automatically.</li>
-      <li><strong>Per-stage Run</strong> — every pipeline row has a Run button that queues a worker job and shows a Queued spinner immediately; the embedded Jobs panel under Proposals tracks progress.</li>
+      <li><strong>Drag forward</strong> — drop a backlog card on Script and the write → fact-check → humanize chain runs automatically in the background.</li>
+      <li><strong>Per-stage Run</strong> — every pipeline row has a Run button that kicks off the stage and shows a Queued spinner immediately; the embedded Jobs panel under Proposals tracks progress live.</li>
     </ul>
   </div>
   <div class="feature-screenshot">
@@ -189,7 +189,7 @@ features:
       <li>Chapter strip across the top — jump to any beat with one tap</li>
       <li>Library panel with Effects, Transitions, Text, Audio, Captions, AI tabs</li>
       <li>Clip inspector with opacity, in/out points, source preview</li>
-      <li>One-click MP4 export via the composition worker</li>
+      <li>One-click MP4 export</li>
     </ul>
   </div>
   <div class="feature-screenshot">

@@ -1,4 +1,4 @@
-# Jobs & Workers
+# Jobs
 
 Long-running tasks in CRAFT Studio run as background jobs so the UI stays responsive. Jobs are **channel-scoped** and — except for a handful of always-on tasks like TTS and resource downloads — **premium-only**.
 
@@ -6,7 +6,7 @@ Long-running tasks in CRAFT Studio run as background jobs so the UI stays respon
 
 ## Opening the Jobs panel
 
-Click the **channel pill** in the top chrome, then **Jobs** in the dropdown. The entry only appears for premium users (admin auto-qualifies — see [Roles](/guide/auth)).
+Click the **channel pill** in the top bar, then **Jobs** in the dropdown. The entry only appears for premium users (admin auto-qualifies — see [Roles](/guide/auth)).
 
 ## What runs as a job
 
@@ -18,16 +18,16 @@ Click the **channel pill** in the top chrome, then **Jobs** in the dropdown. The
 | **Fact-check** | Claim verification across the script |
 | **Humanize** | Detect and rewrite AI-sounding passages |
 | **TTS** | Text-to-speech rendering and merge |
-| **Discover** | YouTube research (yt-dlp) with progressive filtering |
+| **Discover** | YouTube research with progressive filtering |
 | **Resource download** | Pull assets from the 14 sources |
-| **Render** | ffmpeg composition → MP4 export |
+| **Render** | Composition → MP4 export |
 
 ## Lifecycle
 
 Every job goes through the same four states you'll see in the panel:
 
-1. **Queued** — submitted, waiting for a worker slot.
-2. **Running** — a worker picked it up; progress streams live over server-sent events.
+1. **Queued** — submitted, waiting in line.
+2. **Running** — picked up; progress streams live to the panel as it works.
 3. **Completed** — success; result is persisted (e.g. new script, rendered MP4).
 4. **Failed** — error captured; failed jobs retry automatically up to three times before requiring manual intervention.
 

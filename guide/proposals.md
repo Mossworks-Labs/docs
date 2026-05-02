@@ -4,12 +4,12 @@ Proposals are AI-scored content ideas that go through a curation workflow before
 
 ## How It Works
 
-1. **Generation** — the `proposal-generate` NATS worker analyzes trends, channel history, and audience signals to generate 5 scored proposals per run
-2. **Scoring** — each proposal receives a 0-100 score based on weighted criteria (see below)
+1. **Generation** — AI analyzes trends, channel history, and audience signals to generate 5 scored proposals per run
+2. **Scoring** — each proposal receives a 0–100 score based on weighted criteria (see below)
 3. **Review** — browse proposals sorted by score, with trend signals and timeliness indicators
 4. **Decision** — approve proposals to convert them into ideas, or reject to dismiss
 
-Open Proposals from the **channel pill dropdown** → **Proposals** in the top chrome (premium only).
+Open Proposals from the **channel pill dropdown** → **Proposals** in the top bar (premium only).
 
 ## Proposal Fields
 

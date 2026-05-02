@@ -1,6 +1,6 @@
 # Episodes
 
-Episodes represent complete video productions that move through a 7-stage pipeline orchestrated by AI agents with automated quality gates. Reach Episodes from the top-chrome stage rail — **Episodes** is the rightmost stage.
+Episodes represent complete video productions that move through a 7-stage pipeline orchestrated by AI agents with automated quality gates. Reach Episodes from the stage rail — **Episodes** is the rightmost stage.
 
 <SchemeImage name="episodes-panel" alt="Episodes panel" />
 
@@ -16,19 +16,19 @@ Click any episode card to open the detail view. It has three stacked sections:
 
 ## Pipeline stages
 
-Stages run in this order. DB names are stable for back-compat; display labels live in `STAGE_LABELS` (`app/frontend/src/components/panels/EpisodesPanel.tsx`).
+Stages run in this order:
 
-| # | Stage (DB) | Label | Agent | Reviewer | Max iterations | Description |
-|---|------------|-------|-------|----------|----------------|-------------|
-| 1 | `research` | Research | Researcher | Producer | 2 | Gather facts, sources, competitive analysis, define unique angle |
-| 2 | `script` | Script | Writer | Producer | 3 | Write screenplay in channel character voice |
-| 3 | `assets` | **Audio** | Asset Finder | — | 1 | Generate voiceover and gather media resources |
-| 4 | `storyboard` | Storyboard *(optional)* | Storyboarder | Producer | 2 | Plan visual sequences and scene layouts |
-| 5 | `export` | **Composite** | Render Worker | — | 1 | ffmpeg composition render to MP4 (dispatched to `worker-render`) |
-| 6 | `review` | Review | Producer | — | 1 | Holistic quality gate across all artifacts — always requires human approval |
-| 7 | `publish` | Publish | — | — | 1 | Guard on review approval, mark episode complete |
+| # | Label | Agent | Reviewer | Max iterations | Description |
+|---|-------|-------|----------|----------------|-------------|
+| 1 | Research | Researcher | Producer | 2 | Gather facts, sources, competitive analysis, define unique angle |
+| 2 | Script | Writer | Producer | 3 | Write screenplay in channel character voice |
+| 3 | **Audio** | Asset Finder | — | 1 | Generate voiceover and gather media resources |
+| 4 | Storyboard *(optional)* | Storyboarder | Producer | 2 | Plan visual sequences and scene layouts |
+| 5 | **Composite** | Render Worker | — | 1 | Composition render to MP4 |
+| 6 | Review | Producer | — | 1 | Holistic quality gate across all artifacts — always requires human approval |
+| 7 | Publish | — | — | 1 | Guard on review approval, mark episode complete |
 
-**Optional stages** (`storyboard`, `research`) can be skipped on the board — forward drops past them don't require completion.
+**Optional stages** (Storyboard, Research) can be skipped on the board — forward drops past them don't require completion.
 
 ## Storyboard stage — Open editor
 
@@ -73,29 +73,12 @@ If an agent hits its turn limit but still produced the expected artifact (e.g., 
 
 ## Artifact viewers
 
-Research, script, and storyboard rows have a chevron for viewing the produced artifact inline. The artifact is a text blob fetched from `/channels/:channelId/episodes/:episodeId/artifacts/:stage`. For **storyboard**, the artifact is a summary — the full interactive editor is behind **Open editor**.
+Research, script, and storyboard rows have a chevron for viewing the produced artifact inline. For **storyboard**, the artifact is a summary — the full interactive editor is behind **Open editor**.
 
 ## Composition
 
 The header's **Composition** button opens the timeline editor for direct composition editing. Useful for fine-tuning once the AI has produced a first pass.
 
-## Episode files
-
-Each episode lives in `channels/{channel}/episodes/{slug}/` with:
-
-```
-manifest.yml          # Pipeline state (stage statuses + scriptId + audioProjectId)
-research.md           # Research output
-script.md             # Written screenplay
-storyboard.md         # Visual plan (or JSON if generated)
-feedback/             # Producer review notes per stage
-  research.md
-  script.md
-  ...
-output/               # Rendered video
-  {slug}.mp4
-```
-
 ::: tip
-Episodes require the NATS worker pool to be online. If episodes hang in `queued` for minutes, ask your administrator to check that the workers are running.
+Episodes rely on the background job pool. If a stage hangs in `queued` for several minutes, ask your administrator to check the system's job processors.
 :::

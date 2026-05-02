@@ -44,7 +44,7 @@ API keys are stored per-user (encrypted in the database) and managed from the av
 
 ## Change password
 
-1. Click your **avatar** in the top-right of the top chrome.
+1. Click your **avatar** in the top-right of the top bar.
 2. Click **Change password** in the dropdown.
 3. Enter your **current password** for verification.
 4. Enter and confirm your **new password**.

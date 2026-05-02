@@ -933,16 +933,14 @@ test.describe('Documentation Screenshots', () => {
         }
       });
 
-      // ── New views added for the Flow redesign ────────────────────────
-
-      test('top chrome — landing with stage rail', async ({ page }) => {
+      test('top bar — landing with stage rail', async ({ page }) => {
         // Visit landing without selecting a channel; header shows pill + stage rail
         await page.evaluate(() => {
           const store = (window as any).__craftStore;
           if (store) store.setState({ selectedChannelId: null, activeView: 'ideas' });
         });
         await page.waitForTimeout(500);
-        await shotAllSchemes(page, 'top-chrome');
+        await shotAllSchemes(page, 'top-bar');
       });
 
       test('command palette — ⌘K overlay', async ({ page }) => {

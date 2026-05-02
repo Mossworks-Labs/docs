@@ -1,6 +1,6 @@
 # Discover
 
-The Discover panel is a YouTube research tool powered by yt-dlp. Search for videos, analyze channels, estimate earnings, and save inspiring content as ideas. Reach it from the top-chrome stage rail — **Discover** is the leftmost stage.
+The Discover panel is a YouTube research tool powered by yt-dlp. Search for videos, analyze channels, estimate earnings, and save inspiring content as ideas. Reach it from the stage rail — **Discover** is the leftmost stage.
 
 <SchemeImage name="discover-search" alt="Discover — left filter rail, channel strip, video grid" />
 

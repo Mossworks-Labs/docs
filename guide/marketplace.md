@@ -2,7 +2,7 @@
 
 The Marketplace is where you hire voice actors, musicians, on-camera spokespersons, editors, and animators for your channel — and, if you're a creator, where you list yourself for hire.
 
-It runs as a standalone app at **[marketplace.mossworks.io](https://marketplace.mossworks.io/)** and is reachable from CRAFT via the `craft ↗` link in the top-right of the marketplace chrome (and vice versa).
+It lives at **[marketplace.mossworks.io](https://marketplace.mossworks.io/)** and is reachable from CRAFT via the `craft ↗` link in the top-right of the marketplace (and vice versa).
 
 <FlatImage name="marketplace-browse" alt="Marketplace browse" />
 
@@ -10,7 +10,7 @@ It runs as a standalone app at **[marketplace.mossworks.io](https://marketplace.
 
 The Marketplace's defining commitment: **sellers pay $0 in platform fees**. Buyers pay a flat **15% marketplace fee** on top of the seller's quoted price, and that's it — no card fees layered in, no hidden cuts on the seller side.
 
-Storage is the only line item creators ever see. It scales with the library they upload — enough to prevent abuse, not enough to matter in practice ($4/mo for 25 GB at the current tier). Listings, demos, messaging, contracts, payouts (via Stripe Connect Express), and 1099 issuance are all free.
+Storage is the only line item creators ever see. It scales with the library they upload — enough to prevent abuse, not enough to matter in practice ($4/mo for 25 GB at the current tier). Listings, demos, messaging, contracts, payouts, and 1099 issuance are all free.
 
 ## Sub-views
 
@@ -47,7 +47,7 @@ The buyer sees your application under their gig. If they shortlist or accept you
 
 <FlatImage name="marketplace-post-gig" alt="Post a gig form with live preview" />
 
-Click **+ Post a gig** in the top-right of the marketplace chrome. The form has:
+Click **+ Post a gig** in the top-right of the marketplace top bar. The form has:
 
 - **Title** — the headline creators see in the list
 - **Role** — voice / spokesperson / music / editor / animator
@@ -63,17 +63,17 @@ A live preview card sits to the right so you can see the cards as applicants wil
 ### Brand partners
 
 ::: info Coming soon
-Brand-partner listings, two-sided reviews, and placement matching ship in the next phase. The tab renders a coming-soon slide today with placeholder partner cards behind a gradient veil so you can preview the IA.
+Brand-partner listings, two-sided reviews, and placement matching aren't live yet. The tab today shows a coming-soon slide with placeholder partner cards so you can preview the layout.
 :::
 
 <FlatImage name="marketplace-brand-partners" alt="Brand partners — coming soon with sample partner cards" />
 
-Brand partners is the **brand-sponsorship** side of the Marketplace — distinct from creators-for-hire. Two populations will live here:
+Brand partners is the **brand-sponsorship** side of the Marketplace — distinct from creators-for-hire. Two populations live here:
 
 - **Channels seeking sponsors** — audience, niche, sample reads, CPM ranges
 - **Brands seeking channels** — products, campaigns, deliverable expectations, budgets
 
-Both rendered as partner cards with hue-themed covers, tier badges (see [Gamification](#gamification-tiers-badges-streaks)), active listings count, and a spotlight flag for top performers. Reviews are **placement-scoped**, not gig-scoped — they reference a specific placement ID so both sides can back-reference the engagement. Same star-rating mechanics as creator reviews, same merit-only ranking — no paid boosts.
+Both render as partner cards with hue-themed covers, tier badges (see [Gamification](#gamification-tiers-badges-streaks)), active listings count, and a spotlight flag for top performers. Reviews are **placement-scoped**, not gig-scoped — they reference a specific placement so both sides can back-reference the engagement. Same star-rating mechanics as creator reviews, same merit-only ranking — no paid boosts.
 
 ### Artist profile
 
@@ -89,25 +89,25 @@ Cover image, demo reel with inline audio playback, reviews, and a sticky hire si
 
 ### My Studio
 
-<FlatImage name="marketplace-studio" alt="My Studio — Aria's seller dashboard with tier, badges, contribution weights" />
+<FlatImage name="marketplace-studio" alt="My Studio — seller dashboard with tier, badges, contribution weights" />
 
-If you're a creator, this is your home. The page mirrors the craft team's design mock with three layers:
+If you're a creator, this is your home. The page is built in three layers:
 
-**Hero row** — `ProgressionTile` on the left (your tier badge, tier-score progress bar, top earned badges, active streak, recent achievements, onboarding completeness) + `SpotlightCard` on the right (this-quarter job progress against the goal, per-role eligibility breakdown, contribution weights — rating 40% / on-time 30% / volume 20% / reply 10%).
+**Hero row** — a progression tile on the left (your tier badge, tier-score progress bar, top earned badges, active streak, recent achievements, onboarding completeness) + a spotlight card on the right (this-quarter job progress against the goal, per-role eligibility breakdown, contribution weights — rating 40% / on-time 30% / volume 20% / reply 10%).
 
 **Five-stat grid** — 90-day rating, active gigs, completed gigs, this-quarter progress, setup completion (X/21).
 
 **Three internal tabs**
 
 - **Metrics** (default) — earned + locked badges with show/hide toggle, and your most recent reviews.
-- **Active gigs** — table of in-progress contracts with status, deadline, amount. Click a row for the full state-machine view.
-- **Partnerships** — placeholder for "Brands I worked with" with a "Leave review" button per partner once the brand-partners backend lands.
+- **Active gigs** — table of in-progress contracts with status, deadline, amount. Click a row for the full contract view.
+- **Partnerships** — placeholder for "Brands I worked with" with a "Leave review" button per partner — turns on when brand partners launches.
 
-**Quick links rail** at the bottom — Profile · Demos · Packages · Availability · Stripe · Storage · Invitations · Applications · Contracts · Disputes. These were top-level tabs in the previous IA; now they live here as one-click jumps so the top nav stays clean.
+**Quick links rail** at the bottom — Profile · Demos · Packages · Availability · Stripe · Storage · Invitations · Applications · Contracts · Disputes. One-click jumps to every per-role surface without crowding the top nav.
 
 ## Gamification: tiers, badges, streaks
 
-Creators and brand partners earn **visible, criterion-based recognition** based on their public stats. Nothing here is pay-to-play — tiers and badges are computed from `rating`, `jobsCompleted`, `onTimePct`, and `replyHours`. The rationale for every badge is visible in the UI, so there's no mystery about what unlocked it.
+Creators and brand partners earn **visible, criterion-based recognition** based on their public stats. Nothing here is pay-to-play — tiers and badges are computed from your rating, completed-job count, on-time percentage, and reply speed. The rationale for every badge is visible in the UI, so there's no mystery about what unlocked it.
 
 ### Tiers
 
@@ -120,7 +120,7 @@ Four tiers, gated on hard thresholds — all three criteria must be met to advan
 | **Gold** | ≥ 4.8 | ≥ 50 | ≥ 95% |
 | **Platinum** | ≥ 4.9 | ≥ 150 | ≥ 98% |
 
-The profile card also shows a `tierScore` (0–100): **40% rating · 30% volume · 20% on-time · 10% reply speed**. It's a smooth signal between tier jumps so progress is legible.
+The profile card also shows a tier score (0–100): **40% rating · 30% volume · 20% on-time · 10% reply speed**. It's a smooth signal between tier jumps so progress is legible.
 
 ### Badges
 
@@ -140,19 +140,19 @@ Every profile shows what's still needed for the next tier — e.g. `Gold → Pla
 
 ## Seller onboarding
 
-Becoming a seller is a 21-item checklist split across three sections — **Identity**, **Profile**, and **Stripe**. The wizard tracks every item; `is_enabled` flips on automatically when the full checklist passes, and three Stripe-side items (`age_attested`, `legal_name_set`, `tax_form_submitted`) short-circuit when Stripe Connect Express completes verification.
+Becoming a seller is a 21-item checklist split across three sections — **Identity**, **Profile**, and **Stripe**. The wizard tracks every item; your seller listing turns on automatically when the full checklist passes, and three Stripe-side items (age, legal name, tax form) short-circuit once Stripe completes verification.
 
 <FlatImage name="marketplace-onboarding-start" alt="Onboarding checklist — 4 of 21 items, identity / profile / stripe sections" />
 
 The left rail shows progress and lets you jump to any item; the main pane walks one step at a time with a single "Open …" CTA so there's no ambiguity about what's next. Strikethrough indicates completed items.
 
-### Stripe Connect Express handoff
+### Stripe handoff
 
 Government-ID verification, tax forms (W-8BEN / W-9), bank-account verification, and 1099 issuance all live in Stripe — we never see any of it, only the verification status.
 
-<FlatImage name="marketplace-stripe-handoff" alt="Stripe Connect Express handoff — four checks waiting on Stripe" />
+<FlatImage name="marketplace-stripe-handoff" alt="Stripe handoff — four checks waiting on Stripe" />
 
-The four checks (`Stripe account created`, `Details submitted`, `Charges enabled`, `Payouts enabled`) flip green as Stripe completes each step. The "Resolve in Stripe" CTA opens the Stripe-hosted onboarding flow in a new tab — typical completion time is around 8 minutes for a first-time seller.
+The four checks — Stripe account created, details submitted, charges enabled, payouts enabled — flip green as Stripe completes each step. The **Resolve in Stripe** button opens Stripe's hosted onboarding flow in a new tab; typical completion time is around 8 minutes for a first-time seller.
 
 ## Hire & contract
 
@@ -162,10 +162,4 @@ A 4-step stepper: **Brief → Scope & schedule → Contract → Pay & start**. T
 - `Marketplace fee (15%)`
 - **You pay** total
 
-Funds are held in escrow via Stripe Connect Express's manual-capture PaymentIntent (single-mode contracts) or one PaymentIntent per milestone (milestone-mode). The seller's payout goes through Stripe's `transfer_data.destination` at capture; the platform fee comes off as `application_fee_amount`. Refunds, cancels, and dispute handling are first-class state-machine operations on the contract.
-
-## Backend status
-
-Marketplace runs as its own service in the `marketplace` Postgres schema, with ~150 endpoints across 17 route surfaces and 15 NATS workers (sanctions screening, watermark generation, attribution finalization, spotlight recompute, account purge, async data export, etc.). It deploys as a Helm subchart of CRAFT (`craft-marketplace-*` pods), reachable from the cluster at `marketplace-dev.mossworks.io` in dev environments.
-
-Source: [Mossworks-Labs/marketplace](https://github.com/Mossworks-Labs/marketplace) (frontend SPA) + [Mossworks-Labs/api](https://github.com/Mossworks-Labs/api) (`apps/marketplace/` — backend service + workers).
+Funds are held in escrow until you accept the deliverable. Single-payment contracts hold one charge for the whole agreed price; milestone contracts hold each milestone independently and release them as you accept each one. Refunds, cancels, and dispute handling are all available from the contract view.
