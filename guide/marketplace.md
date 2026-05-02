@@ -4,7 +4,7 @@ The Marketplace is where you hire voice actors, musicians, on-camera spokesperso
 
 It runs as a standalone app at **[marketplace.mossworks.io](https://marketplace.mossworks.io/)** and is reachable from CRAFT via the `craft ↗` link in the top-right of the marketplace chrome (and vice versa).
 
-<SchemeImage name="marketplace-browse" alt="Marketplace browse" />
+<FlatImage name="marketplace-browse" alt="Marketplace browse" />
 
 ## The pricing model
 
@@ -30,7 +30,7 @@ Filter rail on the left (category, style/vibe, language, turnaround, price), her
 
 ### Gigs
 
-<SchemeImage name="marketplace-gigs" alt="Open gigs — filter rail + gig cards" />
+<FlatImage name="marketplace-gigs" alt="Open gigs — filter rail + gig cards" />
 
 Gigs is the flip side of Browse — instead of buyers searching for creators, creators see **channels posting what they need** and apply with a message + quote.
 
@@ -45,7 +45,7 @@ The buyer sees your application under their gig. If they shortlist or accept you
 
 **For buyers — Post a gig**
 
-<SchemeImage name="marketplace-post-gig" alt="Post a gig form with live preview" />
+<FlatImage name="marketplace-post-gig" alt="Post a gig form with live preview" />
 
 Click **+ Post a gig** in the top-right of the marketplace chrome. The form has:
 
@@ -66,6 +66,8 @@ A live preview card sits to the right so you can see the cards as applicants wil
 Brand-partner listings, two-sided reviews, and placement matching ship in the next phase. The tab renders a coming-soon slide today with placeholder partner cards behind a gradient veil so you can preview the IA.
 :::
 
+<FlatImage name="marketplace-brand-partners" alt="Brand partners — coming soon with sample partner cards" />
+
 Brand partners is the **brand-sponsorship** side of the Marketplace — distinct from creators-for-hire. Two populations will live here:
 
 - **Channels seeking sponsors** — audience, niche, sample reads, CPM ranges
@@ -74,6 +76,8 @@ Brand partners is the **brand-sponsorship** side of the Marketplace — distinct
 Both rendered as partner cards with hue-themed covers, tier badges (see [Gamification](#gamification-tiers-badges-streaks)), active listings count, and a spotlight flag for top performers. Reviews are **placement-scoped**, not gig-scoped — they reference a specific placement ID so both sides can back-reference the engagement. Same star-rating mechanics as creator reviews, same merit-only ranking — no paid boosts.
 
 ### Artist profile
+
+<FlatImage name="marketplace-artist-profile" alt="Artist public profile — bio, languages, packages, ratings, hire sidebar" />
 
 Cover image, demo reel with inline audio playback, reviews, and a sticky hire sidebar. The sidebar has:
 
@@ -84,6 +88,8 @@ Cover image, demo reel with inline audio playback, reviews, and a sticky hire si
 - **Send a message first** (real messaging — not mocked)
 
 ### My Studio
+
+<FlatImage name="marketplace-studio" alt="My Studio — Aria's seller dashboard with tier, badges, contribution weights" />
 
 If you're a creator, this is your home. The page mirrors the craft team's design mock with three layers:
 
@@ -132,6 +138,22 @@ Streaks are **consecutive counters** that reset when broken but remain visible a
 
 Every profile shows what's still needed for the next tier — e.g. `Gold → Platinum: rating ≥ 4.9, +50 completed jobs, on-time ≥ 98%`. No gamified carrot; just a concrete list so creators know exactly what moves the needle.
 
+## Seller onboarding
+
+Becoming a seller is a 21-item checklist split across three sections — **Identity**, **Profile**, and **Stripe**. The wizard tracks every item; `is_enabled` flips on automatically when the full checklist passes, and three Stripe-side items (`age_attested`, `legal_name_set`, `tax_form_submitted`) short-circuit when Stripe Connect Express completes verification.
+
+<FlatImage name="marketplace-onboarding-start" alt="Onboarding checklist — 4 of 21 items, identity / profile / stripe sections" />
+
+The left rail shows progress and lets you jump to any item; the main pane walks one step at a time with a single "Open …" CTA so there's no ambiguity about what's next. Strikethrough indicates completed items.
+
+### Stripe Connect Express handoff
+
+Government-ID verification, tax forms (W-8BEN / W-9), bank-account verification, and 1099 issuance all live in Stripe — we never see any of it, only the verification status.
+
+<FlatImage name="marketplace-stripe-handoff" alt="Stripe Connect Express handoff — four checks waiting on Stripe" />
+
+The four checks (`Stripe account created`, `Details submitted`, `Charges enabled`, `Payouts enabled`) flip green as Stripe completes each step. The "Resolve in Stripe" CTA opens the Stripe-hosted onboarding flow in a new tab — typical completion time is around 8 minutes for a first-time seller.
+
 ## Hire & contract
 
 A 4-step stepper: **Brief → Scope & schedule → Contract → Pay & start**. The contract is CRAFT-standard with fields for parties, deliverable, format, revisions, delivery date, usage rights, and credit line. The payment summary breaks out:
@@ -146,4 +168,4 @@ Funds are held in escrow via Stripe Connect Express's manual-capture PaymentInte
 
 Marketplace runs as its own service in the `marketplace` Postgres schema, with ~150 endpoints across 17 route surfaces and 15 NATS workers (sanctions screening, watermark generation, attribution finalization, spotlight recompute, account purge, async data export, etc.). It deploys as a Helm subchart of CRAFT (`craft-marketplace-*` pods), reachable from the cluster at `marketplace-dev.mossworks.io` in dev environments.
 
-Source: [Mossworks-Labs/marketplace](https://github.com/Mossworks-Labs/marketplace).
+Source: [Mossworks-Labs/marketplace](https://github.com/Mossworks-Labs/marketplace) (frontend SPA) + [Mossworks-Labs/api](https://github.com/Mossworks-Labs/api) (`apps/marketplace/` — backend service + workers).

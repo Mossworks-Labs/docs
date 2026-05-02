@@ -5,6 +5,7 @@ import { useRoute } from 'vitepress';
 import SchemePicker from './SchemePickerRaw.vue';
 import HeroCarousel from './HeroCarousel.vue';
 import SchemeImage from './SchemeImage.vue';
+import FlatImage from './FlatImage.vue';
 import './custom.css';
 
 const CraftLayout = defineComponent({
@@ -19,7 +20,7 @@ const CraftLayout = defineComponent({
       // Attach zoom to screenshots and the hero carousel — NOT badges,
       // stat cards, or tech-stack chips (those live under .craft-showcase
       // but aren't meaningful to zoom into).
-      zoomInstance = mediumZoom('.vp-doc img, .feature-screenshot img, .scheme-screenshot, .hero-carousel img', {
+      zoomInstance = mediumZoom('.vp-doc img, .feature-screenshot img, .scheme-screenshot, .flat-screenshot, .hero-carousel img', {
         background: 'rgba(0, 0, 0, 0.85)',
       });
     };
@@ -54,5 +55,6 @@ export default {
   Layout: CraftLayout,
   enhanceApp({ app }) {
     app.component('SchemeImage', SchemeImage);
+    app.component('FlatImage', FlatImage);
   },
 };
