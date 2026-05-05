@@ -1,8 +1,15 @@
 import { test, type Page } from '@playwright/test';
+import { readFileSync } from 'fs';
 import { join } from 'path';
+import { TOKEN_FILE } from './screenshot-auth';
 
 const SCREENSHOT_DIR = join(__dirname, 'public', 'screenshots');
 const BASE = `${(process.env.SCREENSHOT_URL || 'http://localhost:3000').replace(/\/studio\/?$/, '')}/api`;
+
+// Real Keycloak access token, minted by globalSetup via ROPC against the
+// `mobile` client. Read at module load — workers spawn after globalSetup
+// completes, so the file is guaranteed to exist by then.
+const SCREENSHOT_TOKEN = readFileSync(TOKEN_FILE, 'utf8').trim();
 const CHANNEL_NAME = 'Lorem Ipsum Tech';
 const CHARACTER_NAME = 'TechExplorer';
 
@@ -101,14 +108,13 @@ const SYNTHETIC_CHANNEL = {
 };
 function effectiveChannelId(): string { return dummyChannelId ?? SYNTHETIC_CHANNEL_ID; }
 
-// Bearer JWT (alg:none) for the screenshot runner — matches
-// playwright.config.ts and goes through studio's bearer-path auth
-// middleware (post-ADR 0002 — the legacy X-Auth-Request-* headers
-// are no longer consulted).
-const SCREENSHOT_JWT = 'eyJhbGciOiJub25lIn0.eyJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiYWRtaW4iLCJwcmVtaXVtIl19LCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJsb2NhbGRldiIsImVtYWlsIjoibG9jYWxkZXZAY3JhZnQubG9jYWwiLCJnaXZlbl9uYW1lIjoiTG9jYWwifQ.';
+// Bearer auth for the in-spec setup fetches (apiPost / apiPut / apiDelete
+// + the beforeAll cleanup query). Matches the same token the page
+// context uses below; both go through studio's bearer-path auth
+// middleware which JWKS-verifies the signature.
 const AUTH_HEADERS: Record<string, string> = {
   'Content-Type': 'application/json',
-  Authorization: `Bearer ${SCREENSHOT_JWT}`,
+  Authorization: `Bearer ${SCREENSHOT_TOKEN}`,
 };
 
 async function apiPost(path: string, body: object) {
@@ -534,7 +540,7 @@ test.describe('Documentation Screenshots', () => {
       console.warn('[SCREENSHOTS] beforeAll setup failed, using existing data:', err);
       // Try to find existing channel for screenshots even if setup fails
       try {
-        const resp = await fetch(`${BASE}/channels`);
+        const resp = await fetch(`${BASE}/channels`, { headers: AUTH_HEADERS });
         const channels = resp.ok ? await resp.json() : [];
         const found = Array.isArray(channels) ? channels.find((c: any) => c.name === CHANNEL_NAME) : null;
         if (found) dummyChannelId = found.id;
@@ -551,6 +557,11 @@ test.describe('Documentation Screenshots', () => {
   // ── Screenshots (all schemes per view) ──────────────────────────────────
 
     test.beforeEach(async ({ page }) => {
+      // Apply the Bearer token to every page request — the SPA's
+      // fetch() calls don't set Authorization themselves (they rely on
+      // session cookies in the browser path), so we inject it at the
+      // network layer.
+      await page.setExtraHTTPHeaders({ Authorization: `Bearer ${SCREENSHOT_TOKEN}` });
       await mockChannelList(page);
       await page.goto('/');
       await page.waitForSelector('header', { timeout: 15000 });
