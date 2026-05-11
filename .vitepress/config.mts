@@ -46,6 +46,7 @@ export default defineConfig({
         text: 'Marketplace',
         items: [
           { text: 'Overview', link: '/guide/marketplace' },
+          { text: 'Beta testing reference', link: '/guide/beta-testing' },
         ],
       },
       {
