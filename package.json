@@ -5,7 +5,10 @@
     "dev": "vitepress dev --host 0.0.0.0",
     "build": "vitepress build",
     "preview": "vitepress preview",
-    "screenshots": "npx playwright test screenshots.spec.ts"
+    "screenshots": "playwright test --project=screenshots",
+    "tour": "playwright test --project=tour",
+    "tour:headed": "playwright test --project=tour --headed",
+    "tour:auth": "playwright test --project=tour-auth --headed"
   },
   "devDependencies": {
     "@playwright/test": "^1.50.0",
