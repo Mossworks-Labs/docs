@@ -5,16 +5,16 @@ CRAFT Studio is a YouTube content creation platform with AI-powered idea generat
 ## What You Can Do
 
 - **Generate Ideas** — AI-powered brainstorming with channel personality, or save from YouTube research
-- **Write Scripts** — AI write, revise, polish with fact-checking and humanization (Claude, Gemini, Ollama)
-- **Produce Videos** — 7-stage pipeline orchestrated by AI agents, rendered to MP4 in a single click
+- **Write Scripts** — AI writes, revises, and polishes with fact-checking and humanization
+- **Produce Videos** — a guided pipeline that takes you from idea to rendered MP4
 - **Research Competitors** — YouTube search with outlier detection, channel deep dives, and earnings estimates
 - **Curate Content** — AI-scored proposals, approval workflows, and episode pipeline tracking
-- **Produce Audio** — 300+ TTS voices with screenplay-aware parsing, GPU speech synthesis, and voice cloning
+- **Produce Audio** — 300+ voices with screenplay-aware parsing and voice cloning
 - **Find Resources** — Search 14 royalty-free sources for video, image, audio, and reference material
 - **Collaborate** — invite editors, video editors, and voice actors per channel; review notes pin to the timeline
-- **Go Mobile** — Android companion app with full dashboard parity over your local network
+- **Go Mobile** — Android companion app with full dashboard parity
 
-<SchemeImage name="top-bar" alt="Top bar — channel pill, peer avatars, stage rail, ⌘K, avatar menu" />
+<SchemeImage name="top-bar" alt="Studio sidebar — Mossworks logo, Studio section with channel selector and stage links" />
 
 <SchemeImage name="episodes-panel" alt="Episodes kanban — every show is a card moving across the pipeline" />
 
@@ -22,31 +22,32 @@ CRAFT Studio is a YouTube content creation platform with AI-powered idea generat
 
 ## Layout
 
-The Studio is organised around a single **top bar** rather than a left sidebar. In it:
+The Studio is organised around a single **left sidebar** that holds every entry point. In it:
 
-- **Logo · channel pill** on the left
-- **Ad / promo slot** between the channel pill and the search box. Free-tier users see a curated affiliate offer for creator tools (ElevenLabs, Descript, etc); active subscribers see a rotating marketplace spotlight; the slot collapses on narrow viewports.
-- **⌘K command palette** slot in the middle-right
-- **Stage rail** on the row below (`Discover → Proposals → Episodes → Publish`) — the workflow stages, with **Marketplace · Settings · Feedback** on the far right. Proposals only appears for premium users.
-- **Avatar menu** top-right (API keys, password change, theme, sign out)
+- **Mossworks logo** — pin the sidebar open or let it collapse to a rail of icons.
+- **Home** — the marketing landing for your account.
+- **Studio** — expands to show your channel selector, channel settings, and the workflow stages: `Episodes → Proposals → Discover → Scripts → Storyboard → Composition → Audio → Publish`. Proposals appears for premium accounts.
+- **Marketplace** — jump to the creator marketplace.
+- **Search (⌘K)** — opens the command palette.
+- **Profile** at the bottom — your account menu (Teams, Billing & plan, API keys, Notifications, Theme & colors, Feedback, Documentation, Sign out).
 
-Channel settings live inside the channel-pill dropdown. Jobs are inlined as a section under Proposals. Ideas no longer has its own panel — Episodes is the single backlog (Proposals → "Create Episode" and Discover → "Inspire" both land on the kanban). See [Top bar & ⌘K](/guide/command-palette) for the full tour.
+Episodes is the single backlog: Proposals → "Create Episode" and Discover → "Inspire" both land on the kanban. See [Sidebar & ⌘K](/guide/command-palette) for the full tour.
 
 ## Getting into the Studio
 
-Once you're signed in, the top bar gives you everything:
+Once you're signed in, the sidebar gives you everything:
 
-- **Channel pill** on the left — switch channels, or create your first one.
-- **Stage rail** across the middle — Discover → Proposals → Episodes → Publish.
+- **Channel selector** in the Studio section — switch channels, or create your first one.
+- **Studio links** — Episodes, Proposals, Discover, Scripts, Storyboard, Composition, Audio, Publish.
 - **⌘K** — search and navigate everything without leaving the keyboard.
 
 ::: tip
-Ollama runs locally and is available to every user — no API key required. Add a Gemini or Claude key (avatar menu → API keys) to unlock those providers.
+Every signed-in account gets a free model for script writing — no key required. Add a Gemini or Claude key (Profile → API keys) to unlock those providers.
 :::
 
 ## Next steps
 
-- [Top bar & ⌘K](/guide/command-palette) — the shortest tour of the layout
+- [Sidebar & ⌘K](/guide/command-palette) — the shortest tour of the layout
 - [Channels](/guide/channels) — create your first channel
 - [Episodes](/guide/episodes) — your single backlog and pipeline
 - [Proposals](/guide/proposals) — AI brainstorms your next episode

@@ -25,9 +25,12 @@ export default async function globalSetup(): Promise<void> {
   const username = process.env.SCREENSHOTS_USER;
   const password = process.env.SCREENSHOTS_PASSWORD;
   if (!username || !password) {
-    throw new Error(
-      'SCREENSHOTS_USER and SCREENSHOTS_PASSWORD must be set so the screenshot runner can mint a Keycloak token.',
-    );
+    // The tour project doesn't need a screenshot token, and this config
+    // is shared with that project. Quiet no-op when the env isn't set —
+    // screenshots.spec.ts itself will fail loudly on TOKEN_FILE if
+    // someone runs the screenshots project without configuring this.
+    console.log('[globalSetup] SCREENSHOTS_USER/PASSWORD unset — skipping ROPC mint (tour project doesn\'t need it).');
+    return;
   }
 
   const params = new URLSearchParams({

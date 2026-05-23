@@ -19,13 +19,13 @@ export default defineConfig({
         items: [
           { text: 'Introduction', link: '/guide/' },
           { text: 'AI Providers', link: '/guide/ai-providers' },
-          { text: 'Roles', link: '/guide/auth' },
+          { text: 'Buyer & Seller', link: '/guide/auth' },
         ],
       },
       {
         text: 'Studio basics',
         items: [
-          { text: 'Top chrome & ⌘K', link: '/guide/command-palette' },
+          { text: 'Sidebar & ⌘K', link: '/guide/command-palette' },
           { text: 'Channels', link: '/guide/channels' },
           { text: 'Settings', link: '/guide/settings' },
         ],

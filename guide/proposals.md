@@ -1,6 +1,6 @@
 # Proposals
 
-Proposals are AI-scored content ideas that go through a curation workflow before entering the production pipeline. Proposals are **channel-scoped** and available to **premium users** only.
+Proposals are AI-scored content ideas that go through a curation workflow before entering the production pipeline. Proposals are **channel-scoped** and unlock on paid plans.
 
 ## How It Works
 
@@ -9,7 +9,7 @@ Proposals are AI-scored content ideas that go through a curation workflow before
 3. **Review** — browse proposals sorted by score, with trend signals and timeliness indicators
 4. **Decision** — approve proposals to convert them into ideas, or reject to dismiss
 
-Open Proposals from the **channel pill dropdown** → **Proposals** in the top bar (premium only).
+Open Proposals from the Studio sidebar → **Proposals**.
 
 ## Proposal Fields
 
@@ -40,5 +40,5 @@ The score (0-100) is a weighted composite:
 <SchemeImage name="proposals-panel" alt="Proposals Panel" />
 
 ::: tip
-Proposals require the **premium** role (admin auto-qualifies). See [Roles](/guide/auth).
+Proposals unlock on a paid plan. Upgrade from **Profile → Billing & plan**.
 :::

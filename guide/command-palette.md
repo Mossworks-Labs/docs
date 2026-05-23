@@ -1,28 +1,25 @@
-# Top bar & ⌘K
+# Sidebar & ⌘K
 
-The Studio runs on a single top bar. Everything you need lives on the stage rail, inside the channel pill dropdown, or behind the avatar menu.
+The Studio is organised around a single left sidebar. Everything you need lives in the Studio section, the channel selector, search (⌘K), or your profile menu.
 
-<SchemeImage name="top-bar" alt="Top bar: channel pill, peer avatars, stage rail, ⌘K slot, and avatar" />
+<SchemeImage name="top-bar" alt="Studio sidebar with channel selector and stage links" />
 
 ## What's where
 
-**Row 1 — identity & search**
+From top to bottom:
 
-- **`craft.`** logo (top-left) — click to clear the channel and return to the landing page.
-- **Channel pill** — shows the current channel. Click to open the dropdown: switch channels, open channel settings, jump to Proposals or Jobs (if you're premium), or add a new channel.
-- **Ad / promo slot** — the gap between the channel pill and the search box. Free-tier users see a curated affiliate offer (ElevenLabs, Descript, etc); active subscribers see a rotating marketplace spotlight. Collapses on narrow viewports.
-- **⌘K search slot** — opens the command palette. Click or press `⌘K` (`Ctrl+K` on Linux/Windows).
-- **Avatar** (top-right) — opens a menu with API keys, change password, color scheme & light/dark, documentation, and sign out.
-
-**Row 2 — the stage rail**
-
-The five primary workflow stages are `Discover → Ideas → Scripts → Episodes → Publish`. The current stage is underlined in accent. On the right side of the rail: `Marketplace`, `Settings` (when a channel is selected), and `Feedback`.
+- **Mossworks logo** — collapses or pins the sidebar. When pinned, labels stay visible; otherwise the rail shows just icons and expands on hover.
+- **Home** — the marketing landing for your account.
+- **Studio** — expands to show the channel selector and the workflow stages: `Episodes → Proposals → Discover → Scripts → Storyboard → Composition → Audio → Publish`. Channel settings sit just below the selector. Proposals appears for premium accounts.
+- **Marketplace** — jump into the creator marketplace from the same sidebar.
+- **Search (⌘K)** — opens the command palette. Click or press `⌘K` (`Ctrl+K` on Linux/Windows).
+- **Profile** at the bottom — opens your account menu (Teams, Billing & plan, API keys, Notifications, Theme & colors, Feedback, Documentation, Sign out).
 
 ## Command palette (⌘K)
 
 <SchemeImage name="command-palette" alt="Command palette overlay" />
 
-The command palette is the fastest way to navigate. Open it anywhere with `⌘K` or by clicking the search slot.
+The command palette is the fastest way to navigate. Open it anywhere with `⌘K` or by clicking the search row in the sidebar.
 
 - **Arrow keys** — move through results
 - **Enter** — run the highlighted action
@@ -30,21 +27,24 @@ The command palette is the fastest way to navigate. Open it anywhere with `⌘K`
 
 It fuzzy-matches across:
 
-- **Actions** — "Go to Ideas", "Go to Scripts", "Go to Discover", "Go to Audio", "Go to Episodes", "Go to Resources", "Go to Marketplace", "Channel settings".
+- **Actions** — "Go to Episodes", "Go to Proposals", "Go to Discover", "Go to Scripts", "Go to Storyboard", "Go to Audio", "Go to Publish", "Channel settings", "Marketplace".
 - **Channel switchers** — "Switch to {channel name}" for every channel you own.
 
 The footer shows your current channel and reminds you of the key bindings.
 
-## Avatar menu
+## Profile menu
 
-Behind the avatar you'll find:
+The bottom-of-sidebar profile button opens your account menu:
 
-- **API keys** — paste Claude OAuth tokens, Gemini / OpenAI / ElevenLabs keys, YouTube Data API, GitHub PAT for feedback → issues, etc. All encrypted server-side.
-- **Change password** — inline form, takes effect immediately.
-- **Theme & colors** — the seven color schemes (Classic / Purple / Blue / Amber / Rose / Liquid gold / Otter) plus light/dark mode toggle.
+- **Teams** — manage who collaborates on your channels.
+- **Billing & plan** — review your subscription and update payment.
+- **API keys** — paste Claude, Gemini, OpenAI, ElevenLabs, or YouTube keys to unlock those providers. Keys are stored encrypted, per user.
+- **Notifications** — choose what pings you and where.
+- **Theme & colors** — seven color schemes (Classic / Purple / Blue / Amber / Rose / Liquid gold / Otter) plus a light/dark toggle.
+- **Feedback** — send a quick note to the Mossworks team.
 - **Documentation** — links to this guide.
-- **Sign out** — ends your session and returns to the login screen.
+- **Sign out** — ends your session.
 
 ::: tip
-Any channel-scoped nav (Proposals, Jobs, channel Settings) is only ever one click deep — open the channel pill and everything for the current channel is listed inline. No more hunt-and-click through nested nav.
+The channel selector inside the Studio section also acts as a quick menu: Channel settings, Team settings, and Team billing (when a channel belongs to a team) all live there in one click.
 :::

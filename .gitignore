@@ -2,3 +2,7 @@ node_modules/
 .vitepress/dist/
 .vitepress/cache/
 test-results/
+# Tour suite — interactive auth storage; videos land under test-results/.
+.auth/
+playwright-report/
+.env.local

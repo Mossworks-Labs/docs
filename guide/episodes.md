@@ -1,6 +1,6 @@
 # Episodes
 
-Episodes represent complete video productions that move through a 7-stage pipeline orchestrated by AI agents with automated quality gates. Reach Episodes from the stage rail — **Episodes** is the rightmost stage.
+Episodes represent complete video productions that move through a 7-stage pipeline orchestrated by AI agents with automated quality gates. Open Episodes from the Studio sidebar.
 
 <SchemeImage name="episodes-panel" alt="Episodes panel" />
 
@@ -80,5 +80,5 @@ Research, script, and storyboard rows have a chevron for viewing the produced ar
 The header's **Composition** button opens the timeline editor for direct composition editing. Useful for fine-tuning once the AI has produced a first pass.
 
 ::: tip
-Episodes rely on the background job pool. If a stage hangs in `queued` for several minutes, ask your administrator to check the system's job processors.
+Episode work runs in the background so the UI stays responsive while it produces. If a stage stays `queued` for several minutes, retry it from the row or refresh the page.
 :::

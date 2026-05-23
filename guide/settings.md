@@ -1,9 +1,6 @@
 # Settings
 
-Access channel settings from the top bar. Two paths — both open the same panel:
-
-1. **Right-rail link** — when a channel is selected, a **Settings** button appears next to Resources / Marketplace on the right side of the stage rail.
-2. **Channel pill dropdown** — click the pill, then **Channel settings** in the dropdown. This is the only entry point when you're currently on a channel-agnostic view (Discover, Marketplace, etc).
+Open the **channel selector** in the Studio sidebar section and click **Channel settings**. This is the single entry point regardless of which view you're currently on.
 
 <SchemeImage name="settings-panel" alt="Channel settings — overview" />
 
@@ -30,7 +27,7 @@ Content themes for your channel (e.g., "cloud computing", "DevOps", "terraform")
 
 Configure the default TTS voice for audio generation:
 
-1. Select a **Service** — Edge TTS (free), ElevenLabs, OpenAI, or OpenedAI Speech (local GPU)
+1. Select a **Service** — Free voice (default), ElevenLabs, OpenAI, or the premium high-quality option
 2. Filter by **Language** and **Gender**
 3. Select a **Voice**
 4. Click **Test** to hear a preview
@@ -50,9 +47,9 @@ When you select **Other**:
 
 Custom niches default to **$4/1k views** (the platform-wide default). Preset RPMs are static averages — actual earnings vary by geography and seasonality. Adjust by switching to a different preset that better matches your real YouTube CPM.
 
-## AI Context (CLAUDE.md)
+## AI Context
 
-The CLAUDE.md editor manages the context document used when Claude processes AI requests:
+The AI Context editor manages the context document used when the AI processes requests:
 
 - **Character mode** — auto-generated from your character name, description, topics, and style rules
 - **Raw mode** — fully custom instructions
@@ -61,7 +58,7 @@ Click **Regenerate from Character** to rebuild from your current settings, or ed
 
 ## Color schemes
 
-Click the **avatar** in the top-right of the top bar, then open **Theme & colors** to choose from 7 color schemes:
+Open the **Profile** menu at the bottom of the sidebar, then **Theme & colors** to choose from 7 color schemes:
 
 - **Classic** — teal accent (default)
 - **Purple** — violet accent with purple-tinted surfaces

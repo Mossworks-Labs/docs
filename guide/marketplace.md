@@ -47,7 +47,7 @@ The buyer sees your application under their gig. If they shortlist or accept you
 
 <FlatImage name="marketplace-post-gig" alt="Post a gig form with live preview" />
 
-Click **+ Post a gig** in the top-right of the marketplace top bar. The form has:
+Click **+ Post a gig** at the top of the marketplace. The form has:
 
 - **Title** — the headline creators see in the list
 - **Role** — voice / spokesperson / music / editor / animator
