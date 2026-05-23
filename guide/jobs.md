@@ -1,12 +1,12 @@
 # Jobs
 
-Long-running tasks in CRAFT Studio run as background jobs so the UI stays responsive. Jobs are **channel-scoped** and — except for a handful of always-on tasks like TTS and resource downloads — **premium-only**.
+Long-running tasks in CRAFT Studio run as background jobs so the UI stays responsive. Jobs are **channel-scoped** — TTS and resource downloads run on every plan; the orchestrated AI pipelines unlock on paid plans.
 
 <SchemeImage name="jobs-panel" alt="Jobs Panel" />
 
 ## Opening the Jobs panel
 
-Click the **channel pill** in the top bar, then **Jobs** in the dropdown. The entry only appears for premium users (admin auto-qualifies — see [Roles](/guide/auth)).
+Open the **channel selector** in the Studio sidebar section, then click **Jobs**. The entry appears once you're on a paid plan.
 
 ## What runs as a job
 

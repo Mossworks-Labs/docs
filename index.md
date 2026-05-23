@@ -37,8 +37,8 @@ features:
     title: Resource Library
     details: Search 14 royalty-free sources for video, image, audio, and reference material with auto-attribution.
   - icon: "\uD83D\uDD10"
-    title: Authentication & Role-Based Access
-    details: Single sign-on with four roles (admin, editor, premium, standard). Channel-level access control and a model-tier system that scales with your role and the keys you've added.
+    title: Buyer & Seller in One Account
+    details: One Mossworks account, two personas — Buyer for creating content, Seller for offering services on the Marketplace. Switch any time, no second sign-in needed.
   - icon: "\uD83D\uDCE4"
     title: "Multi-Platform Publishing \u2728"
     details: "Coming Soon — Publish directly to YouTube, TikTok, Facebook, and X from a single workflow."
@@ -238,7 +238,7 @@ features:
       <li>Voice picker with 300+ voices and preview</li>
       <li>Stability and similarity tuning for ElevenLabs</li>
       <li>RPM presets for earnings estimates</li>
-      <li>MCP server management</li>
+      <li>Research-tool toggles for your AI workflows</li>
     </ul>
   </div>
   <div class="feature-screenshot">

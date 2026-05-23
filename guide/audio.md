@@ -1,6 +1,6 @@
 # Audio production
 
-The Audio room generates speech from your scripts using text-to-speech, handles uploaded voiceovers with timestamp-based splitting, supports sound effect sections, and layers background music under the voice track. Reach it via **Audio** on the stage rail, or from the Script editor with **Send to audio** / **Promote & send**.
+The Audio room generates speech from your scripts using text-to-speech, handles uploaded voiceovers with timestamp-based splitting, supports sound effect sections, and layers background music under the voice track. Open it from the Studio sidebar → **Audio**, or from the Script editor with **Send to audio** / **Promote & send**.
 
 ## Script breakdown (project setup)
 
@@ -28,7 +28,7 @@ This is where you iterate. Common moves:
 
 Once a script and an active project are selected, the panel switches to a three-column **Audio room** layout:
 
-- **Left rail** — voice header (inline rename), service chip, live stats (sections / ready / pending / duration), primary actions (Generate all · Merge · Strip all directions), collapsible **Voice smoothing** (TTS-only sliders), collapsible **Background bed** (upload or MusicGen tabs + volume / fade / mode), collapsible **Orphaned** (audio files no longer linked to a section).
+- **Left rail** — voice header (inline rename), service chip, live stats (sections / ready / pending / duration), primary actions (Generate all · Merge · Strip all directions), collapsible **Voice smoothing** (TTS-only sliders), collapsible **Background bed** (upload or generate tabs + volume / fade / mode), collapsible **Orphaned** (audio files no longer linked to a section).
 - **Centre** — script title + total duration at the top, **row-per-beat** section list with inline mini-waveform and status chip, insert-section + delay-ms between rows, and a **master timeline** footer with the merged output's play button and proportional timeline.
 - **Right rail** — focused section detail: text (click **Edit** for a textarea), any scene context callout, linked resources, and actions (Play · Regenerate · Upload · Record · Strip directions · Remove · delay-after slider).
 
@@ -45,16 +45,16 @@ Generate speech from script text using one of four TTS providers:
 
 | Provider | Voices | Cost | Quality |
 |----------|--------|------|---------|
-| **Edge TTS** | 300+ Microsoft Neural voices | Free | Good |
+| **Free voice** | 300+ neural voices | Free | Good |
 | **ElevenLabs** | Premium cloned/generated voices | Paid | Excellent |
 | **OpenAI** | 6 voices | Paid | Very Good |
-| **OpenedAI Speech** | 6 voices (local GPU) | Free | Very Good |
+| **High-quality (free)** | 6 voices | Free | Very Good |
 
 ::: tip
-Edge TTS is the default — no API key needed. **OpenedAI Speech** is also free if your CRAFT instance has a GPU and the OpenedAI Speech service enabled.
+The default **Free voice** option needs no key. The **High-quality (free)** option may be available on your account too — it shows up automatically in the picker when it is.
 :::
 
-A subtle "Try ElevenLabs free →" link sits below the TTS Service dropdown for users without an ElevenLabs key configured. Once you add the key (Avatar menu → API Keys), the link disappears.
+A subtle "Try ElevenLabs free →" link sits below the TTS Service dropdown when you don't have an ElevenLabs key configured. Add the key under **Profile → API keys** and the link disappears.
 
 ### Upload (recorded voiceover)
 
@@ -97,7 +97,7 @@ Use SFX for transition stingers, intro/outro jingles, or ambient breaks.
 The **Background bed** section in the left rail controls the ambient layer:
 
 - **Upload** — pick a file or drop it in. Configure volume, fade in/out, and mode (Loop / Trim to voice / Play once).
-- **Generate** (tab, if MusicGen GPU service is running) — describe the music, set duration, generate.
+- **Generate** (tab) — describe the music, set duration, and generate it from scratch when AI music is enabled on your account.
 
 Settings are applied during **Merge**.
 
@@ -116,7 +116,7 @@ Each row shows its status: pending / generating / ready / error. Errors get an i
 
 In the left rail's **Voice smoothing** section:
 
-- **Speed** — playback speed multiplier (Edge TTS, OpenAI, OpenedAI Speech)
+- **Speed** — playback speed multiplier (Free voice, OpenAI, High-quality)
 - **Stability** (ElevenLabs) — lower = more expressive, higher = more consistent
 - **Similarity boost** (ElevenLabs) — how closely to match the original voice
 
@@ -136,7 +136,7 @@ Once merged, the master timeline footer at the bottom of the centre column shows
 
 ## Text preprocessing
 
-Edge TTS doesn't support SSML, so text is automatically preprocessed:
+Script text is automatically preprocessed so the voice reads it naturally:
 
 - Dashes become commas (natural pauses)
 - Ellipses become periods (longer pauses)

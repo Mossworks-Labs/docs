@@ -4,18 +4,18 @@ Channels are the top-level organizer in CRAFT. Each channel has its own characte
 
 ## Creating a channel
 
-1. Click the **channel pill** in the top bar (left side, next to the logo) to open the dropdown.
-2. Click **+ New channel** at the bottom.
+1. Open the sidebar and click the **channel selector** inside the **Studio** section.
+2. Click **+ New channel** at the bottom of the dropdown.
 3. Enter a **Channel name** and optional **Character name**.
 4. Click **Create**.
 
-<SchemeImage name="create-channel" alt="Create Channel dialog inside the channel pill dropdown" />
+<SchemeImage name="create-channel" alt="Create Channel dialog inside the Studio channel selector" />
 
 You'll land in the new channel's Settings so you can configure character, voice, and topics.
 
 ## Channel settings
 
-Open them from the top bar — either the **Settings** link in the right-rail (only visible when a channel is selected) or the channel-pill dropdown → **Channel settings**. See the full [Settings guide](/guide/settings).
+Open the **channel selector** in the Studio sidebar section and click **Channel settings**. See the full [Settings guide](/guide/settings).
 
 ### Character
 
@@ -31,7 +31,7 @@ Click **Create Character** in Settings to have AI generate a full character desc
 ### Voice
 
 Configure a default TTS voice for audio generation:
-- **Service** — Edge TTS (free), ElevenLabs, or OpenAI
+- **Service** — Free voice (default), ElevenLabs, or OpenAI
 - **Voice** — cascading filters by language, gender, then specific voice
 - **Test** — preview the voice before saving
 
@@ -39,29 +39,22 @@ Configure a default TTS voice for audio generation:
 
 A preset (Gaming, Tech, Finance, Education, Entertainment, How-To, News, Lifestyle, Health, Food, Travel, Kids, Beauty) or **Other (custom)** for niches outside the preset set. Drives Discover's default search query and the RPM used to estimate earnings. Custom niches let you set a label + comma-separated Discover prompts. See [Settings → Niche](/guide/settings#niche).
 
-### CLAUDE.md
+### AI Context
 
-The AI Context editor lets you view and edit the CLAUDE.md file that shapes Claude's responses for this channel. In **Character** mode, it's auto-generated from your settings. In **Raw** mode, you can write custom instructions.
+The AI Context editor lets you view and edit the context document that shapes AI responses for this channel. In **Character** mode, it's auto-generated from your settings. In **Raw** mode, you can write custom instructions.
 
 ## Switching channels
 
-The top bar gives you three ways to switch:
+Two ways to switch:
 
-- **Peer avatars** — the next few channels sit as small avatars next to the channel pill. One click to switch.
-- **Channel pill dropdown** — shows every channel you own with subs/character, click to select.
-- **⌘K command palette** — type a channel name, hit enter. See [Top bar & ⌘K](/guide/command-palette).
+- **Channel selector** in the Studio sidebar — shows every channel you own; click to select.
+- **⌘K command palette** — type a channel name, hit enter. See [Sidebar & ⌘K](/guide/command-palette).
 
 ## Channel ownership
 
-Each channel is owned by the user who created it. What you can see and edit depends on your [role](/guide/auth):
+Each channel is owned by the user who created it. You can invite collaborators from your team to work on a channel, and the marketplace lets you hire sellers to deliver work into a specific channel.
 
-| Role | See own channels | See others' | Edit others' |
-|------|-----------------|-------------|--------------|
-| **Admin** | Yes | Yes | Yes |
-| **Editor** | Yes | Yes (read-only) | No |
-| **Standard** | Yes | No | No |
-
-When you create a channel it's automatically assigned to you. Your username and role live under the avatar menu in the top-right of the top bar.
+When you create a channel it's automatically assigned to you. Your account details live under the **Profile** menu at the bottom of the sidebar.
 
 ## Multiple Channels
 
