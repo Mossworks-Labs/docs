@@ -1,6 +1,6 @@
 # Discover
 
-The Discover panel is a YouTube research tool. Search for videos, analyze channels, estimate earnings, and save inspiring content as ideas. Reach it from the stage rail — **Discover** is the leftmost stage.
+The Discover panel is a YouTube research tool. Search for videos, analyze channels, estimate earnings, and save inspiring content as ideas. Open it from the Studio sidebar → **Discover**.
 
 <SchemeImage name="discover-search" alt="Discover — left filter rail, channel strip, video grid" />
 
@@ -13,8 +13,8 @@ The Discover panel is a YouTube research tool. Search for videos, analyze channe
 
 Type in the **Search** box in the left rail and hit Enter (or click the button beneath it). Results load in batches — scroll down to fetch more. Your channel's Topic tags show up as pill-buttons in the rail so you can jump straight to relevant queries.
 
-::: tip No API key needed
-Basic search works without a YouTube API key. Adding a key enables subscriber-cap and outlier filters plus channel comparison. Status is reflected in which filter groups appear in the left rail.
+::: tip No setup needed
+Basic search works out of the box. Adding a YouTube key (Profile → API keys) unlocks subscriber-cap and outlier filters plus channel comparison.
 :::
 
 ## Filters
@@ -26,13 +26,13 @@ All filters re-run the search as soon as they change.
 | **Sort by** | Relevance / Most viewed / Newest | Result ordering |
 | **Duration** | Any / < 4 min (Shorts) / 4–20 min / 20+ min | Video length |
 | **Date** | Any time / Past week / Past month / Past year | Recency |
-| **Channel size cap** | Any / < 1M / < 100K / < 10K / < 1K | Subscriber cap — requires API key |
-| **Outlier** | Any / ≥ 5× / ≥ 10× / ≥ 50× | Videos with views well above the channel's average — requires API key |
+| **Channel size cap** | Any / < 1M / < 100K / < 10K / < 1K | Subscriber cap — requires a YouTube key |
+| **Outlier** | Any / ≥ 5× / ≥ 10× / ≥ 50× | Videos with views well above the channel's average — requires a YouTube key |
 | **Topic tags** | Pill-buttons from your channel config | One-click topical searches |
 
 ## Filter loop
 
-Because tight filters (e.g. 10× outliers + <10K subs) can eliminate most of any given batch, the backend searches progressively wider — up to ~6000 raw results — to surface matches. The **Filter loop** card at the bottom of the left rail shows live status (`142 kept`, `exhausted`, `searching…`) so you can tell whether to wait or loosen a filter.
+Because tight filters (e.g. 10× outliers + <10K subs) can eliminate most of any given batch, Discover searches progressively wider — up to ~6000 raw results — to surface matches. The **Filter loop** card at the bottom of the left rail shows live status (`142 kept`, `exhausted`, `searching…`) so you can tell whether to wait or loosen a filter.
 
 ## Channel deep dive
 

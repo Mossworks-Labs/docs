@@ -1,10 +1,10 @@
 # Feedback
 
-The Feedback panel lets you submit suggestions, bug reports, and content ideas that get refined by AI. When the studio is configured for it, submissions become GitHub Issues; otherwise they're logged server-side with your user + channel context for an operator to triage.
+The Feedback panel lets you submit suggestions, bug reports, and content ideas. AI cleans up your note before it leaves, and the Mossworks team picks it up from there.
 
 ## Opening the Panel
 
-Click **Feedback** in the top bar's right rail. The link is always visible.
+Open the **Profile** menu at the bottom of the sidebar and click **Feedback**.
 
 ## Submitting Feedback
 
@@ -14,7 +14,7 @@ Click **Feedback** in the top bar's right rail. The link is always visible.
 
 ## AI Grooming
 
-Click **Groom with AI** to have the local Ollama model analyze and refine your feedback. The AI returns:
+Click **Groom with AI** to have the built-in AI analyze and refine your feedback. The AI returns:
 
 - **Refined Title** -- a clearer, more actionable version
 - **Summary** -- 1-2 sentence distillation
@@ -27,24 +27,9 @@ All fields are editable after grooming -- tweak anything before submitting.
 
 ## Submitting
 
-Click **Submit** to send the feedback. Depending on how your studio is configured:
+Click **Submit** to send your feedback to the Mossworks team. The submission includes the refined title and body, the action items checklist, your original description, and any labels and priority the AI suggested. Your username is attached so we can follow up with you.
 
-- **GitHub-connected studio** — the button reads "Submit to GitHub" and an issue is filed in the configured repository.
-- **Logging-only studio** — the button reads "Submit feedback" and the submission is logged for an operator to review.
-
-The issue (or log entry) includes:
-
-- Refined title as the issue title
-- Markdown body with summary, action items checklist, original description, suggestions, and metadata
-- Labels from the groomed result plus a `feedback` label
-- Your username so the issue is attributed to you
-
-The submission runs as an async background job. You'll see real-time status updates and a link to the created issue once complete.
-
-::: info Requirements
-- AI grooming uses your studio's local model, so it works whenever the local model service is reachable. Ask your administrator if the **Groom with AI** button is greyed out.
-- GitHub forwarding is optional — without it, submissions log server-side; with it, a real issue is created.
-:::
+The submission runs in the background — you'll see live status while it's on its way.
 
 ## Re-grooming
 

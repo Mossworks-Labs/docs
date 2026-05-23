@@ -56,5 +56,5 @@ Each agent invocation has configurable budget limits:
 | Final Review | 15 | $1.00 | — |
 
 ::: tip
-Each agent has a defined persona, instructions, and output expectations. Administrators can customise these for their studio — ask yours if you'd like to tune how a particular agent thinks.
+Each agent has a defined persona, instructions, and output expectations tuned by the Mossworks team for the Studio's pipeline.
 :::

@@ -139,18 +139,22 @@ async function apiDelete(path: string) {
   await fetch(`${BASE}${path}`, { method: 'DELETE', headers: AUTH_HEADERS });
 }
 
-// TopChrome navigation helpers (post-Flow-redesign + post-IA cleanup).
+// Sidebar navigation helpers (post-Mossworks-unified-sidebar redesign).
 //
-// The old Sidebar (<aside>) was replaced by TopChrome (<header>) with a
-// channel pill + stage rail (Discover / Proposals / Episodes / Publish)
-// + right-rail links (Marketplace / Settings / Feedback).
-// Ideas, Scripts, and Jobs no longer have their own panels:
+// The TopChrome <header> was replaced by a left <aside> (MossworksSidebar)
+// shared across studio + marketplace + account. Inside the Studio section
+// the sidebar exposes a channel selector pill + stage rows (Episodes /
+// Proposals / Discover / Scripts / Storyboard / Composition / Audio /
+// Publish). Account & search live at the bottom of the sidebar.
+// Ideas, standalone Scripts, and standalone Jobs have no nav entries:
 //   - Ideas → Episodes is the single backlog. Proposals "Create Episode"
 //     and Discover "Inspire" both land on the kanban.
 //   - Scripts → reachable only via Episodes → Episode detail → script.
 //   - Jobs → embedded as a section inside Proposals.
 // Test hook: window.__craftStore exposes the Zustand store for views
-// without a chrome entry.
+// without a sidebar entry.
+
+const CHROME = 'aside, header';
 
 async function selectChannel(page: Page) {
   const id = effectiveChannelId();
@@ -171,7 +175,17 @@ async function selectChannel(page: Page) {
 
 /** Click a primary stage-rail button (Discover / Proposals / Episodes / Publish). */
 async function clickStageRail(page: Page, label: string) {
-  const btn = page.locator('header button', { hasText: new RegExp(`^\\s*${label}\\s*$`, 'i') }).first();
+  // The new sidebar collapses Studio sub-rows under a parent "Studio" button.
+  // Expand it first if collapsed so the stage rows are reachable.
+  const studio = page.locator(`${CHROME} button[title="Studio"]`).first();
+  if (await studio.isVisible().catch(() => false)) {
+    const expanded = await studio.getAttribute('aria-expanded').catch(() => null);
+    if (expanded !== 'true') {
+      await studio.click().catch(() => {});
+      await page.waitForTimeout(200);
+    }
+  }
+  const btn = page.locator(`${CHROME} button`, { hasText: new RegExp(`^\\s*${label}\\s*$`, 'i') }).first();
   if (await btn.isVisible()) {
     await btn.click();
     await page.waitForTimeout(800);
@@ -187,14 +201,19 @@ async function setView(page: Page, view: string) {
   await page.waitForTimeout(800);
 }
 
-/** Open the channel pill dropdown and click a labelled action (Channel settings). */
+/** Open the channel-selector dropdown in the Studio sidebar section and click a labelled action (Channel settings). */
 async function clickChannelDropdown(page: Page, label: string) {
-  // The pill is the first button in the header after the logo.
-  const pill = page.locator('header button:has(div.rounded-full)').first();
+  // The new chrome surfaces the channel pill as a button inside the
+  // sidebar Studio section. Match by aria-label first; fall back to the
+  // legacy header pill for older deploys.
+  const pill = page
+    .locator(`${CHROME} button[aria-label*="Channel" i], ${CHROME} button:has-text("Channel")`)
+    .first();
   if (!(await pill.isVisible())) return;
   await pill.click();
   await page.waitForTimeout(300);
-  const item = page.locator('header button', { hasText: new RegExp(`^\\s*${label}\\s*$`, 'i') }).first();
+  // Dropdown items render outside the sidebar — search the whole document.
+  const item = page.locator('button', { hasText: new RegExp(`^\\s*${label}\\s*$`, 'i') }).first();
   if (await item.isVisible()) {
     await item.click();
     await page.waitForTimeout(800);
@@ -219,8 +238,8 @@ async function clickChannelNav(page: Page, label: string) {
     // directly for any legacy test that targets it.
     await setView(page, 'scripts');
   } else {
-    // Fallback: try a header text match
-    const btn = page.locator('header button', { hasText: label }).first();
+    // Fallback: try a chrome text match
+    const btn = page.locator(`${CHROME} button`, { hasText: label }).first();
     if (await btn.isVisible()) {
       await btn.click();
       await page.waitForTimeout(800);
@@ -564,7 +583,9 @@ test.describe('Documentation Screenshots', () => {
       await page.setExtraHTTPHeaders({ Authorization: `Bearer ${SCREENSHOT_TOKEN}` });
       await mockChannelList(page);
       await page.goto('/');
-      await page.waitForSelector('header', { timeout: 15000 });
+      // Post Mossworks-unified-sidebar redesign the shell renders <aside>
+      // not <header>. Accept either so older deploys still work.
+      await page.waitForSelector('aside, header', { timeout: 15000 });
       // Wait for the store hook to be attached
       await page.waitForFunction(() => typeof (window as any).__craftStore !== 'undefined', { timeout: 10000 });
     });
@@ -864,12 +885,14 @@ test.describe('Documentation Screenshots', () => {
       });
 
       test('create channel form', async ({ page }) => {
-        // Open the channel pill dropdown and click "New channel"
-        const pill = page.locator('header button:has(div.rounded-full)').first();
+        // Open the sidebar channel-selector pill and click "New channel".
+        const pill = page
+          .locator(`${CHROME} button[aria-label*="Channel" i], ${CHROME} button:has-text("Channel")`)
+          .first();
         if (await pill.isVisible()) {
           await pill.click();
           await page.waitForTimeout(300);
-          const newBtn = page.locator('header button', { hasText: /new channel/i }).first();
+          const newBtn = page.locator('button', { hasText: /new channel/i }).first();
           if (await newBtn.isVisible()) {
             await newBtn.click();
             await page.waitForTimeout(500);
@@ -879,8 +902,8 @@ test.describe('Documentation Screenshots', () => {
       });
 
       test('profile popover', async ({ page }) => {
-        // Avatar button lives in the top-right of the header
-        const avatar = page.locator('header button.bg-accent-500').first();
+        // Account menu button sits at the bottom of the sidebar.
+        const avatar = page.locator(`${CHROME} button[aria-label="Account menu"]`).first();
         if (await avatar.isVisible()) {
           await avatar.click();
           await page.waitForTimeout(500);
@@ -889,7 +912,7 @@ test.describe('Documentation Screenshots', () => {
       });
 
       test('password change form', async ({ page }) => {
-        const avatar = page.locator('header button.bg-accent-500').first();
+        const avatar = page.locator(`${CHROME} button[aria-label="Account menu"]`).first();
         if (await avatar.isVisible()) {
           await avatar.click();
           await page.waitForTimeout(500);
@@ -905,8 +928,10 @@ test.describe('Documentation Screenshots', () => {
       test('settings nav — channel pill dropdown', async ({ page }) => {
         await selectChannel(page);
         await page.waitForTimeout(400);
-        // Open the channel pill dropdown so Settings/Proposals/Jobs items are visible
-        const pill = page.locator('header button:has(div.rounded-full)').first();
+        // Open the channel selector so Settings / Team / New channel items are visible.
+        const pill = page
+          .locator(`${CHROME} button[aria-label*="Channel" i], ${CHROME} button:has-text("Channel")`)
+          .first();
         if (await pill.isVisible()) {
           await pill.click();
           await page.waitForTimeout(300);
@@ -1165,8 +1190,8 @@ test.describe('Documentation Screenshots', () => {
           if (store) store.setState({ openEpisodeId: 'ep-quantum-error', activeView: 'publish' });
         });
         await page.waitForTimeout(900);
-        // Click the Accounts button in the header
-        const btn = page.locator('header button', { hasText: /Accounts/i }).first();
+        // Click the Accounts button (lives in the publish panel header)
+        const btn = page.locator('button', { hasText: /Accounts/i }).first();
         if (await btn.isVisible()) await btn.click();
         await page.waitForTimeout(500);
         await shotAllSchemes(page, 'publish-accounts');
@@ -1234,7 +1259,7 @@ test.describe('Documentation Screenshots', () => {
         });
         // Reload so the mocked channel list lands in the zustand store
         await page.reload();
-        await page.waitForSelector('header');
+        await page.waitForSelector('aside, header');
         await page.waitForFunction(() => typeof (window as any).__craftStore !== 'undefined');
         await page.evaluate((id) => {
           const store = (window as any).__craftStore;
