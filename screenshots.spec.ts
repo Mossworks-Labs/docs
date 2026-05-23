@@ -173,20 +173,36 @@ async function selectChannel(page: Page) {
   await page.waitForTimeout(400);
 }
 
+// Stage-label → activeView. Drives clickStageRail's store-based fallback
+// (since the new sidebar nests these rows under a collapsible Studio
+// section that's awkward to drive by DOM click in headless capture).
+const STAGE_VIEW: Record<string, string> = {
+  Discover: 'discover',
+  Proposals: 'proposals',
+  Episodes: 'episodes',
+  Publish: 'publish',
+  Scripts: 'scripts',
+  Storyboard: 'storyboard',
+  Composition: 'composition',
+  Audio: 'audio-create',
+  Marketplace: 'marketplace',
+  Feedback: 'feedback',
+};
+
 /** Click a primary stage-rail button (Discover / Proposals / Episodes / Publish). */
 async function clickStageRail(page: Page, label: string) {
-  // The new sidebar collapses Studio sub-rows under a parent "Studio" button.
-  // Expand it first if collapsed so the stage rows are reachable.
-  const studio = page.locator(`${CHROME} button[title="Studio"]`).first();
-  if (await studio.isVisible().catch(() => false)) {
-    const expanded = await studio.getAttribute('aria-expanded').catch(() => null);
-    if (expanded !== 'true') {
-      await studio.click().catch(() => {});
-      await page.waitForTimeout(200);
-    }
+  // The new sidebar nests these stages under a collapsible Studio section
+  // and renders the rail collapsed by default. Rather than chase DOM
+  // state, just mutate the Zustand store directly — that's what the
+  // sidebar's onNavigate ultimately does anyway.
+  const view = STAGE_VIEW[label];
+  if (view) {
+    await setView(page, view);
+    return;
   }
+  // Fallback for any label we haven't mapped: try a chrome button click.
   const btn = page.locator(`${CHROME} button`, { hasText: new RegExp(`^\\s*${label}\\s*$`, 'i') }).first();
-  if (await btn.isVisible()) {
+  if (await btn.isVisible().catch(() => false)) {
     await btn.click();
     await page.waitForTimeout(800);
   }
@@ -605,7 +621,9 @@ test.describe('Documentation Screenshots', () => {
         await selectChannel(page);
         await clickChannelNav(page, 'Scripts');
         await page.waitForTimeout(500);
-        const script = page.locator('[class*="cursor-pointer"]').first();
+        // Scope to <main> so we don't accidentally click the sidebar's
+        // Home button (which also carries cursor-pointer in the new chrome).
+        const script = page.locator('main [class*="cursor-pointer"]').first();
         if (await script.isVisible()) {
           await script.click();
           await page.waitForTimeout(1000);
@@ -617,7 +635,7 @@ test.describe('Documentation Screenshots', () => {
         await selectChannel(page);
         await clickChannelNav(page, 'Scripts');
         await page.waitForTimeout(500);
-        const script = page.locator('[class*="cursor-pointer"]').first();
+        const script = page.locator('main [class*="cursor-pointer"]').first();
         if (await script.isVisible()) {
           await script.click();
           await page.waitForTimeout(1000);
@@ -665,23 +683,11 @@ test.describe('Documentation Screenshots', () => {
         await shotAllSchemes(page, 'channel-dive');
       });
 
-      test('resources panel', async ({ page }) => {
-        await selectChannel(page);
-        await setView(page, 'resources-search');
-        const searchInput = page.locator('input[placeholder*="Search"]').first();
-        if (await searchInput.isVisible()) {
-          await searchInput.fill('nature');
-          await searchInput.press('Enter');
-          await page.waitForTimeout(5000);
-        }
-        await shotAllSchemes(page, 'resources-search');
-      });
-
-      test('resources - library', async ({ page }) => {
-        await selectChannel(page);
-        await setView(page, 'resources-library');
-        await shotAllSchemes(page, 'resources-library');
-      });
+      // Resources Search / Library are no longer top-level views — the
+      // panel is reachable only inline from storyboard / audio
+      // attach-resource flows. Skip the standalone captures.
+      test.skip('resources panel', async ({ page: _page }) => {});
+      test.skip('resources - library', async ({ page: _page }) => {});
 
       test('resources - audio sections', async ({ page }) => {
         await selectChannel(page);
@@ -716,24 +722,18 @@ test.describe('Documentation Screenshots', () => {
         await shotAllSchemes(page, 'settings-panel');
       });
 
-      test('settings panel - mcp servers', async ({ page }) => {
-        await selectChannel(page);
-        await setView(page, 'settings');
-        await page.evaluate(() => {
-          const el = document.querySelector('main');
-          if (el) el.scrollTop = el.scrollHeight * 0.7;
-        });
-        await page.waitForTimeout(500);
-        await shotAllSchemes(page, 'mcp-servers');
-      });
+      // MCP-server management was removed from the user-facing settings
+      // panel (research tools live behind the AI Providers flow now).
+      // No guide page references this screenshot; skip the capture.
+      test.skip('settings panel - mcp servers', async ({ page: _page }) => {});
 
       test('settings panel - voice picker', async ({ page }) => {
         await selectChannel(page);
         await setView(page, 'settings');
-        await page.evaluate(() => {
-          const el = document.querySelector('main');
-          if (el) el.scrollTop = el.scrollHeight * 0.4;
-        });
+        const anchor = page.locator('h2, h3', { hasText: /voice/i }).first();
+        if (await anchor.isVisible().catch(() => false)) {
+          await anchor.scrollIntoViewIfNeeded();
+        }
         await page.waitForTimeout(300);
         await shotAllSchemes(page, 'voice-picker');
       });
@@ -744,7 +744,11 @@ test.describe('Documentation Screenshots', () => {
       // the "ollama models in model select" test below stays.
       test.skip('settings panel - ollama models', async ({ page: _page }) => {});
 
-      test('music generate panel', async ({ page }) => {
+      // Music generation no longer has a dedicated top-level view. Skip
+      // the standalone capture; the music tab inside Audio still covers
+      // the same UI surface for docs purposes.
+      test.skip('music generate panel', async ({ page: _page }) => {});
+      test.skip('music generate panel — legacy', async ({ page }) => {
         test.setTimeout(180000);
         await page.waitForTimeout(1500);
         await selectChannel(page);
@@ -871,34 +875,25 @@ test.describe('Documentation Screenshots', () => {
         await shotAllSchemes(page, 'episode-detail');
       });
 
-      test('pipeline config in settings', async ({ page }) => {
-        await selectChannel(page);
-        await selectChannel(page);
-        await setView(page, 'settings');
-        // Scroll to Pipeline Configuration section
-        const pipelineSection = page.locator('h3', { hasText: 'Pipeline Configuration' }).first();
-        if (await pipelineSection.isVisible()) {
-          await pipelineSection.scrollIntoViewIfNeeded();
-          await page.waitForTimeout(300);
-        }
-        await shotAllSchemes(page, 'pipeline-config');
-      });
+      // Pipeline Configuration now sits at the top of the settings panel,
+      // so this would duplicate `settings panel - overview`. No guide
+      // page references this screenshot — skip.
+      test.skip('pipeline config in settings', async ({ page: _page }) => {});
 
       test('create channel form', async ({ page }) => {
-        // Open the sidebar channel-selector pill and click "New channel".
-        const pill = page
-          .locator(`${CHROME} button[aria-label*="Channel" i], ${CHROME} button:has-text("Channel")`)
+        // Click the LandingPage's "Create new channel" / "Create Your
+        // First Channel" CTA to flip showCreate=true. Scoped to <main>
+        // so we don't catch the sidebar's New-channel dropdown item.
+        await setView(page, 'home');
+        await page.waitForTimeout(600);
+        const cta = page
+          .locator('main button', { hasText: /create (new channel|your first channel)/i })
           .first();
-        if (await pill.isVisible()) {
-          await pill.click();
-          await page.waitForTimeout(300);
-          const newBtn = page.locator('button', { hasText: /new channel/i }).first();
-          if (await newBtn.isVisible()) {
-            await newBtn.click();
-            await page.waitForTimeout(500);
-            await shotAllSchemes(page, 'create-channel');
-          }
+        if (await cta.isVisible()) {
+          await cta.click();
+          await page.waitForTimeout(600);
         }
+        await shotAllSchemes(page, 'create-channel');
       });
 
       test('profile popover', async ({ page }) => {
@@ -928,15 +923,15 @@ test.describe('Documentation Screenshots', () => {
       test('settings nav — channel pill dropdown', async ({ page }) => {
         await selectChannel(page);
         await page.waitForTimeout(400);
-        // Open the channel selector so Settings / Team / New channel items are visible.
-        const pill = page
-          .locator(`${CHROME} button[aria-label*="Channel" i], ${CHROME} button:has-text("Channel")`)
-          .first();
-        if (await pill.isVisible()) {
-          await pill.click();
-          await page.waitForTimeout(300);
-          await shotAllSchemes(page, 'settings-nav');
-        }
+        // Dispatch the same custom event the sidebar fires when the
+        // channel pill is clicked. The DOM has several buttons that
+        // contain the word "Channel" (sidebar Studio row, channel
+        // sub-row, account menu) so a text-based click is unreliable.
+        await page.evaluate(() => {
+          document.dispatchEvent(new CustomEvent('craft:open-channel-switcher'));
+        });
+        await page.waitForTimeout(400);
+        await shotAllSchemes(page, 'settings-nav');
       });
 
       test('ollama models in model select', async ({ page }) => {
@@ -1294,7 +1289,9 @@ test.describe('Documentation Screenshots', () => {
         });
 
         await selectChannel(page);
-        await setView(page, 'video-create');
+        // Studio's MainPanel routes the video editor under activeView
+        // 'composition', not the legacy 'video-create' alias.
+        await setView(page, 'composition');
         await page.waitForTimeout(500);
 
         // Inject a populated composition so the panel renders chapter strip,
