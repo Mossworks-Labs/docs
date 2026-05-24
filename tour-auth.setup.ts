@@ -36,7 +36,14 @@ test('capture testuser session for tour', async ({ page, context }) => {
   // Start at /studio/ — anonymous, so the shell will surface a Sign-in
   // CTA that redirects through Keycloak.
   await page.goto(`${BASE_URL}/studio/`, { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('body')).toBeVisible();
+  // The Mossworks shell keeps <body> hidden until JS hydration finishes
+  // (avoids FOUC), so the old `expect(body).toBeVisible()` raced the
+  // hydration and failed every time. Wait for an actual chrome element
+  // instead — sidebar (signed-in or anon apex), header (legacy chrome),
+  // or a Sign-in CTA.
+  await page.waitForSelector('aside, header, a:has-text("Sign in"), button:has-text("Sign in")', {
+    timeout: 30_000,
+  });
 
   // The /me path on the apex is mounted under /api/account (see
   // site/src/auth/fetchMe.ts). Try both the apex path and the standalone
