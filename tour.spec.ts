@@ -25,8 +25,11 @@
  */
 import { test, expect, type Page } from '@playwright/test';
 
-const BEAT = 1_200;
-const SECTION_HOLD = 2_500;
+// Pacing tuning — slower beats produce a more comfortable demo video.
+// Raised from 1200 / 2500 so the viewer has time to read each screen
+// before the next transition fires.
+const BEAT = 2_000;
+const SECTION_HOLD = 4_000;
 
 // Names embed a timestamp so reruns don't collide on slug uniqueness in
 // the test database.
@@ -165,6 +168,15 @@ test('studio product tour — 90s walkthrough', async ({ page }) => {
     await searchBox.fill('AI documentaries');
     await beat(page);
     await page.keyboard.press('Enter');
+    // Give the YouTube search a real chance to render — the first
+    // results take a couple of seconds, and the demo should *show*
+    // them, not transition away while the grid is still empty.
+    await page
+      .locator('text=/views|published|watch/i')
+      .first()
+      .waitFor({ state: 'visible', timeout: 5_000 })
+      .catch(() => {});
+    await beat(page, 5_000);
     await beat(page, SECTION_HOLD);
   } else {
     await beat(page, SECTION_HOLD);
