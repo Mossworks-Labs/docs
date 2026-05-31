@@ -25,7 +25,7 @@ import { test, expect } from '@playwright/test';
 import path from 'node:path';
 import { mkdirSync } from 'node:fs';
 
-const BASE_URL = process.env.PLAYWRIGHT_BASE_URL ?? 'https://qa.mossworks.io';
+const BASE_URL = process.env.PLAYWRIGHT_BASE_URL ?? 'https://preprod.mossworks.io';
 const AUTH_FILE = path.resolve(__dirname, '.auth/tour-storage-state.json');
 
 test('capture testuser session for tour', async ({ page, context }) => {

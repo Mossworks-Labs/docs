@@ -3,15 +3,27 @@
  * driving the headline workflow at 1080p so the marketing edit can use
  * the captured `.webm` as the demo-video source.
  *
- * Sections (each one ~10-15s of screen time):
- *   1. Landing → Create channel
- *   2. Open Episodes → New Episode
- *   3. Switch to Scripts → quick edit
- *   4. Discover panel — niche search
- *   5. Deep Dive into a video card
- *   6. Audio panel — show production surface (progressive section refresh)
- *   7. Storyboard panel — beat board
- *   8. Publish panel — final hand-off surface
+ * Section order mirrors the revised demo-reel script (~2:30 cut). Each
+ * section is ~10-15s of screen time and lands in the same order the
+ * voiceover narrates, so the editor can cut beat-for-beat against it:
+ *   0. Landing
+ *   1. Create channel        (name + niche w/ RPM hint)
+ *   2. Character & Settings   (the persona that steers downstream AI)
+ *   3. API keys               (bring-your-own provider tokens modal)
+ *   4. Proposals              (AI-scored idea generation)
+ *   5. Discover → Deep Dive   (YouTube research layer)
+ *   6. Episodes               (create the working episode on the board)
+ *   7. Scripts                (editor surface)
+ *   8. Audio                  (per-section TTS, progressive refresh)
+ *   9. Storyboard             (beat board + media)
+ *  10. Composition            (timeline assembler)
+ *  11. Publish                (multi-platform hand-off)
+ *
+ * AI-gated surfaces (Character generate, Proposals generate, Audio
+ * generate) are driven *defensively* — if the signed-in QA user has no
+ * provider key the control simply isn't there, and the tour still records
+ * the surface in order rather than failing. That keeps the capture useful
+ * for the edit regardless of which keys the demo account holds.
  *
  * Distinct from the existing `screenshots.spec.ts` in the same repo:
  *   - screenshots uses ROPC + bearer token, runs in CI, drops PNGs into
@@ -43,12 +55,12 @@ async function beat(page: Page, ms = BEAT) {
 
 test.describe.configure({ mode: 'serial' });
 
-test('studio product tour — 90s walkthrough', async ({ page }) => {
-  // The tour now covers 8 surfaces with 2.5s SECTION_HOLD beats — total
-  // expected runtime is ~90s on a fast network, ~2 min worst-case. Bump
-  // the per-test timeout above the playwright.config default so a
-  // single slow XHR doesn't kill the run before the final scene.
-  test.setTimeout(5 * 60 * 1000);
+test('studio product tour — full pipeline walkthrough', async ({ page }) => {
+  // The tour now covers 12 surfaces with 4s SECTION_HOLD beats — total
+  // expected runtime is ~2.5 min on a fast network, more worst-case. Bump
+  // the per-test timeout above the playwright.config default so a single
+  // slow XHR doesn't kill the run before the final scene.
+  test.setTimeout(8 * 60 * 1000);
 
   // Native alert() / confirm() / prompt() dialogs (e.g. createChannel's
   // "Failed to create channel" fallback) freeze the page if not handled;
@@ -96,6 +108,15 @@ test('studio product tour — 90s walkthrough', async ({ page }) => {
   await page.getByPlaceholder('Channel name').fill(CHANNEL_NAME);
   await beat(page);
 
+  // Pick a niche so the "$X/1k views" RPM hint in the dropdown is on
+  // screen for the voiceover line. Index 0 is the placeholder; index 1 is
+  // the first real niche.
+  const nicheSelect = page.locator('select').first();
+  if (await nicheSelect.count()) {
+    await nicheSelect.selectOption({ index: 1 }).catch(() => {});
+    await beat(page);
+  }
+
   console.log('[tour] clicking Get started…');
   await page.getByRole('button', { name: /get started|create/i }).first().click();
   // Channel-create kicks the SPA into the channel-scoped route, so wait
@@ -109,18 +130,107 @@ test('studio product tour — 90s walkthrough', async ({ page }) => {
   console.log(`[tour] channel created (id=${channelId}), holding…`);
   await beat(page, SECTION_HOLD);
 
-  // ─── 2. Episodes — create one ────────────────────────────────────────
-  const episodesLink = page.getByRole('link', { name: /^Episodes$/ }).first();
-  if (await episodesLink.count()) {
-    await episodesLink.click();
-  } else {
-    await page.evaluate(() => {
-      const url = window.location.pathname.replace(/\/c\/([^/]+).*/, '/c/$1/episodes');
-      window.history.pushState({}, '', url);
-      window.dispatchEvent(new PopStateEvent('popstate'));
-    });
+  // ─── 2. Character & Settings ─────────────────────────────────────────
+  // The persona that steers every downstream AI step. Land on the
+  // Character tab so the character description / CLAUDE.md context shows.
+  console.log('[tour] navigating to Settings…');
+  await gotoChannelPanel(page, channelId, 'settings', /\/settings(\/|$)/);
+  await beat(page, SECTION_HOLD);
+  const characterTab = page.getByRole('button', { name: /^Character$/i }).first();
+  if (await characterTab.count()) {
+    await characterTab.click().catch(() => {});
+    await beat(page, SECTION_HOLD);
   }
-  await page.waitForURL(/\/episodes$/, { timeout: 10_000 });
+  // Optionally open the AI Character Creator to show the generate flow.
+  const creatorToggle = page.getByRole('button', { name: /character creator|generate from character|^generate$/i }).first();
+  if (await creatorToggle.count()) {
+    await creatorToggle.click({ trial: false }).catch(() => {});
+    await beat(page, SECTION_HOLD);
+  }
+
+  // ─── 3. API keys (service tokens) ────────────────────────────────────
+  // Bring-your-own-AI: open the API Keys modal via its app-level event —
+  // the same `craft:open-api-keys` dispatch the host command palette uses.
+  // The listener lives in studio's ChromeModals, which mounts once the
+  // user is signed in; retry the dispatch a few times to ride out the
+  // remote-mount race. Best-effort (no hard assert) so a preprod build
+  // that lacks the wiring still records the rest of the reel.
+  console.log('[tour] opening API Keys modal…');
+  const apiKeysHeading = page.getByRole('heading', { name: /api keys/i }).first();
+  let apiKeysOpen = false;
+  for (let i = 0; i < 5 && !apiKeysOpen; i++) {
+    await page.evaluate(() => document.dispatchEvent(new CustomEvent('craft:open-api-keys')));
+    apiKeysOpen = await apiKeysHeading
+      .waitFor({ state: 'visible', timeout: 2_000 })
+      .then(() => true)
+      .catch(() => false);
+  }
+  if (apiKeysOpen) {
+    await beat(page, SECTION_HOLD);
+    // ApiKeyModal has no Escape handler — it closes on backdrop click.
+    // Click a far corner (on the backdrop, clear of the centred dialog) so
+    // it doesn't overlay the next surface in the recording.
+    await page.mouse.click(30, 30).catch(() => {});
+    await beat(page);
+  } else {
+    console.warn('[tour] API Keys modal did not open — skipping (check preprod build wiring)');
+  }
+
+  // ─── 4. Proposals ────────────────────────────────────────────────────
+  console.log('[tour] navigating to Proposals…');
+  await gotoChannelPanel(page, channelId, 'proposals', /\/proposals(\/|$)/);
+  await beat(page, SECTION_HOLD);
+  // Generate is Claude-gated — drive it defensively so a keyless QA user
+  // still records the surface. We don't approve/convert here to avoid
+  // spawning a competing episode before the explicit Episodes section.
+  const generateProposalsBtn = page.getByRole('button', { name: /generate proposals/i }).first();
+  if (await generateProposalsBtn.count()) {
+    await generateProposalsBtn.click({ trial: false }).catch(() => {});
+    await beat(page, SECTION_HOLD);
+  }
+  await beat(page, SECTION_HOLD);
+
+  // ─── 5. Discover → Deep Dive ─────────────────────────────────────────
+  await page.goto('/studio/discover', { waitUntil: 'domcontentloaded' });
+  await page.waitForURL(/\/discover/, { timeout: 10_000 });
+  await beat(page, SECTION_HOLD);
+
+  const searchBox = page.getByPlaceholder(/search|niche|topic/i).first();
+  if (await searchBox.count()) {
+    await searchBox.fill('AI documentaries');
+    await beat(page);
+    await page.keyboard.press('Enter');
+    // Give the YouTube search a real chance to render — the first results
+    // take a couple of seconds, and the demo should *show* them, not
+    // transition away while the grid is still empty.
+    await page
+      .locator('text=/views|published|watch/i')
+      .first()
+      .waitFor({ state: 'visible', timeout: 5_000 })
+      .catch(() => {});
+    await beat(page, 5_000);
+    await beat(page, SECTION_HOLD);
+  } else {
+    await beat(page, SECTION_HOLD);
+  }
+
+  const firstVideoCard = page
+    .locator('[class*="card"], [class*="grid"] button, article')
+    .filter({ hasText: /views|published|watch/i })
+    .first();
+  if (await firstVideoCard.count()) {
+    await firstVideoCard.click({ trial: false }).catch(() => {});
+    await expect(page.getByText(/deep dive|channel stats|transcript/i).first()).toBeVisible({ timeout: 15_000 });
+    await beat(page, SECTION_HOLD);
+  }
+
+  // ─── 6. Episodes — create the working episode ────────────────────────
+  // Direct-nav (not the sidebar link): the global Discover view above
+  // deselected the channel and collapsed the channel-scoped sub-nav, so
+  // the Episodes link isn't in the DOM. gotoChannelPanel rehydrates the
+  // channel context from the URL.
+  console.log('[tour] navigating to Episodes…');
+  await gotoChannelPanel(page, channelId, 'episodes', /\/episodes(\/|$)/);
   await beat(page, SECTION_HOLD);
 
   await page.getByRole('button', { name: /new episode/i }).click();
@@ -133,81 +243,31 @@ test('studio product tour — 90s walkthrough', async ({ page }) => {
   await expect(page.getByText(EPISODE_TITLE, { exact: false })).toBeVisible({ timeout: 15_000 });
   await beat(page, SECTION_HOLD);
 
-  // ─── 3. Scripts — quick edit ─────────────────────────────────────────
-  const scriptsLink = page.getByRole('link', { name: /^Scripts$/ }).first();
-  if (await scriptsLink.count()) {
-    await scriptsLink.click();
-  } else {
-    await page.evaluate(() => {
-      const url = window.location.pathname.replace(/\/episodes$/, '/scripts');
-      window.history.pushState({}, '', url);
-      window.dispatchEvent(new PopStateEvent('popstate'));
-    });
-  }
-  await page.waitForURL(/\/scripts(\/|$)/, { timeout: 10_000 });
+  // ─── 7. Scripts ──────────────────────────────────────────────────────
+  console.log('[tour] navigating to Scripts…');
+  await gotoChannelPanel(page, channelId, 'scripts', /\/scripts(\/|$)/);
   await beat(page, SECTION_HOLD);
-
   const newScriptBtn = page.getByRole('button', { name: /new script|create script|\+ new/i }).first();
   if (await newScriptBtn.count()) {
     await newScriptBtn.click().catch(() => {});
-    await beat(page);
-  }
-
-  // ─── 4. Discover ─────────────────────────────────────────────────────
-  const discoverLink = page.getByRole('link', { name: /^Discover$/ }).first();
-  if (await discoverLink.count()) {
-    await discoverLink.click();
-  } else {
-    await page.goto('/studio/discover');
-  }
-  await page.waitForURL(/\/discover/, { timeout: 10_000 });
-  await beat(page, SECTION_HOLD);
-
-  const searchBox = page.getByPlaceholder(/search|niche|topic/i).first();
-  if (await searchBox.count()) {
-    await searchBox.fill('AI documentaries');
-    await beat(page);
-    await page.keyboard.press('Enter');
-    // Give the YouTube search a real chance to render — the first
-    // results take a couple of seconds, and the demo should *show*
-    // them, not transition away while the grid is still empty.
-    await page
-      .locator('text=/views|published|watch/i')
-      .first()
-      .waitFor({ state: 'visible', timeout: 5_000 })
-      .catch(() => {});
-    await beat(page, 5_000);
-    await beat(page, SECTION_HOLD);
-  } else {
     await beat(page, SECTION_HOLD);
   }
 
-  // ─── 5. Deep Dive ────────────────────────────────────────────────────
-  const firstVideoCard = page
-    .locator('[class*="card"], [class*="grid"] button, article')
-    .filter({ hasText: /views|published|watch/i })
-    .first();
-  if (await firstVideoCard.count()) {
-    await firstVideoCard.click({ trial: false }).catch(() => {});
-    await expect(page.getByText(/deep dive|channel stats/i).first()).toBeVisible({ timeout: 15_000 });
-    await beat(page, SECTION_HOLD);
-  }
-
-  // ─── 6. Audio panel ──────────────────────────────────────────────────
+  // ─── 8. Audio ────────────────────────────────────────────────────────
   // The deployed image includes a 3s polling refresh while sections are
   // pending, so if the demo channel has any existing project mid-flight
   // the section grid animates live.
   console.log('[tour] navigating to Audio…');
   await gotoChannelPanel(page, channelId, 'audio', /\/audio(\/|$)/);
   await beat(page, SECTION_HOLD);
-  const audioGenerateBtn = page.getByRole('button', { name: /generate all|create project|create audio/i }).first();
+  const audioGenerateBtn = page.getByRole('button', { name: /generate all|create project|create audio|create voice track/i }).first();
   if (await audioGenerateBtn.count()) {
     await audioGenerateBtn.click({ trial: false }).catch(() => {});
     await beat(page, SECTION_HOLD);
   }
   await beat(page, SECTION_HOLD);
 
-  // ─── 7. Storyboard panel ─────────────────────────────────────────────
+  // ─── 9. Storyboard ───────────────────────────────────────────────────
   console.log('[tour] navigating to Storyboard…');
   await gotoChannelPanel(page, channelId, 'storyboard', /\/storyboard(\/|$)/);
   await beat(page, SECTION_HOLD);
@@ -218,7 +278,21 @@ test('studio product tour — 90s walkthrough', async ({ page }) => {
   }
   await beat(page, SECTION_HOLD);
 
-  // ─── 8. Publish panel ────────────────────────────────────────────────
+  // ─── 10. Composition ─────────────────────────────────────────────────
+  // The timeline assembler. BoardPanel renders the Composition tab when
+  // the route is /composition; it may show an episode picker first, so
+  // click the first tile defensively to load the timeline.
+  console.log('[tour] navigating to Composition…');
+  await gotoChannelPanel(page, channelId, 'composition', /\/composition(\/|$)/);
+  await beat(page, SECTION_HOLD);
+  const firstCompTile = page.locator('[class*="card"], [class*="grid"] button, article').first();
+  if (await firstCompTile.count()) {
+    await firstCompTile.click({ trial: false }).catch(() => {});
+    await beat(page, SECTION_HOLD);
+  }
+  await beat(page, SECTION_HOLD);
+
+  // ─── 11. Publish ─────────────────────────────────────────────────────
   console.log('[tour] navigating to Publish…');
   await gotoChannelPanel(page, channelId, 'publish', /\/publish(\/|$)/);
   await beat(page, SECTION_HOLD);

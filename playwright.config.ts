@@ -32,7 +32,7 @@ import { SESSION_AUTH, STATE_FILE } from './screenshot-auth';
 //     KEYCLOAK_TOKEN_URL     (optional) Override the default sso.mossworks.io.
 //     KEYCLOAK_CLIENT_ID     (optional) Override the default `mobile` client.
 //   tour:
-//     PLAYWRIGHT_BASE_URL    (optional) Override the default https://qa.mossworks.io.
+//     PLAYWRIGHT_BASE_URL    (optional) Override the default https://preprod.mossworks.io.
 //
 // Usage:
 //   npm run screenshots        # screenshots project (needs SCREENSHOTS_*)
@@ -40,7 +40,7 @@ import { SESSION_AUTH, STATE_FILE } from './screenshot-auth';
 //   npm run tour               # records tests/__videos__/tour/video.webm
 
 const SCREENSHOT_BASE_URL = process.env.SCREENSHOT_URL || 'http://localhost:3000';
-const TOUR_BASE_URL = process.env.PLAYWRIGHT_BASE_URL ?? 'https://qa.mossworks.io';
+const TOUR_BASE_URL = process.env.PLAYWRIGHT_BASE_URL ?? 'https://preprod.mossworks.io';
 const TOUR_AUTH_FILE = path.resolve(__dirname, '.auth/tour-storage-state.json');
 
 export default defineConfig({
