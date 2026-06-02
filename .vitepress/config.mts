@@ -46,7 +46,23 @@ export default defineConfig({
         text: 'Marketplace',
         items: [
           { text: 'Overview', link: '/guide/marketplace' },
+          { text: 'Hiring a creator', link: '/guide/marketplace-buyer' },
+          { text: 'Selling your work', link: '/guide/marketplace-seller' },
           { text: 'Beta testing reference', link: '/guide/beta-testing' },
+        ],
+      },
+      {
+        text: 'Marketplace reference',
+        collapsed: true,
+        items: [
+          { text: 'Browse', link: '/guide/marketplace-browse' },
+          { text: 'Gigs', link: '/guide/marketplace-gigs' },
+          { text: 'Brand partners', link: '/guide/marketplace-brand-partners' },
+          { text: 'Artist profile', link: '/guide/marketplace-artist-profile' },
+          { text: 'My Studio', link: '/guide/marketplace-my-studio' },
+          { text: 'Gamification', link: '/guide/marketplace-gamification' },
+          { text: 'Seller onboarding', link: '/guide/marketplace-onboarding' },
+          { text: 'Hire & contract', link: '/guide/marketplace-hire' },
         ],
       },
       {
