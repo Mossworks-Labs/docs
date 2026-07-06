@@ -47,6 +47,7 @@ Every signed-in account gets a free model for script writing — no key required
 
 ## Next steps
 
+- [Guided tour](/guide/getting-started) — let CRAFT walk you through setup from the **Get started** panel
 - [Sidebar & ⌘K](/guide/command-palette) — the shortest tour of the layout
 - [Channels](/guide/channels) — create your first channel
 - [Episodes](/guide/episodes) — your single backlog and pipeline

@@ -18,6 +18,7 @@ export default defineConfig({
         text: 'Getting Started',
         items: [
           { text: 'Introduction', link: '/guide/' },
+          { text: 'Guided tour', link: '/guide/getting-started' },
           { text: 'AI Providers', link: '/guide/ai-providers' },
           { text: 'Buyer & Seller', link: '/guide/auth' },
         ],
