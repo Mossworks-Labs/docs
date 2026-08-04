@@ -138,18 +138,15 @@ features:
 
 <div class="feature-section">
   <div class="feature-text">
-    <h3>YouTube Discover</h3>
-    <p>Research trending content with built-in YouTube search. No API key needed for basic search. Progressive loading fetches more results as you scroll.</p>
+    <h3>Plan in Conversation</h3>
+    <p>Work out your next episode by talking it through — subject, audience, and length — then turn the idea into a script in one click. Or plan it in Claude and have the finished script land in your channel.</p>
     <ul>
-      <li>Filter by duration, date, subscriber cap</li>
-      <li>Outlier detection — find viral hits (5x/10x/50x avg)</li>
-      <li>Channel deep dive with earnings estimates</li>
-      <li>Compare up to 3 channels side-by-side</li>
-      <li>Save any video as an idea with full metadata</li>
+      <li>Angles shaped by your channel's voice and niche</li>
+      <li>Claude and Gemini models, your pick per conversation</li>
+      <li>Idea and script created and linked automatically</li>
+      <li>No length limit — write what the material deserves</li>
+      <li>Connect Claude directly over MCP</li>
     </ul>
-  </div>
-  <div class="feature-screenshot">
-    <SchemeImage name="discover-search" alt="Discover Search" />
   </div>
 </div>
 

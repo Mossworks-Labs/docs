@@ -268,75 +268,8 @@ async function clickGlobalNav(page: Page, label: string) {
   await clickStageRail(page, label);
 }
 
-// ── Per-feature mocks (used by discover / ideas / audio tests so screenshots
+// ── Per-feature mocks (used by ideas / audio tests so screenshots
 //     don't depend on flaky backends or missing Ollama models) ─────────────
-
-async function mockDiscover(page: Page) {
-  // Fake videos + channels for /api/youtube/discover
-  const videos = Array.from({ length: 8 }, (_, i) => ({
-    id: `vid-${i}`,
-    title: [
-      'Quantum Computing, Explained in 10 Minutes',
-      'Why I Stopped Using Docker (and what I use now)',
-      'Rust is Faster Than C — Here\'s the Benchmark',
-      'The Real Reason Your SSD is Slow',
-      'A Linux Desktop That Actually Works in 2026',
-      'Every Programmer Should Know This Algorithm',
-      'I Built a Home Server for $47 — Here\'s How',
-      'ChatGPT Can\'t Do This One Simple Task',
-    ][i],
-    channelId: `ch-${i}`,
-    channelTitle: ['Quantum Weekly','Terminal Thoughts','Rust Dispatch','PixelForge','Linux Afternoon','AlgorithmsAreCool','TinyServer','AI Sceptic'][i],
-    description: 'A deep, approachable dive with code examples, diagrams, and zero fluff.',
-    thumbnail: `https://i.ytimg.com/vi/vid-${i}/mqdefault.jpg`,
-    viewCount: ['240000','58000','812000','94000','1400000','320000','410000','78000'][i],
-    publishedAt: new Date(Date.now() - (i + 1) * 86400_000 * 3).toISOString(),
-    url: `https://www.youtube.com/watch?v=vid-${i}`,
-    duration: [624, 1820, 941, 512, 2240, 1320, 720, 865][i],
-    likeCount: ['18000','5200','92000','8200','140000','40000','35000','6900'][i],
-    commentCount: ['1120','430','6100','760','8900','2900','3100','530'][i],
-    vph: [420, 180, 950, 260, 1820, 540, 700, 200][i],
-    isShort: false,
-  }));
-  const channels: Record<string, unknown> = {};
-  for (let i = 0; i < 8; i++) {
-    channels[`ch-${i}`] = {
-      id: `ch-${i}`,
-      name: videos[i].channelTitle,
-      thumbnail: '',
-      subscriberCount: ['48000','12000','210000','30000','940000','85000','120000','22000'][i],
-      totalViews: ['3200000','420000','18000000','1100000','140000000','5900000','8400000','920000'][i],
-      videoCount: ['210','54','320','97','610','180','240','68'][i],
-      createdAt: new Date(Date.now() - (i + 3) * 365 * 86400_000).toISOString(),
-    };
-  }
-  await page.route('**/api/youtube/discover*', async (route: any) => {
-    await route.fulfill({ status: 200, contentType: 'application/json',
-      body: JSON.stringify({ videos, channels, hasApiKey: true, exhausted: false }) });
-  });
-  // Channel deep dive
-  await page.route('**/api/youtube/channel/*', async (route: any) => {
-    const url = new URL(route.request().url());
-    const channelId = url.pathname.split('/').pop() || 'ch-0';
-    const recent = videos.slice(0, 12).map((v, i) => ({ ...v, channelId, id: `vid-${channelId}-${i}` }));
-    await route.fulfill({ status: 200, contentType: 'application/json',
-      body: JSON.stringify({
-        channel: channels[channelId] ?? channels['ch-0'],
-        recentVideos: recent,
-        avgViews: 420_000,
-        uploadFrequency: '2.4 videos / week',
-        hasApiKey: true,
-        analytics: {
-          channelAgeDays: 1280, channelAgeYears: 3.5,
-          subsPerDay: 22, avgEngagementRate: 0.038,
-          shortsCount: 42, longsCount: 168, shortsRatio: 0.2,
-          monetizationEligible: true, videosLast30Days: 8,
-          estimatedMonthlyViews: 1_800_000,
-        },
-      }),
-    });
-  });
-}
 
 async function mockAiIdeas(page: Page) {
   await page.route('**/api/ai/ideas', async (route: any) => {
@@ -648,39 +581,16 @@ test.describe('Documentation Screenshots', () => {
         }
       });
 
-      test('discover panel', async ({ page }) => {
-        await mockDiscover(page);
+      // Discover is a conversational planner now, not a YouTube search page
+      // (the yt-dlp surface was retired in 2026-08). The greeting + starter
+      // prompts render without an AI round-trip, so this captures cleanly
+      // without mocking a model stream.
+      test('discover planner', async ({ page }) => {
         await selectChannel(page);
         await clickGlobalNav(page, 'Discover');
-        await page.waitForTimeout(500);
-        const searchInput = page.locator('input[placeholder*="Search YouTube"]').first();
-        if (await searchInput.isVisible()) {
-          await searchInput.fill('quantum computing explained');
-          await searchInput.press('Enter');
-          await page.locator('text=/views/i').first().waitFor({ state: 'visible', timeout: 8000 }).catch(() => {});
-          await page.waitForTimeout(800);
-        }
-        await shotAllSchemes(page, 'discover-search');
-      });
-
-      test('discover - channel dive', async ({ page }) => {
-        await mockDiscover(page);
-        await selectChannel(page);
-        await clickGlobalNav(page, 'Discover');
-        await page.waitForTimeout(400);
-        const searchInput = page.locator('aside input[type="text"], main input[type="text"]').first();
-        if (await searchInput.isVisible()) {
-          await searchInput.fill('tech review');
-          await searchInput.press('Enter');
-          await page.locator('text=/views/i').first().waitFor({ state: 'visible', timeout: 8000 }).catch(() => {});
-          await page.waitForTimeout(600);
-        }
-        const channelBtn = page.locator('main button.text-accent-400').first();
-        if (await channelBtn.isVisible()) {
-          await channelBtn.click();
-          await page.waitForTimeout(1500);
-        }
-        await shotAllSchemes(page, 'channel-dive');
+        await page.getByText('Plan an episode').first().waitFor({ state: 'visible', timeout: 8000 }).catch(() => {});
+        await page.waitForTimeout(600);
+        await shotAllSchemes(page, 'discover-planner');
       });
 
       // Resources Search / Library are no longer top-level views — the
