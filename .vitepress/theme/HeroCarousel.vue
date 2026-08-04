@@ -40,7 +40,7 @@ const baseScreenshots = [
   { name: 'script-editor', alt: 'AI Script Editor' },
   { name: 'storyboard-editor', alt: 'Storyboard editor' },
   { name: 'compose-editor', alt: 'Composition timeline' },
-  { name: 'discover-search', alt: 'YouTube Discover' },
+  { name: 'discover-planner', alt: 'Discover episode planner' },
   { name: 'proposals-panel', alt: 'AI Proposals' },
   { name: 'audio-sections', alt: 'Audio Production' },
 ];

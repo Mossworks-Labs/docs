@@ -7,6 +7,8 @@ into a script in your channel.
 
 Open it from the Studio sidebar → **Discover**.
 
+<SchemeImage name="discover-planner" alt="Discover — the episode planner, with starter prompts, the Short / Long-form toggle and the model picker" />
+
 ::: tip This replaced the old YouTube search
 Discover used to search YouTube directly. That depended on a logged-in session
 that expired constantly, and it mostly surfaced other people's uploads rather

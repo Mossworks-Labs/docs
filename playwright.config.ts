@@ -1,5 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import path from 'node:path';
+import { SESSION_AUTH, STATE_FILE } from './screenshot-auth';
 
 // Two distinct playwright workloads live in this repo:
 //
@@ -19,6 +20,15 @@ import path from 'node:path';
 //   screenshots:
 //     SCREENSHOTS_USER       Keycloak username (a dedicated screenshot user).
 //     SCREENSHOTS_PASSWORD   Its password.
+//     SCREENSHOT_URL         (optional) Base URL. Default http://localhost:3000.
+//     SCREENSHOTS_AUTH       (optional) `session` to sign in through the
+//                            browser OIDC flow instead of Keycloak ROPC —
+//                            required against a deployed apex like
+//                            https://preprod.mossworks.io, whose realm has no
+//                            ROPC-capable client. See screenshot-auth.ts.
+//     SCREENSHOTS_CHANNEL_ID (optional, session mode) Existing channel to point
+//                            channel-scoped captures at; session mode does not
+//                            seed or delete fixtures in a deployed environment.
 //     KEYCLOAK_TOKEN_URL     (optional) Override the default sso.mossworks.io.
 //     KEYCLOAK_CLIENT_ID     (optional) Override the default `mobile` client.
 //   tour:
@@ -58,6 +68,11 @@ export default defineConfig({
         viewport: { width: 1440, height: 900 },
         colorScheme: 'dark',
         screenshot: 'off',
+        // Session mode: reuse the cookies globalSetup captured. The path is
+        // resolved when the context is created (in the worker, after
+        // globalSetup has run), so the file not existing at config-load is
+        // fine. Bearer mode leaves this undefined and injects a header instead.
+        ...(SESSION_AUTH ? { storageState: STATE_FILE } : {}),
       },
     },
     {

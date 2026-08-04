@@ -1,15 +1,24 @@
 import { test, type Page } from '@playwright/test';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { TOKEN_FILE } from './screenshot-auth';
+import { TOKEN_FILE, SESSION_AUTH } from './screenshot-auth';
 
 const SCREENSHOT_DIR = join(__dirname, 'public', 'screenshots');
 const BASE = `${(process.env.SCREENSHOT_URL || 'http://localhost:3000').replace(/\/studio\/?$/, '')}/api`;
 
 // Real Keycloak access token, minted by globalSetup via ROPC against the
 // `mobile` client. Read at module load — workers spawn after globalSetup
-// completes, so the file is guaranteed to exist by then.
-const SCREENSHOT_TOKEN = readFileSync(TOKEN_FILE, 'utf8').trim();
+// completes, so the file is guaranteed to exist by then. Empty in session
+// mode (SCREENSHOTS_AUTH=session), where auth rides on the storageState
+// cookies the config hands the browser context instead of a header.
+const SCREENSHOT_TOKEN = existsSync(TOKEN_FILE) ? readFileSync(TOKEN_FILE, 'utf8').trim() : '';
+
+// Session mode targets a deployed apex, where studio is subpath-mounted and
+// its fixtures are not ours to create or delete. Point channel-scoped
+// captures at an existing channel instead of seeding one.
+const STUDIO_PREFIX = SESSION_AUTH ? '/studio' : '';
+const SESSION_CHANNEL_ID = process.env.SCREENSHOTS_CHANNEL_ID || null;
+
 const CHANNEL_NAME = 'Lorem Ipsum Tech';
 const CHARACTER_NAME = 'TechExplorer';
 
@@ -106,7 +115,7 @@ const SYNTHETIC_CHANNEL = {
   created: new Date().toISOString(),
   updated: new Date().toISOString(),
 };
-function effectiveChannelId(): string { return dummyChannelId ?? SYNTHETIC_CHANNEL_ID; }
+function effectiveChannelId(): string { return SESSION_CHANNEL_ID ?? dummyChannelId ?? SYNTHETIC_CHANNEL_ID; }
 
 // Bearer auth for the in-spec setup fetches (apiPost / apiPut / apiDelete
 // + the beforeAll cleanup query). Matches the same token the page
@@ -114,7 +123,7 @@ function effectiveChannelId(): string { return dummyChannelId ?? SYNTHETIC_CHANN
 // middleware which JWKS-verifies the signature.
 const AUTH_HEADERS: Record<string, string> = {
   'Content-Type': 'application/json',
-  Authorization: `Bearer ${SCREENSHOT_TOKEN}`,
+  ...(SCREENSHOT_TOKEN ? { Authorization: `Bearer ${SCREENSHOT_TOKEN}` } : {}),
 };
 
 async function apiPost(path: string, body: object) {
@@ -471,6 +480,15 @@ async function mockChannelList(page: Page) {
 
 test.describe('Documentation Screenshots', () => {
   test.beforeAll(async () => {
+    // Session mode runs against a deployed apex with a real account. Never
+    // create or reuse fixture channels there — captures point at
+    // SCREENSHOTS_CHANNEL_ID, and afterAll must not delete anything.
+    if (SESSION_AUTH) {
+      if (!SESSION_CHANNEL_ID) {
+        console.warn('[SCREENSHOTS] SCREENSHOTS_AUTH=session without SCREENSHOTS_CHANNEL_ID — channel-scoped captures will not resolve a channel.');
+      }
+      return;
+    }
     try {
       // Clean up any leftover dummy channels from previous runs
       const channelsResp = await fetch(`${BASE}/channels`, { headers: AUTH_HEADERS });
@@ -517,7 +535,9 @@ test.describe('Documentation Screenshots', () => {
   });
 
   test.afterAll(async () => {
-    if (dummyChannelId) {
+    // `dummyChannelId` is only ever set by the beforeAll seed above, which
+    // is skipped in session mode — so this can never delete a real channel.
+    if (!SESSION_AUTH && dummyChannelId) {
       await apiDelete(`/channels/${dummyChannelId}`);
     }
   });
@@ -525,13 +545,16 @@ test.describe('Documentation Screenshots', () => {
   // ── Screenshots (all schemes per view) ──────────────────────────────────
 
     test.beforeEach(async ({ page }) => {
-      // Apply the Bearer token to every page request — the SPA's
+      // Bearer mode: apply the token to every page request — the SPA's
       // fetch() calls don't set Authorization themselves (they rely on
       // session cookies in the browser path), so we inject it at the
-      // network layer.
-      await page.setExtraHTTPHeaders({ Authorization: `Bearer ${SCREENSHOT_TOKEN}` });
-      await mockChannelList(page);
-      await page.goto('/');
+      // network layer. Session mode already *has* those cookies, and must
+      // not mock the channel list away — the real one is the point.
+      if (SCREENSHOT_TOKEN) {
+        await page.setExtraHTTPHeaders({ Authorization: `Bearer ${SCREENSHOT_TOKEN}` });
+      }
+      if (!SESSION_AUTH) await mockChannelList(page);
+      await page.goto(`${STUDIO_PREFIX}/`);
       // Post Mossworks-unified-sidebar redesign the shell renders <aside>
       // not <header>. Accept either so older deploys still work.
       await page.waitForSelector('aside, header', { timeout: 15000 });
@@ -585,10 +608,31 @@ test.describe('Documentation Screenshots', () => {
       // (the yt-dlp surface was retired in 2026-08). The greeting + starter
       // prompts render without an AI round-trip, so this captures cleanly
       // without mocking a model stream.
+      //
+      // DiscoverChatPanel has three render branches and only the last one is
+      // worth a screenshot, so the waits below are assertions, not
+      // best-effort hints — a silent `.catch()` here would happily capture
+      // the "Pick a channel" or "Plan your next video with Claude" gate:
+      //   - no selectedChannelId          → "Pick a channel to start planning"
+      //   - !user.isPremium || no models  → the Claude-connector upsell
+      //   - otherwise                     → header "Plan an episode", the
+      //     greeting, four starter-prompt pills, Short/Long-form toggle,
+      //     model <select>, and the "What do you want to make?" textarea.
       test('discover planner', async ({ page }) => {
-        await selectChannel(page);
-        await clickGlobalNav(page, 'Discover');
-        await page.getByText('Plan an episode').first().waitFor({ state: 'visible', timeout: 8000 }).catch(() => {});
+        if (SESSION_AUTH) {
+          // Studio's routing is TanStack-Router-owned: the rendered panel
+          // comes from the URL, and poking `activeView` in the store no
+          // longer navigates. Discover keeps both a global `/discover` and a
+          // channel-scoped `/c/<id>/discover` route — use the latter, since
+          // the panel needs a selected channel to get past its first gate.
+          await page.goto(`${STUDIO_PREFIX}/c/${effectiveChannelId()}/discover`);
+        } else {
+          await selectChannel(page);
+          await clickGlobalNav(page, 'Discover');
+        }
+        await page.getByText('Plan an episode').first().waitFor({ state: 'visible', timeout: 20_000 });
+        await page.locator('textarea[placeholder="What do you want to make?"]').waitFor({ state: 'visible' });
+        await page.getByRole('button', { name: 'Help me find an angle for my next video' }).waitFor({ state: 'visible' });
         await page.waitForTimeout(600);
         await shotAllSchemes(page, 'discover-planner');
       });

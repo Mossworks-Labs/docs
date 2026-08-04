@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The repo is **more than a VitePress site** — it also carries a **Playwright capture subsystem** with two distinct workloads that boot the live apps:
 
-- **`screenshots`** — auto-captures the guide PNGs in **7 colour schemes** (amber, blue, liquidgold, otter, purple, rose, xanderu) into `public/screenshots/`. Auths via Keycloak ROPC against the `mobile` client (programmatic; runs in CI-style flows). Viewport 1440×900.
+- **`screenshots`** — auto-captures the guide PNGs in **7 colour schemes** (amber, blue, liquidgold, otter, purple, rose, xanderu) into `public/screenshots/`. Two auth modes (see `screenshot-auth.ts`): **bearer** (default) mints a Keycloak ROPC token against the `mobile` client and injects it as a header — programmatic, CI-style, aimed at a **local** stack; **session** (`SCREENSHOTS_AUTH=session`) does a headless browser OIDC sign-in against a deployed apex and reuses the cookies as a `storageState`. Viewport 1440×900.
 - **`tour`** — records a 1080p `.webm` walkthrough of the headline studio workflow (for the marketing site, not the guide). Auths via an interactive sign-in whose `storageState` is captured once with `npm run tour:auth`. Viewport 1920×1080, video on.
 
 The README documents the VitePress side and the `<SchemeImage>` / `<FlatImage>` authoring API but deliberately punts on the capture pipeline ("operator-internal"); this file fills that gap.
@@ -23,6 +23,17 @@ From `package.json` scripts:
 - `npm run build` — static build → `.vitepress/dist/`.
 - `npm run preview` — preview the production build.
 - `npm run screenshots` — Playwright `screenshots` project (`screenshots.spec.ts`); drives the live app to capture guide PNGs. Needs `SCREENSHOTS_USER` / `SCREENSHOTS_PASSWORD` (and optionally `KEYCLOAK_TOKEN_URL`, `KEYCLOAK_CLIENT_ID`); base URL defaults to `http://localhost:3000` (override with `SCREENSHOT_URL`).
+  - **ROPC only works where a ROPC-capable client exists.** The default token URL (`sso.mossworks.io/realms/craft`) no longer resolves, and preprod's realm is `mossworks` (`login-preprod.mossworks.io`) with **no `mobile` client** — the token endpoint answers `invalid_client`, and the clients that do exist reject direct access grants. Against a deployed apex use session mode instead:
+
+    ```bash
+    SCREENSHOTS_AUTH=session SCREENSHOT_URL=https://preprod.mossworks.io \
+    SCREENSHOTS_USER=… SCREENSHOTS_PASSWORD=… \
+    SCREENSHOTS_CHANNEL_ID=<existing channel uuid> \
+    npx playwright test --project=screenshots -g "discover planner"
+    ```
+
+    Session mode **does not seed or delete fixtures** (a deployed environment's data isn't ours to touch) — `beforeAll`/`afterAll` early-return and channel-scoped captures point at `SCREENSHOTS_CHANNEL_ID`. It also skips the channel-list mock and the bearer header. Only the captures explicitly written for it (currently `discover planner`) are session-aware; filter with `-g` rather than running the whole project.
+  - **Store pokes no longer navigate.** studio's routing is TanStack-Router-owned, so the spec's `setView()` (which mutates `activeView` on `window.__craftStore`) does not change what renders. Session-aware tests navigate by URL (`/studio/c/<id>/discover`).
 - `npm run tour:auth` — runs the `tour-auth` project (`tour-auth.setup.ts`, `--headed`): opens a real Chromium, you sign in by hand, and the context is saved to `.auth/tour-storage-state.json`.
 - `npm run tour` — runs the `tour` project (`tour.spec.ts`); records the marketing `.webm`. Reuses the `tour:auth` storage state; base URL defaults to `https://qa.mossworks.io` (override with `PLAYWRIGHT_BASE_URL`).
 - `npm run tour:headed` — same as `tour` but headed.
