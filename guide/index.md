@@ -1,6 +1,6 @@
 # Getting Started
 
-CRAFT Studio is a YouTube content creation platform with AI-powered idea generation, script writing, video production, audio, competitive research, and multi-source resource discovery — orchestrated by specialized AI agents that collaborate through a 7-stage pipeline.
+CRAFT Studio is a YouTube content creation platform with conversational episode planning, AI-powered script writing, video production, audio, and multi-source resource discovery — orchestrated by specialized AI agents that collaborate through a 7-stage pipeline.
 
 ## What You Can Do
 
@@ -17,8 +17,6 @@ CRAFT Studio is a YouTube content creation platform with AI-powered idea generat
 <SchemeImage name="top-bar" alt="Studio sidebar — Mossworks logo, Studio section with channel selector and stage links" />
 
 <SchemeImage name="episodes-panel" alt="Episodes kanban — every show is a card moving across the pipeline" />
-
-<SchemeImage name="channel-dive" alt="Channel Deep Dive" />
 
 ## Layout
 

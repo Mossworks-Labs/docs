@@ -1,86 +1,82 @@
 # Discover
 
-The Discover panel is a YouTube research tool. Search for videos, analyze channels, estimate earnings, and save inspiring content as ideas. Open it from the Studio sidebar → **Discover**.
+Discover is where you work out what to make next. Instead of browsing what other
+people have already published, you talk it through: what the video is about, who
+it's for, and how long it should run. When the idea is solid, one click turns it
+into a script in your channel.
 
-<SchemeImage name="discover-search" alt="Discover — left filter rail, channel strip, video grid" />
+Open it from the Studio sidebar → **Discover**.
 
-## Layout
-
-- **Left — filter rail.** Search input at the top, then stacked filter sections (Sort by / Duration / Date / Channel size cap / Outlier / Topic tags) and a **Filter loop** status card at the bottom that shows how many videos are currently kept.
-- **Main — results area.** Channel strip (when applicable) and the progressively-loaded video grid. Infinite scroll pulls more results when you approach the bottom.
-
-## Searching
-
-Type in the **Search** box in the left rail and hit Enter (or click the button beneath it). Results load in batches — scroll down to fetch more. Your channel's Topic tags show up as pill-buttons in the rail so you can jump straight to relevant queries.
-
-::: tip No setup needed
-Basic search works out of the box. Adding a YouTube key (Profile → API keys) unlocks subscriber-cap and outlier filters plus channel comparison.
+::: tip This replaced the old YouTube search
+Discover used to search YouTube directly. That depended on a logged-in session
+that expired constantly, and it mostly surfaced other people's uploads rather
+than a plan for yours. Planning in conversation is both more reliable and more
+useful.
 :::
 
-## Filters
+## Planning an episode
 
-All filters re-run the search as soon as they change.
+1. **Pick a channel.** Planning is channel-specific — it uses your channel's
+   voice and niche to suggest angles, so choose a channel first (or create one).
+2. **Say what you're thinking.** A topic, a half-formed idea, or just the mood
+   you're after. If you're stuck, say who you're making it for and you'll get a
+   few angles to react to.
+3. **Set the shape.** Use the **Short / Long-form** toggle in the header, and say
+   how long you want it — the target length shapes the structure you get back.
+4. **Push back.** Reject the angles that feel generic. The useful result is the
+   one you argued your way to.
 
-| Filter | Options | What it does |
-|--------|---------|--------------|
-| **Sort by** | Relevance / Most viewed / Newest | Result ordering |
-| **Duration** | Any / < 4 min (Shorts) / 4–20 min / 20+ min | Video length |
-| **Date** | Any time / Past week / Past month / Past year | Recency |
-| **Channel size cap** | Any / < 1M / < 100K / < 10K / < 1K | Subscriber cap — requires a YouTube key |
-| **Outlier** | Any / ≥ 5× / ≥ 10× / ≥ 50× | Videos with views well above the channel's average — requires a YouTube key |
-| **Topic tags** | Pill-buttons from your channel config | One-click topical searches |
+### Turning it into a script
 
-## Filter loop
+When the idea has settled, click **Turn this into a script**. That creates:
 
-Because tight filters (e.g. 10× outliers + <10K subs) can eliminate most of any given batch, Discover searches progressively wider — up to ~6000 raw results — to surface matches. The **Filter loop** card at the bottom of the left rail shows live status (`142 kept`, `exhausted`, `searching…`) so you can tell whether to wait or loosen a filter.
+- an **idea** in your channel, carrying the title, hook and angle
+- a **script** seeded with that framing, ready to write in the editor
+- the link between them, so the idea doesn't reappear as an orphan on your board
 
-## Channel deep dive
+You'll land in the Scripts panel with the new draft selected.
 
-<SchemeImage name="channel-dive" alt="Channel Deep Dive" />
+## Choosing a model
 
-Click a **channel name** (accent link) on any video card to open the deep dive. The main column switches to channel-focused view.
+The model picker sits in the header next to the length toggle. Claude and Gemini
+models are both available; which ones you see depends on your plan and on the API
+keys stored for the channel (Profile → API keys). If a model is unavailable, the
+picker says why.
 
-**Analytics**
+**Start over** (the circular arrow) clears the conversation and begins fresh.
+Nothing is saved until you turn it into a script.
 
-- **Subscribers**, **Total Views**, **Video Count**
-- **Avg Views**, **Upload Frequency**, **Engagement Rate**
-- **Subs/Day**, **Shorts Ratio**, **Videos in last 30 days**
-- **Monetization** badge (≥1K subs + ≥4K watch hours in 12 months)
+## Planning in Claude instead
 
-**Estimated earnings**
+Every plan is a paid AI action. If you'd rather not spend allowance on ideation —
+or you simply prefer working in Claude — connect CRAFT to Claude and plan there:
+the conversation runs on your own Claude plan, and the finished script still
+lands in your channel.
 
-Based on your channel's RPM setting (configurable in [Settings](/guide/settings)):
+In Claude: **Settings → Connectors → Add custom connector**, then paste your
+CRAFT connector URL (`https://<your-craft-host>/api/mcp`) and sign in with the
+account you use here.
 
-- **Monthly revenue** — estimated monthly views × RPM
-- **Per video** — average views × RPM
-- **30-day views** — projected monthly view count
+Claude can then research the topic, draft the script, submit it to your channel,
+fact-check or humanize it, and estimate what production will cost — without you
+leaving the conversation. Setup guide and the full tool list:
+[Mossworks-Labs/craft-claude-plugin](https://github.com/Mossworks-Labs/craft-claude-plugin).
 
-**Channel comparison**
+## Script length
 
-Click **+ Add this channel** to add to the comparison table. Compare up to 3 channels side-by-side: subs, total views, avg views, and estimated earnings per video.
+There's no length limit. Write to whatever the material deserves — a 20-minute
+deep dive is as valid as a 45-second short. The word targets shown in the script
+editor (150 for shorts, 1,500 for long-form) are pacing guidance, not caps.
 
-**Recent videos**
+CRAFT prices runtime at roughly **150 spoken words per minute**, so a 3,000-word
+script is about a 20-minute video. Stage directions in `[square brackets]` and
+`**Speaker:**` prefixes don't count toward the spoken total.
 
-Scrollable list of the latest uploads. Click any to view full metadata.
+## What happened to channel research?
 
-## Video detail
+Subscriber caps, outlier filters, channel deep-dives and earnings estimates went
+with the YouTube search surface.
 
-Click any video card to expand in-place and see full metadata:
-
-- Views, likes, comments, duration, upload date
-- Full description
-- Tags and categories
-- Chapters (if available)
-- **Transcript** — fetches and displays captions
-- **Inspire** — creates an idea with all enrichment data
-
-## Inspire
-
-Every video card has an **Inspire** button. It creates an idea with:
-
-- Video title as the idea title
-- Channel name in the hook
-- Enrichment: views, duration, description, transcript (if fetched)
-- Source: `discover`, with the original URL stored for attribution
-
-The idea appears immediately in the Ideas panel, tagged `⊕ Discover` with the view count visible in the list's source column.
+Your **own** channel's metrics are unaffected — they live in
+[Channel settings](/guide/settings) → YouTube, which connects over OAuth and is
+unrelated to the retired search path. Publishing to YouTube is likewise unchanged.
